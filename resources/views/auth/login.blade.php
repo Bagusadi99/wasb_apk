@@ -13,7 +13,7 @@
 
 <body style="background-color: #d5edd2;">
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-lg p-4" style="width: 350px; height: 400px;">
+        <div class="card shadow-lg p-4" style="width: 350px; height: auto">
             <div class="d-flex align-items-center justify-content-center mb-4">
                 <a href="#">
                     <img src="{{ asset('template/dist/assets/compiled/png/logotransjatim.png') }}" alt="Logo" style="width: 80px; height: 80px;">
@@ -23,6 +23,12 @@
                     <h6 class="text-success">Pengawasan Kebersihan</h6>
                 </div>
             </div>            
+
+            @if (Session::has('error'))
+                <div class="alert alert-light-danger color-danger">
+                    <i class="bi bi-exclamation-circle"></i> {{ Session::get('error') }}
+                </div>
+            @endif
             
             <form action="{{ route('login.input') }}" method="POST">
                 @csrf   
@@ -33,7 +39,7 @@
                         <input type="text" class="form-control" id="user_nama" name="user_nama" placeholder="Masukkan username" required>
                     </div>
                 </div>
-                <div class="mb-5">
+                <div class="mb-4">
                     <label for="password" class="form-label">Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-shield-lock mb-2"></i></span>
@@ -45,17 +51,8 @@
         </div>
     </div>
 </body>
+
 <script src="{{ asset('template/dist/assets/static/js/initTheme.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-@if ($message = Session::get('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: '{{ $message }}',
-        });
-    </script>
-@endif
 
 </html>
