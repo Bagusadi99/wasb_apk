@@ -14,20 +14,26 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Proses login
     public function login(Request $request)
     {
         $request->validate([
-            'user_nama' => 'required',
+            'user_nama'     => 'required',
             'user_password' => 'required'
         ]);
 
-        // Cek apakah username ditemukan
         $user = User::where('user_nama', $request->user_nama)->first();
 
         if ($user && Hash::check($request->user_password, $user->user_password)) {
-            Auth::login($user);
-            return redirect()->route('homeuser'); // Pastikan route welcome sudah dibuat
+            // Hanya user dengan role 'admin' atau 'petugas' yang boleh login
+            if ($user->user_role === 'admin') {
+                Auth::login($user);
+                return redirect()->route('admin.dashadmin');
+            } elseif ($user->user_role === 'petugas') {
+                Auth::login($user);
+                return redirect()->route('user.homeuser');
+            } else {
+                return back()->with('error', ' Anda tidak memiliki akses ke sistem.');
+            }
         }
 
         return back()->with('error', 'Username atau password salah!');
