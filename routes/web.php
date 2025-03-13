@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormHalteController;
+use App\Http\Controllers\FormPoolController;    
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PengawasController;
 use App\Http\Controllers\ShiftController;
@@ -22,5 +23,5 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:petugas'])->group(function () {
     Route::get('/homeuser', function () { return view('user.homeuser'); })->name('user.homeuser');
     Route::get('/halteuser', [FormHalteController::class, 'formhalte'])->name('halteuser');
-    Route::get('/pooluser', function () { return view('user.pooluser'); })->name('pooluser');
+    Route::get('/pooluser', [FormPoolController::class, 'formpool'])->name('pooluser');
 });
