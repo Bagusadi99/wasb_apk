@@ -29,6 +29,12 @@
                         <span>Pengawas</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ Request::is('shift') ? 'active' : '' }}">
+                    <a href="{{ route('admin.shift.list_shift') }}" class='sidebar-link'>
+                        <i class="bi bi-alarm-fill"></i>
+                        <span>Shift</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
