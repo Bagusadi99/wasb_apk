@@ -6,7 +6,7 @@ use App\Models\Shift;
 use App\Models\Koridor;
 
 
-class HalteController extends Controller
+class FormHalteController extends Controller
 {
 
     public function formhalte()

@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class Koridor extends Authenticatable
+use Illuminate\Database\Eloquent\Model;
+class Koridor extends Model
 {
-    protected $table = 'koridor'; // Nama tabel di database
-    protected $primaryKey = 'koridor_id'; // Primary Key
-    protected $fillable = ['koridor_id', 'koridor_nama'];
+    protected $table = 'koridor';
+    protected $primaryKey = 'koridor_id';
+    protected $fillable = ['koridor_nama'];
     public $timestamps = false;
 }

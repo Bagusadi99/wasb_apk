@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class Shift extends Authenticatable
+use Illuminate\Database\Eloquent\Model;
+class Shift extends Model
 {
-    protected $table = 'shift'; // Nama tabel di database
-    protected $primaryKey = 'shift_id'; // Primary Key
+    protected $table = 'shift'; 
+    protected $primaryKey = 'shift_id';
     protected $fillable = ['shift_id', 'shift_nama'];
     public $timestamps = false;
 }

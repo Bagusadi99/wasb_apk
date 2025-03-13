@@ -23,6 +23,12 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ Request::is('pengawas') ? 'active' : '' }}">
+                    <a href="{{ route('admin.pengawas.list_pengawas') }}" class='sidebar-link'>
+                        <i class="bi bi-person-standing"></i>
+                        <span>Pengawas</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
