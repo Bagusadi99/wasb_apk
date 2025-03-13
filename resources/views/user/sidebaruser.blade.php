@@ -26,7 +26,7 @@
                 <li class="sidebar-item {{ Request::is('halteuser') ? 'active' : '' }}">
                     <a href="{{ route('halteuser') }}" class='sidebar-link'>
                         <i class="bi bi-bus-front-fill"></i>
-                        <span>Form Halte</span>
+                        <span>Form Halte/Shelter</span>
                     </a>
                 </li>
 
