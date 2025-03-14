@@ -74,7 +74,7 @@
                                                     <div class="col-md-6 mb-3">
                                                         <h6>Koridor</h6>
                                                         <select name="koridor_id" id="koridor" class="choices form-select">
-                                                            <option value=""disabled selected>Pilih Koridor</option>
+                                                            <option value="" disabled selected>Pilih Koridor</option>
                                                             @foreach ($koridors as $koridor)
                                                                 <option value="{{ $koridor->koridor_id }}">{{ $koridor->koridor_nama }}</option>
                                                             @endforeach
@@ -85,8 +85,10 @@
                                                         <input type="date" name="tanggal" class="form-control" placeholder="Masukkan Tanggal">
                                                     </div>
                                                     <div class="col-md-6 mb-3">
-                                                        <h6>Nama Halte</h6>
-                                                        <input type="text" name="nama_halte" class="form-control" placeholder="Masukkan Nama Halte">
+                                                        <h6>Halte</h6>
+                                                        <select name="halte_id" id="halte" class="choices form-select">
+                                                            <option value="" disabled selected>Pilih Halte</option>
+                                                        </select>
                                                     </div>
                                                     <div class="col-md-3 mb-4">
                                                         <h6>Lokasi (Alamat)</h6>
@@ -283,12 +285,39 @@
             }
         });
     </script>
+
+    {{-- Scrip Relasi Koridor & Halte --}}
+    <script>
+        document.getElementById('koridor').addEventListener('change', function() {
+        const koridorId = this.value;
+        const halteDropdown = document.getElementById('halte');
+
+        if (koridorId) {
+            // Lakukan permintaan AJAX ke server
+            fetch(`/get-halte-by-koridor/${koridorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Kosongkan dropdown halte
+                    halteDropdown.innerHTML = '<option value="" disabled selected>Pilih Halte</option>';
+
+                    // Isi dropdown halte dengan data yang diterima
+                    data.forEach(halte => {
+                        const option = document.createElement('option');
+                        option.value = halte.halte_id;
+                        option.textContent = halte.halte_nama;
+                        halteDropdown.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        } else {
+            // Kosongkan dropdown halte jika tidak ada koridor yang dipilih
+            halteDropdown.innerHTML = '<option value="" disabled selected>Pilih Halte</option>';
+        }
+    });
+    </script>
     <script src="{{ asset('template/dist/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
-    <!-- Need: Apexcharts -->
-    <script src="{{ asset('template/dist/assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('template/dist/assets/static/js/pages/dashboard.js') }}"></script>
 
 </body>
 

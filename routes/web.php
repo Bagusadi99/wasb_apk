@@ -9,6 +9,7 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\KoridorController;
 use App\Http\Controllers\HalteController;
 
+
 // Halaman Login & Logiut
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.input');
@@ -27,6 +28,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 // Hanya untuk petugas
 Route::middleware(['auth', 'role:petugas'])->group(function () {
     Route::get('/homeuser', function () { return view('user.homeuser'); })->name('user.homeuser');
+
+    // Form Halte
     Route::get('/halteuser', [FormHalteController::class, 'formhalte'])->name('halteuser');
+    Route::get('/get-halte-by-koridor/{koridorId}', [FormHalteController::class, 'getHalteByKoridor']);
+
+    // Form Pool
     Route::get('/pooluser', [FormPoolController::class, 'formpool'])->name('pooluser');
 });
