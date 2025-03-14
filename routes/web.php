@@ -6,17 +6,22 @@ use App\Http\Controllers\FormPoolController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PengawasController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\KoridorController;
+use App\Http\Controllers\HalteController;
 
 // Halaman Login & Logiut
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.input');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
 // Hanya untuk admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashadmin', function () { return view('admin.dashadmin'); })->name('admin.dashadmin');
     Route::get('/pengawas', [PengawasController::class, 'list_pengawas'])->name('admin.pengawas.list_pengawas');
     Route::get('/shift', [ShiftController::class, 'list_shift'])->name('admin.shift.list_shift');
+    Route::get('/koridor', [KoridorController::class, 'list_koridor'])->name('admin.koridor.list_koridor');
+    Route::get('/halte', [HalteController::class, 'list_halte'])->name('admin.halte.list_halte');
 });
 
 // Hanya untuk petugas

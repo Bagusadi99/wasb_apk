@@ -35,6 +35,18 @@
                         <span>Shift</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ Request::is('koridor') ? 'active' : '' }}">
+                    <a href="{{ route('admin.koridor.list_koridor') }}" class='sidebar-link'>
+                        <i class="bi bi-building-fill"></i>
+                        <span>Koridor</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ Request::is('halte') ? 'active' : '' }}">
+                    <a href="{{ route('admin.halte.list_halte') }}" class='sidebar-link'>
+                        <i class="bi bi-bus-front-fill"></i>
+                        <span>Halte</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
