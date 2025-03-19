@@ -23,6 +23,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/shift', [ShiftController::class, 'list_shift'])->name('admin.shift.list_shift');
     Route::get('/koridor', [KoridorController::class, 'list_koridor'])->name('admin.koridor.list_koridor');
     Route::get('/halte', [HalteController::class, 'list_halte'])->name('admin.halte.list_halte');
+    Route::get('/pool', [PoolController::class, 'list_pool'])->name('admin.pool.list_pool');
+
 });
 
 // Hanya untuk petugas

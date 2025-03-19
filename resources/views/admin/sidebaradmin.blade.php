@@ -47,6 +47,12 @@
                         <span>Halte</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ Request::is('pool') ? 'active' : '' }}">
+                    <a href="{{ route('admin.pool.list_pool') }}" class='sidebar-link'>
+                        <i class="bi bi-buildings-fill"></i>
+                        <span>Pool</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf

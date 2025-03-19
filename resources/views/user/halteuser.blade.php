@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/iconly.css') }}">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
-          crossorigin=""/>
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+        crossorigin=""/>
     <style>
         #map {
             height: 300px;
@@ -99,7 +99,9 @@
                                                         <input type="text" id="koordinat" name="koordinat" class="form-control" placeholder="Koordinat" readonly>
                                                     </div>
                                                     <div class="col-md-6 mb-4">
-                                                        <button type="button" class="btn btn-success mt-1" onclick="getCurrentLocation()">Ambil Lokasi</button>
+                                                        <button type="button" class="btn btn-success mt-1" onclick="getCurrentLocation()">
+                                                            <i class="bi bi-geo-alt-fill"></i> Ambil Lokasi
+                                                        </button>
                                                     </div>
                                                     
                                                     <!-- Map container -->
