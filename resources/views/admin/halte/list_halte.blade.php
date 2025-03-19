@@ -138,7 +138,7 @@
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-end">
-                        <p>&copy; {{ date('Y') }} Transjatim</p>
+                        <p>&copy; {{ date('Y') }} Trans Jawa Timur</p>
                     </div>
                 </div>
             </footer>
