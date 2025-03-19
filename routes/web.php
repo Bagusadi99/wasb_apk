@@ -8,6 +8,7 @@ use App\Http\Controllers\PengawasController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\KoridorController;
 use App\Http\Controllers\HalteController;
+use App\Http\Controllers\PoolController;
 
 
 // Halaman Login & Logiut
