@@ -21,6 +21,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashadmin', function () { return view('admin.dashadmin'); })->name('admin.dashadmin');
     Route::get('/pengawas', [PengawasController::class, 'list_pengawas'])->name('admin.pengawas.list_pengawas');
+    Route::post('/pengawas/store', [PengawasController::class, 'store'])->name('pengawas.store');
+    Route::put('/pengawas/{id}', [PengawasController::class, 'update'])->name('pengawas.update');
+    Route::delete('/pengawas/{id}', [PengawasController::class, 'destroy'])->name('pengawas.destroy');
+
+
     Route::get('/shift', [ShiftController::class, 'list_shift'])->name('admin.shift.list_shift');
     Route::get('/koridor', [KoridorController::class, 'list_koridor'])->name('admin.koridor.list_koridor');
     Route::get('/halte', [HalteController::class, 'list_halte'])->name('admin.halte.list_halte');

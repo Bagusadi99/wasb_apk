@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/iconly.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/simple-datatables/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/table-datatable.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body style="background-color: #d5edd2;">
@@ -22,7 +26,7 @@
                 </a>
             </header>
             <div class="page-heading">
-                <h3 style="color: #4A8939">Pengawas</h3>
+                <h3 style="color: #4A8939">Pengawas Kebersihan</h3>
             </div>
             <div class="page-content">
                 <section class="basic-choices">
@@ -48,6 +52,7 @@
                                                     <th>Nama</th>
                                                     <th>Shift</th>
                                                     <th class="text-center">Aksi</th>
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -58,7 +63,7 @@
                                                         <td>{{ $item->shift->shift_nama ?? 'Tidak ada shift' }}</td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-sm btn-warning mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#editModal" 
-                                                                onclick="loadDataPengawas('{{ $item->pekerja_id }}', '{{ $item->nama_pekerja }}', '{{ $item->shift->shift_nama ?? 'Tidak ada shift' }}')">
+                                                                onclick="loadDataPengawas('{{ $item->pekerja_id }}', '{{ $item->nama_pekerja }}', '{{ $item->shift->shift_id ?? 'Tidak ada shift' }}')">
                                                                 <i class="bi bi-pencil-fill"></i> Edit
                                                             </button>
                                                             <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModal" 
@@ -73,60 +78,71 @@
                                     </div>
                                     <!-- Modal Tambah Pengawas -->
                                     <div class="modal fade text-left" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-scrollable, role="document">
+                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
+                                                <form action="{{ route('pengawas.store') }}" method="POST">
                                                 @csrf
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="addModalLabel">Tambah Pengawas</h5>
-                                                    <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                        <i data-feather="x"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h6 class="text-start">Nama Pengawas:</h6>
-                                                    <div class="form-group">
-                                                        <input type="text" name="nama_pengawas" class="form-control" placeholder="Nama Pengawas">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addModalLabel">Tambah Pengawas</h5>
+                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
                                                     </div>
-                                                    <h6 class="text-start">Shift:</h6>
-                                                    <div class="form-group">
-                                                        <input type="text" name="shift" class="form-control" placeholder="Shift">
+                                                    <div class="modal-body">
+                                                        <h6 class="text-start">Nama Pengawas:</h6>
+                                                        <div class="form-group">
+                                                            <input type="text" name="nama_pekerja" class="form-control" placeholder="Nama Pengawas" required>
+                                                        </div>
+                                                        <h6 class="text-start">Shift:</h6>
+                                                        <div class="form-group">
+                                                            <select name="shift_id" class="choices form-select" required>
+                                                                <option value=""disabled selected>Pilih Shift</option>
+                                                                @foreach ($shift as $item)
+                                                                    <option value="{{ $item->shift_id }}">{{ $item->shift_nama }}</option> <!-- ID yang dikirim -->
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                                                    <button type="submit" class="btn btn-success ms-1">Simpan</button>
-                                                </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-success ms-1">Simpan</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- Modal Edit Pengawas -->
                                     <div class="modal fade text-left" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title", id="editModalLabel">Edit Pengawas</h5>
-                                                    <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                        <i data-feather="x"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h6 class="text-start">Nama Pengawas:</h6>
-                                                    <div class="form-group">
-                                                        <input type="text" id="edit_nama_pengawas" name="nama_pengawas" class="form-control" placeholder="Nama Pengawas">
+                                                <form id="editForm" action="" method="POST">
+                                                    @csrf
+                                                    @method('PUT') 
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editModalLabel">Edit Pengawas</h5>
+                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
                                                     </div>
-                                                    <h6 class="text-start">Shift:</h6>
-                                                    <div class="form-group">
-                                                        <input type="text" id="edit_shift" name="shift" class="form-control" placeholder="Shift">
+                                                    <div class="modal-body">
+                                                        <h6 class="text-start">Nama Pengawas:</h6>
+                                                        <div class="form-group">
+                                                            <input type="text" id="edit_nama_pengawas" name="nama_pekerja" class="form-control" placeholder="Nama Pengawas">
+                                                        </div>
+                                                        <h6 class="text-start">Shift:</h6>
+                                                        <div class="form-group">
+                                                            <select id="edit_shift" name="shift_id" class="choices form-select">
+                                                                @foreach($shift as $item)
+                                                                    <option value="{{ $item->shift_id }}">{{ $item->shift_nama }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                                                    <button type="submit" class="btn btn-warning ms-1">Simpan</button>
-                                                </div>
-                                            
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-warning ms-1">Simpan</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -135,22 +151,24 @@
                                     <div class="modal fade text-left" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
-                                                @csrf
-                                                @method('DELETE')
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Hapus Pengawas</h5>
-                                                    <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                        <i data-feather="x"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Apakah Anda yakin ingin menghapus pengawas - <br>
-                                                        <strong id="delete_nama_pengawas"></strong>?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                                                    <button type="submit" class="btn btn-danger ms-1">Hapus</button>
-                                                </div>
+                                                <form id="deleteForm" action="" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteModalLabel">Hapus Pengawas</h5>
+                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Apakah Anda yakin ingin menghapus pengawas - <br>
+                                                            <strong id="delete_nama_pengawas"></strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-danger ms-1">Hapus</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -164,30 +182,66 @@
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-end">
-                        <p>&copy; {{ date('Y') }} Trans Jawa Timur </p>
+                        <p>&copy; {{ date('Y') }} Trans Jawa Timur</p>
                     </div>
                 </div>
             </footer>
         </div>
     </div>
+
+    {{-- Sweet Alert --}}
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session("success") }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @endif
+
+    @if($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan!',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+                showConfirmButton: true
+            });
+        </script>
+    @endif
     
     <script src="{{ asset('template/dist/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
-
-    {{-- Script untuk mengisi data ke dalam modal --}}
+    <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/static/js/pages/simple-datatables.js') }}"></script>
+    
+    {{-- Script Modal --}}
     <script>
-        function loadDataPengawas(id, nama, shiftNama) {
+        function loadDataPengawas(id, nama, shiftId) {
             // Isi data ke dalam modal edit
             document.getElementById('edit_nama_pengawas').value = nama;
-            document.getElementById('edit_shift').value = shiftNama;
+            document.getElementById('edit_shift').value = shiftId;
+
+            // Update form action URL dengan ID yang sesuai
+            document.getElementById("editForm").action = "/pengawas/" + id;
         }
 
         function setDeleteData(id, nama) {
             // Isi data ke dalam modal hapus
-            document.getElementById('delete_nama_pengawas').textContent = nama;  
+            document.getElementById('delete_nama_pengawas').textContent = nama;
+            document.getElementById("deleteForm").action = "/pengawas/" + id;
+
+            // Tampilkan modal hapus
+            new bootstrap.Modal(document.getElementById('deleteModal')).show();
         }
     </script>
+    
 </body>
+
 
 </html>
