@@ -25,8 +25,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/pengawas/{id}', [PengawasController::class, 'update'])->name('pengawas.update');
     Route::delete('/pengawas/{id}', [PengawasController::class, 'destroy'])->name('pengawas.destroy');
 
-
     Route::get('/shift', [ShiftController::class, 'list_shift'])->name('admin.shift.list_shift');
+    Route::post('/shift/store', [ShiftController::class, 'store'])->name('shift.store');
+    Route::put('/shift/{id}', [ShiftController::class, 'update'])->name('shift.update');
+    Route::delete('/shift/{id}', [ShiftController::class, 'destroy'])->name('shift.destroy');
+
     Route::get('/koridor', [KoridorController::class, 'list_koridor'])->name('admin.koridor.list_koridor');
     Route::get('/halte', [HalteController::class, 'list_halte'])->name('admin.halte.list_halte');
     Route::get('/pool', [PoolController::class, 'list_pool'])->name('admin.pool.list_pool');
