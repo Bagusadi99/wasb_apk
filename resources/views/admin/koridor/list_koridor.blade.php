@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/iconly.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/simple-datatables/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/table-datatable.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body style="background-color: #d5edd2;">
@@ -59,9 +63,10 @@
                                                                 onclick="loadDataKoridor('{{ $item->koridor_id }}', '{{ $item->koridor_nama }}')">
                                                                 <i class="bi bi-pencil-fill"></i> Edit
                                                             </button>
-                                                            <a class="btn btn-sm btn-danger">
+                                                            <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                                                onclick="setDeleteData('{{ $item->koridor_id }}', '{{ $item->koridor_nama}}')">
                                                                 <i class="bi bi-trash-fill"></i> Hapus
-                                                            </a>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 @endforEach
@@ -72,23 +77,25 @@
                                     <div class="modal fade text-left" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
-                                                @csrf
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="addModalLabel">Tambah Koridor</h5>
-                                                    <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                        <i data-feather="x"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h6 class="text-start">Koridor:</h6>
-                                                    <div class="form-group">
-                                                        <input type="text" name="koridor_nama" class="form-control" placeholder="Nama Koridor">
+                                                <form action="{{ route('koridor.store') }}" method="POST">
+                                                    @csrf
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addModalLabel">Tambah Koridor</h5>
+                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                                                    <button type="submit" class="btn btn-success ms-1">Simpan</button>
-                                                </div>
+                                                    <div class="modal-body">
+                                                        <h6 class="text-start">Koridor:</h6>
+                                                        <div class="form-group">
+                                                            <input type="text" name="koridor_nama" class="form-control" placeholder="Nama Koridor">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-success ms-1">Simpan</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -97,24 +104,51 @@
                                     <div class="modal fade text-left" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editModalLabel">Edit Koridor</h5>
-                                                    <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                        <i data-feather="x"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h6 class="text-start">Koridor:</h6>
-                                                    <div class="form-group">
-                                                        <input type="text" id="edit_koridor_nama" name="koridor_nama" class="form-control" placeholder="Nama Koridor">
+                                                <form id="editForm" action="" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editModalLabel">Edit Koridor</h5>
+                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                                                    <button type="submit" class="btn btn-warning ms-1">Simpan</button>
-                                                </div>
+                                                    <div class="modal-body">
+                                                        <h6 class="text-start">Koridor:</h6>
+                                                        <div class="form-group">
+                                                            <input type="text" id="edit_koridor_nama" name="koridor_nama" class="form-control" placeholder="Nama Koridor">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-warning ms-1">Simpan</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal Hapus Koridor -->
+                                    <div class="modal fade text-left" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <form id="deleteForm" action="" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteModalLabel">Hapus Koridor</h5>
+                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                                            <i data-feather="x"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Apakah Anda yakin ingin menghapus koridor - <br>
+                                                            <strong id="delete_koridor_nama"></strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-danger ms-1">Hapus</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -128,23 +162,58 @@
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-end">
-                        <p>&copy; {{ date('Y') }} Trans Jawa Timur </p>
+                        <p>&copy; {{ date('Y') }} Trans Jawa Timur</p>
                     </div>
                 </div>
             </footer>
         </div>
     </div>
+
+    {{-- Sweet Alert --}}
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session("success") }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @endif
+
+    @if($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan!',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+                showConfirmButton: true
+            });
+        </script>
+    @endif
     
+    {{-- Script Modal --}}
+    <script>
+        function loadDataKoridor(id, koridorNama) {
+            // Isi data ke dalam modal edit
+            document.getElementById('edit_koridor_nama').value = koridorNama;
+            document.getElementById("editForm").action = "/koridor/" + id;
+        }
+        function setDeleteData(id, koridorNama) {
+            // Isi data ke dalam modal hapus
+            document.getElementById('delete_koridor_nama').textContent = koridorNama;
+            document.getElementById("deleteForm").action = "/koridor/" + id;
+            
+        }
+    </script>
+
     <script src="{{ asset('template/dist/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
-
-    <script>
-        function loadDataKoridor(koridorId, koridorNama) {
-            // Isi data ke dalam modal edit
-            document.getElementById('edit_koridor_nama').value = koridorNama;
-        }
-    </script>
+    <script src="{{ asset('template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/static/js/pages/simple-datatables.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
 </body>
 
 </html>

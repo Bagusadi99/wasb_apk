@@ -31,6 +31,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/shift/{id}', [ShiftController::class, 'destroy'])->name('shift.destroy');
 
     Route::get('/koridor', [KoridorController::class, 'list_koridor'])->name('admin.koridor.list_koridor');
+    Route::post('/koridor/store', [KoridorController::class, 'store'])->name('koridor.store');
+    Route::put('/koridor/{id}', [KoridorController::class, 'update'])->name('koridor.update');
+    Route::delete('/koridor/{id}', [KoridorController::class, 'destroy'])->name('koridor.destroy');
+    
     Route::get('/halte', [HalteController::class, 'list_halte'])->name('admin.halte.list_halte');
     Route::get('/pool', [PoolController::class, 'list_pool'])->name('admin.pool.list_pool');
 
