@@ -90,7 +90,7 @@
                                                     <div class="modal-body">
                                                         <h6 class="text-start">Halte:</h6>
                                                         <div class="form-group">
-                                                            <input type="text" name="halte_nama" class="form-control" placeholder="Nama Koridor">
+                                                            <input type="text" name="halte_nama" class="form-control" placeholder="Nama Halte">
                                                         </div>
                                                         <h6 class="text-start">Koridor:</h6>
                                                         <div class="form-group">
