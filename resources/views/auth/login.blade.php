@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +10,25 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/auth.css') }}">
+    <style>
+        body {
+            background-image: url('{{ asset('template/dist/assets/compiled/jpg/bgtransjatim4.jpg') }}');
+            background-size: cover; /* Sesuaikan ukuran gambar */
+            background-position: center 70%; /* Posisi gambar: tengah horizontal, 20% dari atas */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* .glass-card {
+            background-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px); 
+        } */
+        
+    </style>
 </head>
 
-<body style="background-color: #d5edd2;">
+<body>
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-lg p-4" style="width: 350px; height: auto">
+        <div class="card glass-card shadow-lg p-4" style="width: 350px; height: auto">
             <div class="d-flex align-items-center justify-content-center mb-4">
                 <a href="#">
                     <img src="{{ asset('template/dist/assets/compiled/png/logotransjatim.png') }}" alt="Logo" style="width: 80px; height: 80px;">
