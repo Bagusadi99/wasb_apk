@@ -36,6 +36,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/koridor/{id}', [KoridorController::class, 'destroy'])->name('koridor.destroy');
     
     Route::get('/halte', [HalteController::class, 'list_halte'])->name('admin.halte.list_halte');
+    Route::post('/halte/store', [HalteController::class, 'store'])->name('halte.store');
+    Route::put('/halte/{id}', [HalteController::class, 'update'])->name('halte.update');
+    Route::delete('/halte/{id}', [HalteController::class, 'destroy'])->name('halte.destroy');
+    
     Route::get('/pool', [PoolController::class, 'list_pool'])->name('admin.pool.list_pool');
 
 });
