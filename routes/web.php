@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DataHalteController;
 use App\Http\Controllers\FormHalteController;
 use App\Http\Controllers\FormPoolController;    
 use App\Http\Controllers\AuthController;
@@ -20,6 +21,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Hanya untuk admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashadmin', function () { return view('admin.dashadmin'); })->name('admin.dashadmin');
+    Route::get('/dataformhalte', [DataHalteController::class, 'data_halte'])->name('admin.dashboard.data_halte');
+    Route::get('/detail_datahalte/{id}', [DataHalteController::class, 'detail_datahalte']);
+    Route::get('/datahalte/filter', [DataHalteController::class, 'filter_datahalte'])->name('filter_datahalte');
+
+
     Route::get('/pengawas', [PengawasController::class, 'list_pengawas'])->name('admin.pengawas.list_pengawas');
     Route::post('/pengawas/store', [PengawasController::class, 'store'])->name('pengawas.store');
     Route::put('/pengawas/{id}', [PengawasController::class, 'update'])->name('pengawas.update');

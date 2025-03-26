@@ -6,7 +6,7 @@
                     <a href="index.html"><img src="{{ asset('template/dist/assets/compiled/png/logotransjatim.png') }}"
                         alt="Logo" style="width: 65px; height: 65px !important;"></a>
                     <div class="ms-4 text-justify">
-                        <h6 class="mb-0 text-success">WASB</h6>
+                        <h5 class="mb-0 text-success">ADMIN</h5>
                         <h6 class="text-success" style="font-size: 12px">Pengawasan Kebersihan</h6>
                     </div>
                 </div> 
@@ -23,6 +23,13 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ Request::is('dataformhalte') || Request::is('dataformhalte/detail/*') || Request::is('datahalte/filter') ? 'active' : '' }}">
+                    <a href="{{ route('admin.dashboard.data_halte') }}" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                        <span>Data Halte / Shalter</span>
+                    </a>
+                </li>
+                <hr>
                 <li class="sidebar-item {{ Request::is('pengawas') ? 'active' : '' }}">
                     <a href="{{ route('admin.pengawas.list_pengawas') }}" class='sidebar-link'>
                         <i class="bi bi-person-standing"></i>
