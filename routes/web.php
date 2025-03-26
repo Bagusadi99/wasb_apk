@@ -54,6 +54,7 @@ Route::middleware(['auth', 'role:petugas'])->group(function () {
     // Form Halte
     Route::get('/halteuser', [FormHalteController::class, 'formhalte'])->name('halteuser');
     Route::get('/get-halte-by-koridor/{koridorId}', [FormHalteController::class, 'getHalteByKoridor']);
+    Route::post('/halteuser/store', [FormHalteController::class, 'store'])->name('formhalte.store');
 
     // Form Pool
     Route::get('/pooluser', [FormPoolController::class, 'formpool'])->name('pooluser');

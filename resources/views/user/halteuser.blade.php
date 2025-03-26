@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/iconly.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Choices.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
@@ -19,7 +25,14 @@
             width: 100%;
             border-radius: 8px;
             margin-bottom: 15px;
-            cursor: default; /* Change cursor to default to indicate no interaction */
+            cursor: default;
+        }
+        .coordinates-container {
+            display: flex;
+            gap: 10px;
+        }
+        .coordinate-input {
+            flex: 1;
         }
     </style>
 </head>
@@ -47,104 +60,113 @@
                                     <h4 class="card-title">Halte / Shelter</h4>
                                 </div>
                                 <div class="card-body">
-                                    <form action="">
+                                    <form action="{{ route('formhalte.store') }}" method="POST" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <div class="row">
-                                                <form action="" method="POST">
-                                                    @csrf <!-- Tambahkan CSRF Token untuk keamanan -->
-                                                    <div class="col-md-6 mb-3">
-                                                        <h6>Nama</h6>
-                                                        <select name="pekerja_id" id="pekerja" class="choices form-select">
-                                                            <option value=""disabled selected>Nama Pekerja</option>
-                                                            @foreach ($pekerjas as $pekerja)
-                                                                <option value="{{ $pekerja->pekerja_id }}">{{ $pekerja->nama_pekerja }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <h6>Shift</h6>
-                                                        <select name="shift_id" id="shift" class="choices form-select">
-                                                            <option value=""disabled selected>Pilih Shift</option>
-                                                            @foreach ($shifts as $shift)
-                                                                <option value="{{ $shift->shift_id }}">{{ $shift->shift_nama }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    
-                                                    <div class="col-md-6 mb-3">
-                                                        <h6>Koridor</h6>
-                                                        <select name="koridor_id" id="koridor" class="choices form-select">
-                                                            <option value="" disabled selected>Pilih Koridor</option>
-                                                            @foreach ($koridors as $koridor)
-                                                                <option value="{{ $koridor->koridor_id }}">{{ $koridor->koridor_nama }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <h6>Tanggal</h6>
-                                                        <input type="date" name="tanggal" class="form-control" placeholder="Masukkan Tanggal">
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <h6>Halte</h6>
-                                                        <select name="halte_id" id="halte" class="choices form-select">
-                                                            <option value="" disabled selected>Pilih Halte</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3 mb-4">
-                                                        <h6>Lokasi (Alamat)</h6>
-                                                        <input type="text" id="lokasi" name="lokasi" class="form-control" placeholder="Masukkan Lokasi" readonly>
-                                                    </div>
-                                                    <div class="col-md-3 mb-4">
-                                                        <h6>Koordinat (Lat, Lng)</h6>
-                                                        <input type="text" id="koordinat" name="koordinat" class="form-control" placeholder="Koordinat" readonly>
-                                                    </div>
-                                                    <div class="col-md-6 mb-4">
-                                                        <button type="button" class="btn btn-success mt-1" onclick="getCurrentLocation()">
-                                                            <i class="bi bi-geo-alt-fill"></i> Ambil Lokasi
-                                                        </button>
-                                                    </div>
-                                                    
-                                                    <!-- Map container -->
-                                                    <div class="col-12 mb-4">
-                                                        <h6>Lokasi di Peta</h6>
-                                                        <div id="map"></div>
-                                                    </div>
-                                                    
-                                                    <hr>
-                                                    <div class="col-md-6 mb-3">
-                                                        <h6>Foto Kebersihan Lantai Halte</h6>
-                                                        <input type="file" name="foto_lantai" class="imageInput form-control" data-target="previewImage1" accept="image/*">
-                                                        <img id="previewImage1" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
-                                                    </div>
+                                                @csrf 
+                                                <div class="col-md-6 mb-3">
+                                                    <h6>Nama</h6>
+                                                    <select name="pekerja_id" id="pekerja" class="choices form-select">
+                                                        <option value=""disabled selected>Nama Pekerja</option>
+                                                        @foreach ($pekerja as $item)
+                                                            <option value="{{ $item->pekerja_id }}">{{ $item->nama_pekerja }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <h6>Shift</h6>
+                                                    <select name="shift_id" id="shift" class="choices form-select">
+                                                        <option value=""disabled selected>Pilih Shift</option>
+                                                        @foreach ($shift as $item)
+                                                            <option value="{{ $item->shift_id }}">{{ $item->shift_nama }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                                 
-                                                    <div class="col-md-6 mb-3">
-                                                        <h6>Foto Kebersihan Kaca Halte</h6>
-                                                        <input type="file" name="foto_kaca" class="imageInput form-control" data-target="previewImage2" accept="image/*">
-                                                        <img id="previewImage2" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                <div class="col-md-6 mb-3">
+                                                    <h6>Koridor</h6>
+                                                    <select name="koridor_id" id="koridor" class="choices form-select">
+                                                        <option value="" disabled selected>Pilih Koridor</option>
+                                                        @foreach ($koridor as $item)
+                                                            <option value="{{ $item->koridor_id }}">{{ $item->koridor_nama }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <h6>Tanggal</h6>
+                                                    <input type="date" id="tanggal_waktu_halte" name="tanggal_waktu_halte" class="form-control" placeholder="Masukkan Tanggal">
+                                                </div>
+                                                <div class="col-md-6 mb-3" style="position: relative; z-index: 1050;">
+                                                    <h6>Halte</h6>
+                                                    <select name="halte_id" id="halte" class="choices form-select" style="position: relative; z-index: 1050; background: white;">
+                                                        <option value="" disabled selected>Pilih Halte</option>
+                                                    </select>
+                                                </div>                                                    
+                                                <div class="col-md-3 mb-4">
+                                                    <h6>Lokasi (Alamat)</h6>
+                                                    <input type="text" id="lokasi" name="lokasi_halte" class="form-control" placeholder="Masukkan Lokasi" readonly>
+                                                </div>
+                                                <div class="col-md-3 mb-4">
+                                                    <h6>Koordinat</h6>
+                                                    <div class="coordinates-container">
+                                                        <input type="text" id="latitude" name="latitude" class="form-control coordinate-input" placeholder="Latitude" readonly>
+                                                        <input type="text" id="longitude" name="longitude" class="form-control coordinate-input" placeholder="Longitude" readonly>
                                                     </div>
+                                                    <input type="hidden" id="koordinat" name="koordinat">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <button type="button" class="btn btn-success mt-2" onclick="getCurrentLocation()">
+                                                        <i class="bi bi-geo-alt-fill"></i> Ambil Lokasi
+                                                    </button>
+                                                </div>
                                                 
-                                                    <div class="col-md-6 mb-3">
-                                                        <h6>Foto Kebersihan Sampah Halte</h6>
-                                                        <input type="file" name="foto_sampah" class="imageInput form-control" data-target="previewImage3" accept="image/*">
-                                                        <img id="previewImage3" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
-                                                    </div>
+                                                <!-- Map container -->
+                                                <div class="col-12 mb-4">
+                                                    <h6>Lokasi di Peta</h6>
+                                                    <div id="map"></div>
+                                                </div>
+                                                
+                                                <hr>
+                                                <div class="col-md-6 mb-3">
+                                                    <h6>Foto Kebersihan Lantai Halte</h6>
+                                                    <input type="file" name="bukti_kebersihan_lantai_halte" class="imageInput form-control" data-target="previewImage1" accept="image/*">
+                                                    <img id="previewImage1" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                </div>
+                                            
+                                                <div class="col-md-6 mb-3">
+                                                    <h6>Foto Kebersihan Kaca Halte</h6>
+                                                    <input type="file" name="bukti_kebersihan_kaca_halte" class="imageInput form-control" data-target="previewImage2" accept="image/*">
+                                                    <img id="previewImage2" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                </div>
+                                            
+                                                <div class="col-md-6 mb-3">
+                                                    <h6>Foto Kebersihan Sampah Halte</h6>
+                                                    <input type="file" name="bukti_kebersihan_sampah_halte" class="imageInput form-control" data-target="previewImage3" accept="image/*">
+                                                    <img id="previewImage3" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                </div>
 
-                                                    <div class="col-md-6 mb-3">
-                                                        <h6>Foto Kebersihan Kondisi Halte</h6>
-                                                        <input type="file" name="foto_kondisi" class="imageInput form-control" data-target="previewImage4" accept="image/*">
-                                                        <img id="previewImage4" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
-                                                    </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <h6>Foto Kebersihan Kondisi Halte</h6>
+                                                    <input type="file" name="bukti_kondisi_halte" class="imageInput form-control" data-target="previewImage4" accept="image/*">
+                                                    <img id="previewImage4" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                </div>
 
-                                                    <div class="col-md-6 mb-4">
-                                                        <h6>Kendala Halte</h6>
-                                                        <input type="text" name="kendala" class="form-control" placeholder="Masukkan Kendala">
-                                                    </div>
-                                                </form>
+                                                <div class="col-md-6 mb-4">
+                                                    <h6>Kendala Halte</h6>
+                                                    <input type="text" name="kendala_halte" class="form-control" placeholder="Masukkan Kendala">
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+                                                    <h6>Foto Kendala Halte</h6>
+                                                    <input type="file" name="bukti_kendala_halte" class="imageInput form-control" data-target="previewImage5" accept="image/*">
+                                                    <img id="previewImage5" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                </div>
+
+                                                <div class="card">
+                                                    <button type="submit" class="btn btn-success">Kirim</button>
+                                                </div>
+                                            
                                             </div> 
-
-                                            <div class="card">
-                                                <button type="submit" class="btn btn-success">Kirim</button>
-                                            </div>
                                         </div>
                                     </form>                                
                                 </div>
@@ -167,19 +189,69 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
-            
+            crossorigin="">
+    </script>
+
     <script>
-        // Initialize map with default view (Indonesia)
+        document.addEventListener("DOMContentLoaded", function () {
+            const koridorDropdown = document.getElementById('koridor');
+            const halteDropdown = document.getElementById('halte');
+
+            // Inisialisasi Choices.js pada dropdown halte
+            let halteChoices = new Choices(halteDropdown, {
+                searchEnabled: true,
+                removeItemButton: true,
+                shouldSort: false,
+                itemSelectText: '',
+                allowHTML: true
+            });
+
+            koridorDropdown.addEventListener('change', function () {
+                const koridorId = this.value;
+
+                if (koridorId) {
+                    fetch(`/get-halte-by-koridor/${koridorId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            halteChoices.clearStore();
+
+                            if (data.length > 0) {
+                                let halteOptions = data.map(halte => ({
+                                    value: halte.halte_id,
+                                    label: halte.halte_nama
+                                }));
+
+                                halteChoices.setChoices(halteOptions, "value", "label", true);
+                            } else {
+                                halteChoices.setChoices([{ value: "", label: "Tidak ada halte tersedia", disabled: true, selected: true }]);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                } else {
+                    halteChoices.clearStore();
+                    halteChoices.setChoices([{ value: "", label: "Pilih Halte", disabled: true, selected: true }]);
+                }
+            });
+            
+            // Jika ada data koordinat yang sudah ada (misalnya saat edit), tampilkan di peta
+            const latitudeInput = document.getElementById('latitude');
+            const longitudeInput = document.getElementById('longitude');
+            
+            if (latitudeInput.value && longitudeInput.value) {
+                updateMap(parseFloat(latitudeInput.value), parseFloat(longitudeInput.value));
+            }
+        });
+
+        //Script untuk inisialisasi peta
         var map = L.map('map', {
             zoomControl: true,
-            dragging: false,  // Disable map dragging
-            touchZoom: false, // Disable touch zoom
-            doubleClickZoom: false, // Disable double click zoom
-            scrollWheelZoom: false, // Disable scroll wheel zoom
-            boxZoom: false,   // Disable box zoom
-            tap: false,       // Disable tap handler
-            keyboard: false   // Disable keyboard navigation
+            dragging: false,
+            touchZoom: false,
+            doubleClickZoom: false,
+            scrollWheelZoom: false,
+            boxZoom: false,
+            tap: false,
+            keyboard: false
         }).setView([-7.2575, 112.7521], 13);
         
         var marker = null;
@@ -189,26 +261,22 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         
-        document.querySelectorAll(".imageInput").forEach(input => {
-            input.addEventListener("change", function(event) {
-                const file = event.target.files[0]; // Ambil file yang dipilih
-                const targetImg = document.getElementById(event.target.getAttribute("data-target"));
-    
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        targetImg.src = e.target.result; // Set gambar ke src
-                        targetImg.style.display = "block"; // Tampilkan gambar
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    targetImg.style.display = "none"; // Sembunyikan jika tidak ada file
-                }
-            });
-        });
+        // Fungsi untuk memperbarui peta berdasarkan koordinat
+        function updateMap(latitude, longitude) {
+            map.setView([latitude, longitude], 18);
+            
+            if (marker !== null) {
+                map.removeLayer(marker);
+            }
+            
+            marker = L.marker([latitude, longitude]).addTo(map);
+        }
 
+        // Fungsi untuk mendapatkan lokasi saat ini
         function getCurrentLocation() {
             const lokasiInput = document.getElementById("lokasi");
+            const latitudeInput = document.getElementById("latitude");
+            const longitudeInput = document.getElementById("longitude");
             const koordinatInput = document.getElementById("koordinat");
 
             if ("geolocation" in navigator) {
@@ -217,29 +285,22 @@
                         // Get high accuracy coordinates
                         const latitude = position.coords.latitude;
                         const longitude = position.coords.longitude;
-                        const accuracy = position.coords.accuracy;
                         
                         // Format coordinates with more precision (6 decimal places)
                         const formattedLat = latitude.toFixed(6);
                         const formattedLng = longitude.toFixed(6);
                         
-                        // Set coordinates in the input field with higher precision
-                        koordinatInput.value = `${formattedLat}, ${formattedLng}`;
+                        // Set coordinates in the input fields
+                        latitudeInput.value = formattedLat;
+                        longitudeInput.value = formattedLng;
+                        koordinatInput.value = `${formattedLat},${formattedLng}`;
                         
+                        // Update map view
+                        updateMap(latitude, longitude);
+                        
+                        // Fetch address from OpenStreetMap
                         const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
 
-                        // Update map with high zoom level for precision
-                        map.setView([latitude, longitude], 18);
-                        
-                        // Remove previous marker if exists
-                        if (marker !== null) {
-                            map.removeLayer(marker);
-                        }
-                        
-                        // Add new marker with precise coordinates (no popup text)
-                        marker = L.marker([latitude, longitude]).addTo(map);
-
-                        // Fetch detailed address from OpenStreetMap
                         fetch(apiUrl)
                             .then(response => response.json())
                             .then(data => {
@@ -254,73 +315,68 @@
                     function (error) {
                         console.error("Error getting location:", error);
                         lokasiInput.value = "Lokasi tidak dapat diambil";
-                        koordinatInput.value = "N/A";
+                        latitudeInput.value = "";
+                        longitudeInput.value = "";
                     },
-                    // Enable high accuracy option
                     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
                 );
             } else {
                 lokasiInput.value = "Geolocation tidak didukung";
-                koordinatInput.value = "N/A";
+                latitudeInput.value = "";
+                longitudeInput.value = "";
             }
         }
         
-        // Function to update map when coordinates are entered manually
-        // This is kept in case the coordinates are changed by other system processes
-        document.getElementById("koordinat").addEventListener("change", function() {
-            const koordinatValue = this.value.split(",");
-            if (koordinatValue.length === 2) {
-                const lat = parseFloat(koordinatValue[0].trim());
-                const lng = parseFloat(koordinatValue[1].trim());
-                
-                if (!isNaN(lat) && !isNaN(lng)) {
-                    // Set high precision view
-                    map.setView([lat, lng], 18);
-                    
-                    if (marker !== null) {
-                        map.removeLayer(marker);
-                    }
-                    
-                    // Add marker without popup
-                    marker = L.marker([lat, lng]).addTo(map);
+        // Event listeners untuk preview gambar
+        document.querySelectorAll(".imageInput").forEach(input => {
+            input.addEventListener("change", function(event) {
+                const file = event.target.files[0];
+                const targetImg = document.getElementById(event.target.getAttribute("data-target"));
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        targetImg.src = e.target.result;
+                        targetImg.style.display = "block";
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    targetImg.style.display = "none";
                 }
-            }
+            });
         });
     </script>
 
-    {{-- Scrip Relasi Koridor & Halte --}}
-    <script>
-        document.getElementById('koridor').addEventListener('change', function() {
-        const koridorId = this.value;
-        const halteDropdown = document.getElementById('halte');
+    {{-- Sweet Alert --}}
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session("success") }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @endif
 
-        if (koridorId) {
-            // Lakukan permintaan AJAX ke server
-            fetch(`/get-halte-by-koridor/${koridorId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Kosongkan dropdown halte
-                    halteDropdown.innerHTML = '<option value="" disabled selected>Pilih Halte</option>';
+    @if($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan!',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+                showConfirmButton: true
+            });
+        </script>
+    @endif
+    
 
-                    // Isi dropdown halte dengan data yang diterima
-                    data.forEach(halte => {
-                        const option = document.createElement('option');
-                        option.value = halte.halte_id;
-                        option.textContent = halte.halte_nama;
-                        halteDropdown.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Error:', error));
-        } else {
-            // Kosongkan dropdown halte jika tidak ada koridor yang dipilih
-            halteDropdown.innerHTML = '<option value="" disabled selected>Pilih Halte</option>';
-        }
-    });
-    </script>
     <script src="{{ asset('template/dist/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
-
+    <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Choices.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 </body>
-
 </html>
