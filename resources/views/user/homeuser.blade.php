@@ -25,7 +25,7 @@
                 </a>
             </header>
             <div class="page-heading">
-            <h3>Home</h3>
+            <h3 style="color: #4A8939">Home</h3>
             </div>
             <div class="page-content">
                 <section class="basic-choices">
