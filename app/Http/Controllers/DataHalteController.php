@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\LaporanHalte;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\HalteExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class DataHalteController extends Controller
@@ -35,5 +38,33 @@ class DataHalteController extends Controller
         $laporan_halte = $query->orderBy('tanggal_waktu_halte', 'desc')->get();
         
         return view('admin.dashboard.data_halte', compact('laporan_halte'));
+    }
+
+    private function filterLaporan(Request $request)
+    {
+        $query = LaporanHalte::with(['pekerja', 'shift']);
+
+        if ($request->start_date && $request->end_date) {
+            $query->whereBetween('tanggal_waktu_halte', [
+                $request->start_date,
+                $request->end_date
+            ]);
+        }
+
+        return $query->orderBy('tanggal_waktu_halte', 'desc')->get();
+    }
+
+
+        public function exportPDF(Request $request)
+    {
+        $laporan_halte = $this->filterLaporan($request);
+
+        $pdf = Pdf::loadView('admin.exports.halte_pdf', compact('laporan_halte'));
+        return $pdf->download('laporan_halte.pdf');
+    }
+
+        public function exportExcel(Request $request)
+    {
+        return Excel::download(new HalteExport($request), 'laporan_halte.xlsx');
     }
 }

@@ -111,13 +111,19 @@
                                     <button class="btn btn-success dropdown-toggle me-1" type="button"
                                         id="dropdownMenuButtonIcon" data-bs-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
-                                        <i class="bi bi-error-circle me-50"></i> Eksport
+                                        <i class="bi bi-download me-50"></i> Eksport
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonIcon">
-                                        <a class="dropdown-item" href="#"><i class="bi bi-filetype-pdf"></i> PDF</a>
-                                        <a class="dropdown-item" href="#"><i class="bi bi-filetype-exe"></i> EXCEL</a>
+                                        <a class="dropdown-item" 
+                                            href="{{ route('export_pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}">
+                                            <i class="bi bi-filetype-pdf"></i> PDF
+                                        </a>
+                                        <a class="dropdown-item" 
+                                            href="{{ route('export_excel', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}">
+                                            <i class="bi bi-file-earmark-spreadsheet"></i> EXCEL
+                                        </a>
                                     </div>
-                                </div>
+                                </div>                                
                             </div>
                         </div>
                     </form>

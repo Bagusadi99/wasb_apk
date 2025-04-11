@@ -129,27 +129,35 @@
                                                 <hr>
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kebersihan Lantai Halte</h6>
-                                                    <input type="file" name="bukti_kebersihan_lantai_halte" class="imageInput form-control" data-target="previewImage1" accept="image/*">
-                                                    <img id="previewImage1" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                    <input type="file" name="bukti_kebersihan_lantai_halte" class="imageInput form-control"
+                                                        data-target="previewImage1" accept="image/*" capture="environment">
+                                                    <img id="previewImage1" src="#" alt="Pratinjau Gambar"
+                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>
-                                            
+                                                
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kebersihan Kaca Halte</h6>
-                                                    <input type="file" name="bukti_kebersihan_kaca_halte" class="imageInput form-control" data-target="previewImage2" accept="image/*">
-                                                    <img id="previewImage2" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                    <input type="file" name="bukti_kebersihan_kaca_halte" class="imageInput form-control"
+                                                        data-target="previewImage2" accept="image/*" capture="environment">
+                                                    <img id="previewImage2" src="#" alt="Pratinjau Gambar"
+                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>
-                                            
+                                                
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kebersihan Sampah Halte</h6>
-                                                    <input type="file" name="bukti_kebersihan_sampah_halte" class="imageInput form-control" data-target="previewImage3" accept="image/*">
-                                                    <img id="previewImage3" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                    <input type="file" name="bukti_kebersihan_sampah_halte" class="imageInput form-control"
+                                                        data-target="previewImage3" accept="image/*" capture="environment">
+                                                    <img id="previewImage3" src="#" alt="Pratinjau Gambar"
+                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>
-
+                                                
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kebersihan Kondisi Halte</h6>
-                                                    <input type="file" name="bukti_kondisi_halte" class="imageInput form-control" data-target="previewImage4" accept="image/*">
-                                                    <img id="previewImage4" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
-                                                </div>
+                                                    <input type="file" name="bukti_kondisi_halte" class="imageInput form-control"
+                                                        data-target="previewImage4" accept="image/*" capture="environment">
+                                                    <img id="previewImage4" src="#" alt="Pratinjau Gambar"
+                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                </div>                                                
 
                                                 <div class="col-md-6 mb-4">
                                                     <h6>Kendala Halte</h6>
@@ -165,7 +173,6 @@
                                                 <div class="card">
                                                     <button type="submit" class="btn btn-success">Kirim</button>
                                                 </div>
-                                            
                                             </div> 
                                         </div>
                                     </form>                                

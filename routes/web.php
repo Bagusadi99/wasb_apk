@@ -24,6 +24,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dataformhalte', [DataHalteController::class, 'data_halte'])->name('admin.dashboard.data_halte');
     Route::get('/detail_datahalte/{id}', [DataHalteController::class, 'detail_datahalte']);
     Route::get('/datahalte/filter', [DataHalteController::class, 'filter_datahalte'])->name('filter_datahalte');
+    Route::get('/export-pdf', [DataHalteController::class, 'exportPDF'])->name('export_pdf');
+    Route::get('/export-excel', [DataHalteController::class, 'exportExcel'])->name('export_excel');
+
 
 
     Route::get('/pengawas', [PengawasController::class, 'list_pengawas'])->name('admin.pengawas.list_pengawas');
