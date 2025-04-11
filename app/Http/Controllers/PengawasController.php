@@ -11,10 +11,9 @@ class PengawasController extends Controller
     // Menampilkan daftar pengawas
     public function list_pengawas()
     {
-        $pekerja = Pekerja::with('shift')->get(); // Ambil data pekerja beserta relasi shift
-        $shift = Shift::all();
+        $pekerja = Pekerja::all();
         // dd($shifts);
-        return view('admin.pengawas.list_pengawas', compact('pekerja', 'shift')); // Kirim data ke view
+        return view('admin.pengawas.list_pengawas', compact('pekerja')); // Kirim data ke view
     }
     public function store(Request $request)
     {
@@ -22,13 +21,11 @@ class PengawasController extends Controller
         // Validasi data yang dikirim dari form
         $request->validate([
             'nama_pekerja' => 'required|string|max:255',
-            'shift_id' => 'required|exists:shift,shift_id', // Pastikan shift_id ada di tabel shifts
         ]);
 
         // Simpan data ke database
         Pekerja::create([
             'nama_pekerja' => $request->nama_pekerja,
-            'shift_id' => $request->shift_id,
         ]);
 
         // Redirect ke halaman sebelumnya dengan pesan sukses
@@ -40,15 +37,11 @@ class PengawasController extends Controller
         // Validasi request
         $request->validate([
             'nama_pekerja' => 'required|string|max:255',
-            'shift_id' => 'required|exists:shift,shift_id',
         ]);
 
-        // Cari pengawas berdasarkan ID
         $pekerja = Pekerja::findOrFail($id);
-        // Update data pengawas
         $pekerja->update([
             'nama_pekerja' => $request->nama_pekerja,
-            'shift_id' => $request->shift_id,
         ]);
 
         // Redirect atau response sesuai kebutuhan

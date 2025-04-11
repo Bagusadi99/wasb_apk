@@ -50,7 +50,6 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Nama</th>
-                                                    <th>Shift</th>
                                                     <th class="text-center">Aksi</th>
                                                     
                                                 </tr>
@@ -60,10 +59,9 @@
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td>{{ $item->nama_pekerja }}</td>
-                                                        <td>{{ $item->shift->shift_nama ?? 'Tidak ada shift' }}</td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-sm btn-warning mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#editModal" 
-                                                                onclick="loadDataPengawas('{{ $item->pekerja_id }}', '{{ $item->nama_pekerja }}', '{{ $item->shift->shift_id ?? 'Tidak ada shift' }}')">
+                                                                onclick="loadDataPengawas('{{ $item->pekerja_id }}', '{{ $item->nama_pekerja }}')">
                                                                 <i class="bi bi-pencil-fill"></i> Edit
                                                             </button>
                                                             <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModal" 
@@ -93,15 +91,6 @@
                                                         <div class="form-group">
                                                             <input type="text" name="nama_pekerja" class="form-control" placeholder="Nama Pengawas" required>
                                                         </div>
-                                                        <h6 class="text-start">Shift:</h6>
-                                                        <div class="form-group">
-                                                            <select name="shift_id" class="choices form-select" required>
-                                                                <option value=""disabled selected>Pilih Shift</option>
-                                                                @foreach ($shift as $item)
-                                                                    <option value="{{ $item->shift_id }}">{{ $item->shift_nama }}</option> <!-- ID yang dikirim -->
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
@@ -128,14 +117,6 @@
                                                         <h6 class="text-start">Nama Pengawas:</h6>
                                                         <div class="form-group">
                                                             <input type="text" id="edit_nama_pengawas" name="nama_pekerja" class="form-control" placeholder="Nama Pengawas">
-                                                        </div>
-                                                        <h6 class="text-start">Shift:</h6>
-                                                        <div class="form-group">
-                                                            <select id="edit_shift" name="shift_id" class="choices form-select">
-                                                                @foreach($shift as $item)
-                                                                    <option value="{{ $item->shift_id }}">{{ $item->shift_nama }}</option>
-                                                                @endforeach
-                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -222,10 +203,9 @@
     
     {{-- Script Modal --}}
     <script>
-        function loadDataPengawas(id, nama, shiftId) {
+        function loadDataPengawas(id, nama) {
             // Isi data ke dalam modal edit
             document.getElementById('edit_nama_pengawas').value = nama;
-            document.getElementById('edit_shift').value = shiftId;
 
             // Update form action URL dengan ID yang sesuai
             document.getElementById("editForm").action = "/pengawas/" + id;
