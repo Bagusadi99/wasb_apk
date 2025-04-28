@@ -43,7 +43,7 @@
         @include('user.sidebaruser')
         <div id="main">
             <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
+                <a class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3" style="color: #4A8939;"></i>
                 </a>
             </header>
@@ -96,9 +96,9 @@
                                                     <h6>Tanggal</h6>
                                                     <input type="date" id="tanggal_waktu_halte" name="tanggal_waktu_halte" class="form-control" placeholder="Masukkan Tanggal">
                                                 </div>
-                                                <div class="col-md-6 mb-3" style="position: relative; z-index: 1050;">
+                                                <div class="col-md-6 mb-3" style="position: relative; z-index: 2;">
                                                     <h6>Halte</h6>
-                                                    <select name="halte_id" id="halte" class="choices form-select" style="position: relative; z-index: 1050; background: white;">
+                                                    <select name="halte_id" id="halte" class="choices form-select" style="position: relative; z-index: 1050;">
                                                         <option value="" disabled selected>Pilih Halte</option>
                                                     </select>
                                                 </div>                                                    
@@ -121,7 +121,7 @@
                                                 </div>
                                                 
                                                 <!-- Map container -->
-                                                <div class="col-12 mb-4">
+                                                <div class="col-12 mb-4" style=" z-index: 1;">
                                                     <h6>Lokasi di Peta</h6>
                                                     <div id="map"></div>
                                                 </div>

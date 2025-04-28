@@ -1,6 +1,6 @@
 <div id="sidebar">
     <div class="sidebar-wrapper active">
-        <div class="sidebar-header position-relative">
+        <div class="sidebar-header position-relative z-index-1">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center justify-content-center mb-4">
                     <a href="index.html"><img src="{{ asset('template/dist/assets/compiled/png/logotransjatim.png') }}"
