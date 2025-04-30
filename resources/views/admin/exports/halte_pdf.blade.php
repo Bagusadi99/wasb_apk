@@ -29,11 +29,28 @@
                     <td>{{ $item->shift->shift_nama ?? '-' }}</td>
                     <td>{{ $item->tanggal_waktu_halte }}</td>
                     <td>
-                        @if ($item->bukti_kebersihan_lantai_halte)
+                      
+                    @if ($item->bukti_kebersihan_lantai_halte)
                             <img src="{{ public_path('storage/' . $item->bukti_kebersihan_lantai_halte) }}" alt="Bukti Gambar">
                         @else
-                            Tidak ada
+                            Tidak ada foto kebersihan lantai halte
                         @endif
+
+                        @if ($item->bukti_kebersihan_kaca_halte)
+                            <img src="{{ public_path('storage/' . $item->bukti_kebersihan_kaca_halte) }}" alt="Bukti Gambar">
+                        @else
+                            Tidak ada foto kebersihan kaca halte
+                        @endif
+                        @if ($item->bukti_kebersihan_sampah_halte)
+                            <img src="{{ public_path('storage/' . $item->bukti_kebersihan_sampah_halte) }}" alt="Bukti Gambar">
+                        @else
+                            Tidak ada foto kebersihan sampah halte
+                        @endif
+                        @if ($item->bukti_kondisi_halte)
+                            <img src="{{ public_path('storage/' . $item->bukti_kondisi_halte) }}" alt="Bukti Gambar">
+                        @else
+                            Tidak ada foto kondisi halte
+                        @endif
                     </td>
                 </tr>
             @endforeach

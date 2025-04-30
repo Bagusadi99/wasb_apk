@@ -92,10 +92,10 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="col-md-6 mb-3">
+                                                {{-- <div class="col-md-6 mb-3">
                                                     <h6>Tanggal</h6>
-                                                    <input type="date" id="tanggal_waktu_halte" name="tanggal_waktu_halte" class="form-control" placeholder="Masukkan Tanggal">
-                                                </div>
+                                                    <input type="datetime-local" id="tanggal_waktu_halte" name="tanggal_waktu_halte" class="form-control" placeholder="Masukkan Tanggal">
+                                                </div> --}}
                                                 <div class="col-md-6 mb-3" style="position: relative; z-index: 2;">
                                                     <h6>Halte</h6>
                                                     <select name="halte_id" id="halte" class="choices form-select" style="position: relative; z-index: 1050;">
@@ -278,10 +278,31 @@
                 }
 
                 marker = L.marker([lat, lng]).addTo(map);
-                
+
                 document.getElementById("latitude").value = lat;
                 document.getElementById("longitude").value = lng;
                 document.getElementById("koordinat").value = `${lat},${lng}`;
+
+
+                    const lokasiInput = document.getElementById("lokasi");
+
+
+
+                                        // Fetch address from OpenStreetMap
+                        const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+
+
+                        console.log(apiUrl);
+                        fetch(apiUrl)
+                            .then(response => response.json())
+                            .then(data => {
+                                const address = data.display_name || "Alamat tidak ditemukan";
+                                lokasiInput.value = address;
+                            })
+                            .catch(error => {
+                                console.error("Error fetching address:", error);
+                                lokasiInput.value = "Gagal mengambil alamat";
+                            });
             });
         
         // Fungsi untuk memperbarui peta berdasarkan koordinat
@@ -294,6 +315,7 @@
             
             marker = L.marker([latitude, longitude]).addTo(map);
 
+    
 
            
         }

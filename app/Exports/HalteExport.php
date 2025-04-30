@@ -43,13 +43,21 @@ class HalteExport implements FromCollection, WithHeadings, WithDrawings
         });
     }
 
+        //    'bukti_kebersihan_lantai_halte',
+        // 'bukti_kebersihan_kaca_halte',
+        // 'bukti_kebersihan_sampah_halte',
+        // 'bukti_kondisi_halte',
+
     public function headings(): array
     {
         return [
             'Nama Petugas',
             'Shift',
             'Tanggal & Waktu',
-            'Bukti Foto (lihat gambar)',
+            'Bukti kebersihan lantai halte',
+            'Bukti kebersihan kaca halte',
+            'Bukti kebersihan sampah halte',
+            'Bukti kondisi halte',
         ];
     }
 
@@ -58,20 +66,78 @@ class HalteExport implements FromCollection, WithHeadings, WithDrawings
         $drawings = [];
 
         foreach ($this->data as $index => $item) {
-            if (!$item->bukti_kebersihan_lantai_halte) continue;
+            // if (!$item->bukti_kebersihan_lantai_halte) continue;
 
-            $path = public_path('storage/' . $item->bukti_kebersihan_lantai_halte);
-            if (!file_exists($path)) continue;
+            $bukti_kebersihan_lantai_halte = public_path('storage/' . $item->bukti_kebersihan_lantai_halte);
+
+            if (file_exists($bukti_kebersihan_lantai_halte)){
+
 
             $drawing = new Drawing();
             $drawing->setName('Bukti');
             $drawing->setDescription('Bukti Kebersihan');
-            $drawing->setPath($path);
+            $drawing->setPath($bukti_kebersihan_lantai_halte);
             $drawing->setHeight(100);
             $drawing->setCoordinates('E' . ($index + 2)); // Kolom E, baris mulai dari 2 (karena heading di baris 1)
 
-            $drawings[] = $drawing;
+                $drawings[] = $drawing;
+            }
+
+            
+
+
+            $bukti_kebersihan_kaca_halte = public_path('storage/' . $item->bukti_kebersihan_kaca_halte);
+            if (file_exists($bukti_kebersihan_kaca_halte)){
+
+
+            $drawing = new Drawing();
+            $drawing->setName('Bukti');
+            $drawing->setDescription('Bukti Kebersihan');
+            $drawing->setPath($bukti_kebersihan_kaca_halte);
+            $drawing->setHeight(100);
+            $drawing->setCoordinates('F' . ($index + 2)); // Kolom E, baris mulai dari 2 (karena heading di baris 1)
+                $drawings[] = $drawing;
+            }
+
+            
+
+
+            $bukti_kebersihan_sampah_halte = public_path('storage/' . $item->bukti_kebersihan_sampah_halte);
+            if (file_exists($bukti_kebersihan_sampah_halte)){
+
+
+            $drawing = new Drawing();
+            $drawing->setName('Bukti');
+            $drawing->setDescription('Bukti Kebersihan');
+            $drawing->setPath($bukti_kebersihan_sampah_halte);
+            $drawing->setHeight(100);
+            $drawing->setCoordinates('G' . ($index + 2)); // Kolom E, baris mulai dari 2 (karena heading di baris 1)
+                $drawings[] = $drawing;
+            }
+
+
+            
+
+
+            $bukti_kondisi_halte = public_path('storage/' . $item->bukti_kondisi_halte);
+            if (file_exists($bukti_kondisi_halte)){
+
+
+            $drawing = new Drawing();
+            $drawing->setName('Bukti');
+            $drawing->setDescription('Bukti Kebersihan');
+            $drawing->setPath($bukti_kondisi_halte);
+            $drawing->setHeight(100);
+            $drawing->setCoordinates('H' . ($index + 2)); // Kolom E, baris mulai dari 2 (karena heading di baris 1)
+                $drawings[] = $drawing;
+            }   
+
+            
+
+
+
         }
+
 
         return $drawings;
     }

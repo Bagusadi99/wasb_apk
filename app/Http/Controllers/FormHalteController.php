@@ -34,27 +34,27 @@ class FormHalteController extends Controller
             'shift_id' => 'required|exists:shift,shift_id',
             'koridor_id' => 'required|exists:koridor,koridor_id',
             'halte_id' => 'required|exists:halte,halte_id',
-            'tanggal_waktu_halte' => 'required|date',
+            // 'tanggal_waktu_halte' => 'required|date',
             'lokasi_halte' => 'required|string|max:255',
             'latitude' => [
                 'required',
                 'numeric',
                 'between:-90,90',
-                function ($attribute, $value, $fail) {
-                    if (!preg_match('/^-?\d{1,3}\.\d{4,8}$/', $value)) {
-                        $fail('Format latitude tidak valid. Gunakan format desimal dengan 4-8 digit presisi.');
-                    }
-                },
+                // function ($attribute, $value, $fail) {
+                //     if (!preg_match('/^-?\d{1,3}\.\d{4,8}$/', $value)) {
+                //         $fail('Format latitude tidak valid. Gunakan format desimal dengan 4-8 digit presisi.');
+                //     }
+                // },
             ],
             'longitude' => [
                 'required',
                 'numeric',
                 'between:-180,180',
-                function ($attribute, $value, $fail) {
-                    if (!preg_match('/^-?\d{1,3}\.\d{4,8}$/', $value)) {
-                        $fail('Format longitude tidak valid. Gunakan format desimal dengan 4-8 digit presisi.');
-                    }
-                },
+                // function ($attribute, $value, $fail) {
+                //     if (!preg_match('/^-?\d{1,3}\.\d{4,8}$/', $value)) {
+                //         $fail('Format longitude tidak valid. Gunakan format desimal dengan 4-8 digit presisi.');
+                //     }
+                // },
             ],
             'bukti_kebersihan_lantai_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'bukti_kebersihan_kaca_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -63,6 +63,8 @@ class FormHalteController extends Controller
             'kendala_halte' => 'nullable|string',
             'bukti_kendala_halte' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        // dd($request->all());
 
         // Simpan file
         $fotoLantaiPath = $request->file('bukti_kebersihan_lantai_halte')->store('foto_lantai', 'public');
@@ -77,7 +79,7 @@ class FormHalteController extends Controller
             'shift_id' => $request->shift_id,
             'koridor_id' => $request->koridor_id,
             'halte_id' => $request->halte_id,
-            'tanggal_waktu_halte' => $request->tanggal_waktu_halte,
+            'tanggal_waktu_halte' => date('Y-m-d H:i:s'),
             'lokasi_halte' => $request->lokasi_halte,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,

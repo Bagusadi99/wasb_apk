@@ -60,7 +60,7 @@ class DataHalteController extends Controller
         $laporan_halte = $this->filterLaporan($request);
 
         $pdf = Pdf::loadView('admin.exports.halte_pdf', compact('laporan_halte'));
-        return $pdf->download('laporan_halte.pdf');
+        return $pdf->stream('laporan_halte.pdf');
     }
 
         public function exportExcel(Request $request)
