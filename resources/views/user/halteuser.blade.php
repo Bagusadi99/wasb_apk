@@ -267,6 +267,22 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+
+
+         map.on('click', function(e) {
+                const { lat, lng } = e.latlng;
+                map.setView([lat, lng], 18);
+                
+                if (marker !== null) {
+                    map.removeLayer(marker);
+                }
+
+                marker = L.marker([lat, lng]).addTo(map);
+                
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
+                document.getElementById("koordinat").value = `${lat},${lng}`;
+            });
         
         // Fungsi untuk memperbarui peta berdasarkan koordinat
         function updateMap(latitude, longitude) {
@@ -277,6 +293,9 @@
             }
             
             marker = L.marker([latitude, longitude]).addTo(map);
+
+
+           
         }
 
         // Fungsi untuk mendapatkan lokasi saat ini
