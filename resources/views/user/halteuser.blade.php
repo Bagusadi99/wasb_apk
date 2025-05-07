@@ -34,6 +34,31 @@
         .coordinate-input {
             flex: 1;
         }
+        .camera-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .camera-button {
+            display: inline-block;
+            background-color: #4A8939;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .camera-button i {
+            margin-right: 5px;
+        }
+        .camera-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -43,7 +68,7 @@
         @include('user.sidebaruser')
         <div id="main">
             <header class="mb-3">
-                <a class="burger-btn d-block d-xl-none">
+                <a href="#" class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3" style="color: #4A8939;"></i>
                 </a>
             </header>
@@ -96,9 +121,9 @@
                                                     <h6>Tanggal</h6>
                                                     <input type="date" id="tanggal_waktu_halte" name="tanggal_waktu_halte" class="form-control" placeholder="Masukkan Tanggal">
                                                 </div>
-                                                <div class="col-md-6 mb-3" style="position: relative; z-index: 2;">
+                                                <div class="col-md-6 mb-3" style="position: relative; z-index: 1050;">
                                                     <h6>Halte</h6>
-                                                    <select name="halte_id" id="halte" class="choices form-select" style="position: relative; z-index: 1050;">
+                                                    <select name="halte_id" id="halte" class="choices form-select" style="position: relative; z-index: 1050; background: white;">
                                                         <option value="" disabled selected>Pilih Halte</option>
                                                     </select>
                                                 </div>                                                    
@@ -121,7 +146,7 @@
                                                 </div>
                                                 
                                                 <!-- Map container -->
-                                                <div class="col-12 mb-4" style=" z-index: 1;">
+                                                <div class="col-12 mb-4">
                                                     <h6>Lokasi di Peta</h6>
                                                     <div id="map"></div>
                                                 </div>
@@ -129,33 +154,53 @@
                                                 <hr>
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kebersihan Lantai Halte</h6>
-                                                    <input type="file" name="bukti_kebersihan_lantai_halte" class="imageInput form-control"
-                                                        data-target="previewImage1" accept="image/*" capture="environment">
-                                                    <img id="previewImage1" src="#" alt="Pratinjau Gambar"
+                                                    <div class="camera-container">
+                                                        <div class="camera-button">
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Lantai
+                                                        </div>
+                                                        <input type="file" name="bukti_kebersihan_lantai_halte" class="camera-input imageInput" 
+                                                            data-target="previewImage1" accept="image/*" capture="environment">
+                                                    </div>
+                                                    <img id="previewImage1" src="#" alt="Pratinjau Gambar" 
                                                         style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>
                                                 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kebersihan Kaca Halte</h6>
-                                                    <input type="file" name="bukti_kebersihan_kaca_halte" class="imageInput form-control"
-                                                        data-target="previewImage2" accept="image/*" capture="environment">
-                                                    <img id="previewImage2" src="#" alt="Pratinjau Gambar"
+                                                    <div class="camera-container">
+                                                        <div class="camera-button">
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Kaca
+                                                        </div>
+                                                        <input type="file" name="bukti_kebersihan_kaca_halte" class="camera-input imageInput" 
+                                                            data-target="previewImage2" accept="image/*" capture="environment">
+                                                    </div>
+                                                    <img id="previewImage2" src="#" alt="Pratinjau Gambar" 
                                                         style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>
                                                 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kebersihan Sampah Halte</h6>
-                                                    <input type="file" name="bukti_kebersihan_sampah_halte" class="imageInput form-control"
-                                                        data-target="previewImage3" accept="image/*" capture="environment">
-                                                    <img id="previewImage3" src="#" alt="Pratinjau Gambar"
+                                                    <div class="camera-container">
+                                                        <div class="camera-button">
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Sampah
+                                                        </div>
+                                                        <input type="file" name="bukti_kebersihan_sampah_halte" class="camera-input imageInput" 
+                                                            data-target="previewImage3" accept="image/*" capture="environment">
+                                                    </div>
+                                                    <img id="previewImage3" src="#" alt="Pratinjau Gambar" 
                                                         style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>
                                                 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kebersihan Kondisi Halte</h6>
-                                                    <input type="file" name="bukti_kondisi_halte" class="imageInput form-control"
-                                                        data-target="previewImage4" accept="image/*" capture="environment">
-                                                    <img id="previewImage4" src="#" alt="Pratinjau Gambar"
+                                                    <div class="camera-container">
+                                                        <div class="camera-button">
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Kondisi
+                                                        </div>
+                                                        <input type="file" name="bukti_kondisi_halte" class="camera-input imageInput" 
+                                                            data-target="previewImage4" accept="image/*" capture="environment">
+                                                    </div>
+                                                    <img id="previewImage4" src="#" alt="Pratinjau Gambar" 
                                                         style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>                                                
 
@@ -166,8 +211,15 @@
 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kendala Halte</h6>
-                                                    <input type="file" name="bukti_kendala_halte" class="imageInput form-control" data-target="previewImage5" accept="image/*">
-                                                    <img id="previewImage5" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                    <div class="camera-container">
+                                                        <div class="camera-button">
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Kendala
+                                                        </div>
+                                                        <input type="file" name="bukti_kendala_halte" class="camera-input imageInput" 
+                                                            data-target="previewImage5" accept="image/*" capture="environment">
+                                                    </div>
+                                                    <img id="previewImage5" src="#" alt="Pratinjau Gambar" 
+                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>
 
                                                 <div class="card">
@@ -247,6 +299,16 @@
             if (latitudeInput.value && longitudeInput.value) {
                 updateMap(parseFloat(latitudeInput.value), parseFloat(longitudeInput.value));
             }
+
+            // Trigger camera automatically when a camera button is clicked
+            document.querySelectorAll(".camera-container").forEach(container => {
+                container.addEventListener("click", function() {
+                    const input = this.querySelector(".camera-input");
+                    if (input) {
+                        input.click();
+                    }
+                });
+            });
         });
 
         //Script untuk inisialisasi peta
@@ -267,22 +329,6 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-
-
-         map.on('click', function(e) {
-                const { lat, lng } = e.latlng;
-                map.setView([lat, lng], 18);
-                
-                if (marker !== null) {
-                    map.removeLayer(marker);
-                }
-
-                marker = L.marker([lat, lng]).addTo(map);
-                
-                document.getElementById("latitude").value = lat;
-                document.getElementById("longitude").value = lng;
-                document.getElementById("koordinat").value = `${lat},${lng}`;
-            });
         
         // Fungsi untuk memperbarui peta berdasarkan koordinat
         function updateMap(latitude, longitude) {
@@ -293,9 +339,6 @@
             }
             
             marker = L.marker([latitude, longitude]).addTo(map);
-
-
-           
         }
 
         // Fungsi untuk mendapatkan lokasi saat ini
