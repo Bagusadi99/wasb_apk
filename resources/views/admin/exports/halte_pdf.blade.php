@@ -1,43 +1,154 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan Halte</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>{{ $title }}</title>
     <style>
-        body { font-family: sans-serif; font-size: 12px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #000; padding: 6px; text-align: left; }
-        img { width: 100px; height: auto; }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 2px solid #4A8939;
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-height: 70px;
+        }
+        .header h1 {
+            color: #4A8939;
+            margin: 5px 0;
+            font-size: 24px;
+            text-align: center;
+        }
+        .header h2 {
+            color: #666;
+            margin: 5px 0;
+            font-size: 16px;
+            font-weight: normal;
+            text-align: center;
+        }
+        .company-info {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th {
+            background-color: #4A8939;
+            color: white;
+            font-weight: bold;
+            text-align: left;
+            padding: 8px;
+            font-size: 14px;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid #ddd;
+            padding: 10px 0;
+            font-size: 10px;
+            text-align: center;
+            color: #666;
+        }
+        .page-number:after {
+            content: counter(page);
+        }
+        .image-cell {
+            text-align: center;
+        }
+        .image-cell img {
+            max-width: 100px;
+            max-height: 70px;
+        }
+        .timestamp {
+            font-size: 10px;
+            text-align: right;
+            margin-bottom: 10px;
+            color: #666;
+        }
     </style>
 </head>
 <body>
-    <h3>Laporan Data Halte</h3>
+    <div class="header">
+        <table style="border: none; margin: 0;">
+            <tr style="background: none; border: none;">
+                <td style="width: 20%; border: none; text-align: center; vertical-align: middle;">
+                    <img src="{{ public_path('template/dist/assets/compiled/png/logotransjatim.png') }}" alt="Logo">
+                </td>
+                <td style="width: 80%; border: none; text-align: center; vertical-align: middle;">
+                    <h1>{{ $title }}</h1>
+                    <h2>{{ $subtitle }}</h2>
+                    <div class="company-info">
+                        {{ $company['name'] }} | {{ $company['address'] }} | {{ $company['phone'] }}
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="timestamp">
+        Dicetak pada: {{ \Carbon\Carbon::now('Asia/Jakarta')->format('d/m/Y H:i:s') }}
+    </div>
+
     <table>
         <thead>
             <tr>
-                <th>No</th>
-                <th>Nama Petugas</th>
-                <th>Shift</th>
-                <th>Tanggal & Waktu</th>
-                <th>Bukti Foto</th>
+                <th style="width: 5%;">No</th>
+                <th style="width: 20%;">Nama Petugas</th>
+                <th style="width: 10%;">Shift</th>
+                <th style="width: 15%;">Tanggal & Waktu</th>
+                <th style="width: 20%;">Bukti Kebersihan</th>
+                <th style="width: 30%;">Keterangan</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($laporan_halte as $index => $item)
+            @if(count($laporan_halte) > 0)
+                @foreach($laporan_halte as $index => $item)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $item->pekerja->nama_pekerja }}</td>
+                        <td>{{ $item->shift->shift_nama }}</td>
+                        <td>{{ date('d/m/Y H:i', strtotime($item->tanggal_waktu_halte)) }}</td>
+                        <td class="image-cell">
+                            @if($item->bukti_kebersihan_lantai_halte)
+                                <img src="{{ public_path('storage/' . $item->bukti_kebersihan_lantai_halte) }}" alt="Bukti">
+                            @else
+                                [Tidak ada bukti]
+                            @endif
+                        </td>
+                        <td>{{ $item->keterangan ?? '-' }}</td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->pekerja->nama_pekerja ?? '-' }}</td>
-                    <td>{{ $item->shift->shift_nama ?? '-' }}</td>
-                    <td>{{ $item->tanggal_waktu_halte }}</td>
-                    <td>
-                        @if ($item->bukti_kebersihan_lantai_halte)
-                            <img src="{{ public_path('storage/' . $item->bukti_kebersihan_lantai_halte) }}" alt="Bukti Gambar">
-                        @else
-                            Tidak ada
-                        @endif
-                    </td>
+                    <td colspan="6" style="text-align: center;">Tidak ada data yang tersedia</td>
                 </tr>
-            @endforeach
+            @endif
         </tbody>
     </table>
+
+    <div class="footer">
+        <div>Trans Jawa Timur &copy; {{ date('Y') }}. All rights reserved.</div>
+        <div class="page-number">Halaman </div>
+    </div>
 </body>
 </html>
