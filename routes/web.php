@@ -10,6 +10,7 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\KoridorController;
 use App\Http\Controllers\HalteController;
 use App\Http\Controllers\PoolController;
+use App\Http\Controllers\KendalaController;
 
 
 // Halaman Login & Logiut
@@ -53,6 +54,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/pool/store', [PoolController::class, 'store'])->name('pool.store');
     Route::put('/pool/{id}', [PoolController::class, 'update'])->name('pool.update');
     Route::delete('/pool/{id}', [PoolController::class, 'destroy'])->name('pool.destroy');
+
+    Route::get('/kendala', [KendalaController::class, 'list_kendala'])->name('admin.kendala.list_kendala');
+    Route::post('/kendala/store', [KendalaController::class, 'store'])->name('kendala.store');
 
 });
 
