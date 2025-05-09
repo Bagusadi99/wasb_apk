@@ -60,6 +60,12 @@
                         <span>Pool</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ Request::is('kendala') ? 'active' : '' }}">
+                    <a href="{{ route('admin.kendala.list_kendala') }}" class='sidebar-link'>
+                        <i class="bi bi-bookmark-fill"></i>
+                        <span>Kendala</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf

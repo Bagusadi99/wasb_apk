@@ -93,8 +93,9 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                    <h6>Tanggal</h6>
-                                                    <input type="date" id="tanggal_waktu_halte" name="tanggal_waktu_halte" class="form-control" placeholder="Masukkan Tanggal">
+                                                    <h6>Tanggal & Waktu</h6>
+                                                    <input type="text" class="form-control" id="live-time" disabled>
+                                                    <input type="hidden" name="tanggal_waktu_halte" id="hidden-time">
                                                 </div>
                                                 <div class="col-md-6 mb-3" style="position: relative; z-index: 2;">
                                                     <h6>Halte</h6>
@@ -353,6 +354,34 @@
             });
         });
     </script>
+    <script>
+        function updateLiveTime() {
+            const now = new Date();
+            
+            // Format tampilan: "DD-MM-YYYY HH:MM WIB" (contoh: 11-04-2025 14:30 WIB)
+            const formattedTime = now.toLocaleString('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }).replace(/\./g, ':'); // Ganti titik dengan strip (format Indonesia)
+            
+            // Format database: "YYYY-MM-DD HH:MM:SS" (contoh: 2025-04-11 14:30:00)
+            const dbTime = now.toISOString().slice(0, 19).replace('T', ' ');
+            
+            // Update nilai input
+            document.getElementById('live-time').value = `${formattedTime} WIB`;
+            document.getElementById('hidden-time').value = dbTime;
+        }
+    
+        // Jalankan sekali saat halaman dimuat
+        updateLiveTime();
+        
+        // Update setiap 1 menit (60000 ms)
+        setInterval(updateLiveTime, 60000);
+    </script>
 
     {{-- Sweet Alert --}}
     @if(session('success'))
@@ -385,5 +414,7 @@
     <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- Choices.js JS -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    {{-- <script src="{{ asset('template/dist/assets/static/js/pages/form-element-select.js') }}"></script> --}}
+    {{-- <script src="{{ asset('template/dist/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script> --}}
 </body>
 </html>
