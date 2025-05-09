@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\Models\LaporanHalte;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithDrawings;
@@ -11,53 +10,42 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class HalteExport implements FromCollection, WithHeadings, WithDrawings
 {
-    protected $request;
+    protected $start_date;
+    protected $end_date;
     protected $data;
-
-    public function __construct(Request $request)
+    protected $imageCollection = []; 
+    public function __construct($start_date, $end_date, $imageCollection = [])
     {
-        $this->request = $request;
-
-        // Ambil data sekali saja untuk digunakan di collection dan drawings
-        $query = LaporanHalte::with(['pekerja', 'shift']);
-
-        if ($request->start_date && $request->end_date) {
-            $query->whereBetween('tanggal_waktu_halte', [
-                $request->start_date,
-                $request->end_date
-            ]);
-        }
-
-        $this->data = $query->get();
+        $this->start_date = $start_date;
+        $this->end_date = $end_date;
+        $this->imageCollection = $imageCollection;
     }
 
     public function collection()
     {
-        return $this->data->map(function ($item) {
-            return [
-                'Nama Petugas' => $item->pekerja->nama_pekerja ?? '-',
-                'Shift' => $item->shift->shift_nama ?? '-',
-                'Tanggal & Waktu' => $item->tanggal_waktu_halte,
-                'Bukti Foto (lihat gambar)' => 'Lihat Kolom Gambar',
-            ];
-        });
-    }
+        $query = LaporanHalte::with(['pekerja', 'shift']);
 
-        //    'bukti_kebersihan_lantai_halte',
-        // 'bukti_kebersihan_kaca_halte',
-        // 'bukti_kebersihan_sampah_halte',
-        // 'bukti_kondisi_halte',
+        if ($this->start_date && $this->end_date) {
+            $query->whereBetween('tanggal_waktu_halte', [
+                $this->start_date . ' 00:00:00',
+                $this->end_date . ' 23:59:59',
+            ]);
+        }
+
+        $this->data = $query->get();
+        return $this->data;
+    }
 
     public function headings(): array
     {
         return [
-            'Nama Petugas',
-            'Shift',
-            'Tanggal & Waktu',
-            'Bukti kebersihan lantai halte',
-            'Bukti kebersihan kaca halte',
-            'Bukti kebersihan sampah halte',
-            'Bukti kondisi halte',
+            'ID',
+            'Nama Pekerja',
+            'Nama Shift',
+            'Tanggal Waktu Halte',
+            'Kegiatan Halte',
+            'Keterangan Halte',
+            'Foto Halte'
         ];
     }
 
@@ -66,78 +54,58 @@ class HalteExport implements FromCollection, WithHeadings, WithDrawings
         $drawings = [];
 
         foreach ($this->data as $index => $item) {
-            // if (!$item->bukti_kebersihan_lantai_halte) continue;
-
-            $bukti_kebersihan_lantai_halte = public_path('storage/' . $item->bukti_kebersihan_lantai_halte);
-
-            if (file_exists($bukti_kebersihan_lantai_halte)){
-
-
-            $drawing = new Drawing();
-            $drawing->setName('Bukti');
-            $drawing->setDescription('Bukti Kebersihan');
-            $drawing->setPath($bukti_kebersihan_lantai_halte);
-            $drawing->setHeight(100);
-            $drawing->setCoordinates('E' . ($index + 2)); // Kolom E, baris mulai dari 2 (karena heading di baris 1)
-
+            // Bukti kebersihan kaca halte
+            $bukti_kaca = public_path('storage/' . $item->bukti_kebersihan_kaca_halte);
+            if (file_exists($bukti_kaca)) {
+                $drawing = new Drawing();
+                $drawing->setName('Bukti Kaca');
+                $drawing->setDescription('Bukti Kebersihan Kaca');
+                $drawing->setPath($bukti_kaca);
+                $drawing->setHeight(100);
+                $drawing->setCoordinates('F' . ($index + 2));
                 $drawings[] = $drawing;
             }
 
-            
-
-
-            $bukti_kebersihan_kaca_halte = public_path('storage/' . $item->bukti_kebersihan_kaca_halte);
-            if (file_exists($bukti_kebersihan_kaca_halte)){
-
-
-            $drawing = new Drawing();
-            $drawing->setName('Bukti');
-            $drawing->setDescription('Bukti Kebersihan');
-            $drawing->setPath($bukti_kebersihan_kaca_halte);
-            $drawing->setHeight(100);
-            $drawing->setCoordinates('F' . ($index + 2)); // Kolom E, baris mulai dari 2 (karena heading di baris 1)
+            // Bukti kebersihan sampah halte
+            $bukti_sampah = public_path('storage/' . $item->bukti_kebersihan_sampah_halte);
+            if (file_exists($bukti_sampah)) {
+                $drawing = new Drawing();
+                $drawing->setName('Bukti Sampah');
+                $drawing->setDescription('Bukti Kebersihan Sampah');
+                $drawing->setPath($bukti_sampah);
+                $drawing->setHeight(100);
+                $drawing->setCoordinates('G' . ($index + 2));
                 $drawings[] = $drawing;
             }
 
-            
-
-
-            $bukti_kebersihan_sampah_halte = public_path('storage/' . $item->bukti_kebersihan_sampah_halte);
-            if (file_exists($bukti_kebersihan_sampah_halte)){
-
-
-            $drawing = new Drawing();
-            $drawing->setName('Bukti');
-            $drawing->setDescription('Bukti Kebersihan');
-            $drawing->setPath($bukti_kebersihan_sampah_halte);
-            $drawing->setHeight(100);
-            $drawing->setCoordinates('G' . ($index + 2)); // Kolom E, baris mulai dari 2 (karena heading di baris 1)
+            // Bukti kondisi halte
+            $bukti_kondisi = public_path('storage/' . $item->bukti_kondisi_halte);
+            if (file_exists($bukti_kondisi)) {
+                $drawing = new Drawing();
+                $drawing->setName('Bukti Kondisi');
+                $drawing->setDescription('Bukti Kondisi Halte');
+                $drawing->setPath($bukti_kondisi);
+                $drawing->setHeight(100);
+                $drawing->setCoordinates('H' . ($index + 2));
                 $drawings[] = $drawing;
             }
-
-
-            
-
-
-            $bukti_kondisi_halte = public_path('storage/' . $item->bukti_kondisi_halte);
-            if (file_exists($bukti_kondisi_halte)){
-
-
-            $drawing = new Drawing();
-            $drawing->setName('Bukti');
-            $drawing->setDescription('Bukti Kebersihan');
-            $drawing->setPath($bukti_kondisi_halte);
-            $drawing->setHeight(100);
-            $drawing->setCoordinates('H' . ($index + 2)); // Kolom E, baris mulai dari 2 (karena heading di baris 1)
-                $drawings[] = $drawing;
-            }   
-
-            
-
-
-
         }
 
+        // ✅ Tambahan jika kamu ingin menyisipkan gambar dari imageCollection
+        foreach ($this->imageCollection as $key => $value) {
+            if (file_exists($value['path'])) {
+                $drawing = new Drawing();
+                $drawing->setName('Bukti_' . $key);
+                $drawing->setDescription('Bukti Kebersihan');
+                $drawing->setPath($value['path']);
+                $drawing->setCoordinates('F' . $value['row']); // Pastikan kolom/row sesuai
+                $drawing->setOffsetX(5);
+                $drawing->setOffsetY(5);
+                $drawing->setWidth(80);
+                $drawing->setHeight(70);
+                $drawings[] = $drawing;
+            }
+        }
 
         return $drawings;
     }

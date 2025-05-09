@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/iconly.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Choices.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
@@ -20,6 +25,39 @@
             border-radius: 8px;
             margin-bottom: 15px;
             cursor: default; /* Change cursor to default to indicate no interaction */
+        }
+        
+        .coordinates-container {
+            display: flex;
+            gap: 10px;
+        }
+        .coordinate-input {
+            flex: 1;
+        }
+        .camera-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .camera-button {
+            display: inline-block;
+            background-color: #4A8939;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .camera-button i {
+            margin-right: 5px;
+        }
+        .camera-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -50,7 +88,7 @@
                                     <form action="">
                                         <div class="form-group">
                                             <div class="row">
-                                                <form action="" method="POST">
+                                                <form action="" method="POST" enctype="multipart/form-data">
                                                     @csrf <!-- Tambahkan CSRF Token untuk keamanan -->
                                                     <div class="col-md-6 mb-3">
                                                         <h6>Nama</h6>
@@ -107,28 +145,57 @@
                                                     </div>
                                                     
                                                     <hr>
+                                                    
                                                     <div class="col-md-6 mb-3">
                                                         <h6>Foto Kebersihan Lantai Pool</h6>
-                                                        <input type="file" name="foto_lantai" class="imageInput form-control" data-target="previewImage1" accept="image/*">
-                                                        <img id="previewImage1" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                        <div class="camera-container">
+                                                            <div class="camera-button">
+                                                                <i class="bi bi-camera-fill"></i> Ambil Foto Lantai
+                                                            </div>
+                                                            <input type="file" name="foto_lantai" class="camera-input imageInput" 
+                                                                data-target="previewImage1" accept="image/*" capture="environment">
+                                                        </div>
+                                                        <img id="previewImage1" src="#" alt="Pratinjau Gambar" 
+                                                            style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                     </div>
                                                 
                                                     <div class="col-md-6 mb-3">
                                                         <h6>Foto Kebersihan Kaca Pool</h6>
-                                                        <input type="file" name="foto_kaca" class="imageInput form-control" data-target="previewImage2" accept="image/*">
-                                                        <img id="previewImage2" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                        <div class="camera-container">
+                                                            <div class="camera-button">
+                                                                <i class="bi bi-camera-fill"></i> Ambil Foto Kaca
+                                                            </div>
+                                                            <input type="file" name="foto_kaca" class="camera-input imageInput" 
+                                                                data-target="previewImage2" accept="image/*" capture="environment">
+                                                        </div>
+                                                        <img id="previewImage2" src="#" alt="Pratinjau Gambar" 
+                                                            style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                     </div>
                                                 
                                                     <div class="col-md-6 mb-3">
                                                         <h6>Foto Kebersihan Sampah Pool</h6>
-                                                        <input type="file" name="foto_sampah" class="imageInput form-control" data-target="previewImage3" accept="image/*">
-                                                        <img id="previewImage3" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                        <div class="camera-container">
+                                                            <div class="camera-button">
+                                                                <i class="bi bi-camera-fill"></i> Ambil Foto Sampah
+                                                            </div>
+                                                            <input type="file" name="foto_sampah" class="camera-input imageInput" 
+                                                                data-target="previewImage3" accept="image/*" capture="environment">
+                                                        </div>
+                                                        <img id="previewImage3" src="#" alt="Pratinjau Gambar" 
+                                                            style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                     </div>
 
                                                     <div class="col-md-6 mb-3">
                                                         <h6>Foto Kebersihan Kondisi Pool</h6>
-                                                        <input type="file" name="foto_kondisi" class="imageInput form-control" data-target="previewImage4" accept="image/*">
-                                                        <img id="previewImage4" src="#" alt="Pratinjau Gambar" style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                        <div class="camera-container">
+                                                            <div class="camera-button">
+                                                                <i class="bi bi-camera-fill"></i> Ambil Foto Kondisi
+                                                            </div>
+                                                            <input type="file" name="foto_kondisi" class="camera-input imageInput" 
+                                                                data-target="previewImage4" accept="image/*" capture="environment">
+                                                        </div>
+                                                        <img id="previewImage4" src="#" alt="Pratinjau Gambar" 
+                                                            style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                     </div>
 
                                                     <div class="col-md-6 mb-4">
@@ -184,21 +251,34 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         
-        document.querySelectorAll(".imageInput").forEach(input => {
-            input.addEventListener("change", function(event) {
-                const file = event.target.files[0]; // Ambil file yang dipilih
-                const targetImg = document.getElementById(event.target.getAttribute("data-target"));
-    
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        targetImg.src = e.target.result; // Set gambar ke src
-                        targetImg.style.display = "block"; // Tampilkan gambar
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    targetImg.style.display = "none"; // Sembunyikan jika tidak ada file
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Trigger camera automatically when a camera button is clicked
+            document.querySelectorAll(".camera-container").forEach(container => {
+                container.addEventListener("click", function() {
+                    const input = this.querySelector(".camera-input");
+                    if (input) {
+                        input.click();
+                    }
+                });
+            });
+            
+            // Event listeners for preview images
+            document.querySelectorAll(".imageInput").forEach(input => {
+                input.addEventListener("change", function(event) {
+                    const file = event.target.files[0];
+                    const targetImg = document.getElementById(event.target.getAttribute("data-target"));
+
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            targetImg.src = e.target.result;
+                            targetImg.style.display = "block";
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        targetImg.style.display = "none";
+                    }
+                });
             });
         });
 
@@ -285,6 +365,9 @@
     <script src="{{ asset('template/dist/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Choices.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <!-- Need: Apexcharts -->
     <script src="{{ asset('template/dist/assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/static/js/pages/dashboard.js') }}"></script>

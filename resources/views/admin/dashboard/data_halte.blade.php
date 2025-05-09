@@ -372,14 +372,36 @@
                     <iframe id="pdfIframe" src="" frameborder="0"
                         style="width: 100%; height: 80vh;"></iframe>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="downloadPdfBtn" onclick="downloadPDF()">
+                        <i class="bi bi-download"></i> Download PDF
+                    </button>
+                </div>
             </div>
         </div>
     </div>
     <script>
+        // Modify the showPDFPreview function to first display the PDF in iframe
         function showPDFPreview(url) {
-            document.getElementById('pdfIframe').src = url;
-            var myModal = new bootstrap.Modal(document.getElementById('previewPDFModal'), {});
+            // Modify URL to include a parameter that indicates preview only
+            const previewUrl = url + (url.includes('?') ? '&' : '?') + 'preview=true';
+            
+            // Set the iframe src to the preview URL
+            document.getElementById('pdfIframe').src = previewUrl;
+            
+            // Store the original download URL for later use
+            document.getElementById('downloadPdfBtn').setAttribute('data-url', url);
+            
+            // Show the modal
+            var myModal = new bootstrap.Modal(document.getElementById('previewPDFModal'));
             myModal.show();
+        }
+
+        // Function to handle the download after preview
+        function downloadPDF() {
+            const downloadUrl = document.getElementById('downloadPdfBtn').getAttribute('data-url');
+            window.location.href = downloadUrl + (downloadUrl.includes('?') ? '&' : '?') + 'download=true';
         }
     </script>
 
