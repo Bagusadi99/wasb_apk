@@ -11,9 +11,10 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/iconly.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Choices.js CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"> --}}
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
@@ -91,7 +92,7 @@
                                                 @csrf 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Nama</h6>
-                                                    <select name="pekerja_id" id="pekerja" class="choices form-select">
+                                                    <select name="pekerja_id" id="pekerja" class="form-select">
                                                         <option value=""disabled selected>Nama Pekerja</option>
                                                         @foreach ($pekerja as $item)
                                                             <option value="{{ $item->pekerja_id }}">{{ $item->nama_pekerja }}</option>
@@ -100,7 +101,7 @@
                                                 </div>
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Shift</h6>
-                                                    <select name="shift_id" id="shift" class="choices form-select">
+                                                    <select name="shift_id" id="shift" class="form-select">
                                                         <option value=""disabled selected>Pilih Shift</option>
                                                         @foreach ($shift as $item)
                                                             <option value="{{ $item->shift_id }}">{{ $item->shift_nama }}</option>
@@ -110,7 +111,7 @@
                                                 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Koridor</h6>
-                                                    <select name="koridor_id" id="koridor" class="choices form-select">
+                                                    <select name="koridor_id" id="koridor" class="form-select">
                                                         <option value="" disabled selected>Pilih Koridor</option>
                                                         @foreach ($koridor as $item)
                                                             <option value="{{ $item->koridor_id }}">{{ $item->koridor_nama }}</option>
@@ -207,7 +208,14 @@
 
                                                 <div class="col-md-6 mb-4">
                                                     <h6>Kendala Halte</h6>
-                                                    <input type="text" name="kendala_halte" class="form-control" placeholder="Masukkan Kendala">
+                                                    <select class="choices form-select multiple-remove" multiple="multiple" style="position: relative; z-index: 1050;">
+                                                        <option value="">Pilih kendala halte</option>
+                                                        <optgroup label="kendalahalte">
+                                                            @foreach ($kendala_halte as $item)
+                                                                <option value="{{ $item->kendala_halte_id }}">{{ $item->kendala_halte }}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    </select>
                                                 </div>
 
                                                 <div class="col-md-6 mb-3">
@@ -476,7 +484,7 @@
     <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- Choices.js JS -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    {{-- <script src="{{ asset('template/dist/assets/static/js/pages/form-element-select.js') }}"></script> --}}
-    {{-- <script src="{{ asset('template/dist/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script> --}}
+    <script src="{{ asset('template/dist/assets/static/js/pages/form-element-select.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
 </body>
 </html>
