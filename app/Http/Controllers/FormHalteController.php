@@ -9,6 +9,7 @@ use App\Models\Pekerja;
 use App\Models\Shift;
 use App\Models\Koridor;
 use App\Models\Halte;
+use App\Models\KendalaHalte;
 use App\Models\LaporanHalte;
 
 class FormHalteController extends Controller
@@ -18,7 +19,8 @@ class FormHalteController extends Controller
         $pekerja = Pekerja::all();
         $shift = Shift::all();
         $koridor = Koridor::all();
-        return view('user.halteuser', compact('shift', 'pekerja', 'koridor'));
+        $kendala_halte = KendalaHalte::all();
+        return view('user.halteuser', compact('shift', 'pekerja', 'koridor', 'kendala_halte'));
     } 
 
     public function getHalteByKoridor($koridorId)

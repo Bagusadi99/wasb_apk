@@ -208,14 +208,7 @@
 
                                                 <div class="col-md-6 mb-4">
                                                     <h6>Kendala Halte</h6>
-                                                    <select class="choices form-select multiple-remove" multiple="multiple" style="position: relative; z-index: 1050; background: white;">
-                                                        <option value="">Pilih kendala halte</option>
-                                                        <optgroup label="kendalahalte">
-                                                            @foreach ($kendala_halte as $item)
-                                                                <option value="{{ $item->kendala_halte_id }}">{{ $item->kendala_halte }}</option>
-                                                            @endforeach
-                                                        </optgroup>
-                                                    </select>
+                                                    <input type="text" name="kendala_halte" class="form-control" placeholder="Masukkan Kendala">
                                                 </div>
 
                                                 <div class="col-md-6 mb-3">
