@@ -206,9 +206,14 @@
                                                         style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>                                                
 
-                                                <div class="col-md-6 mb-4">
+                                                <div class="col-md-6 mb-3">
                                                     <h6>Kendala Halte</h6>
-                                                    <input type="text" name="kendala_halte" class="form-control" placeholder="Masukkan Kendala">
+                                                    <select name="kendala_halte_id" id="kendala_halte" class="choices form-select">
+                                                        <option value="" disabled selected>Pilih Kendala Halte</option>
+                                                        @foreach ($kendala_halte as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->kendala_halte }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
 
                                                 <div class="col-md-6 mb-3">
@@ -332,6 +337,22 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         
+
+        map.on('click', function(e) {
+                const { lat, lng } = e.latlng;
+                map.setView([lat, lng], 18);
+                
+                if (marker !== null) {
+                    map.removeLayer(marker);
+                }
+
+                marker = L.marker([lat, lng]).addTo(map);
+                
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
+                document.getElementById("koordinat").value = `${lat},${lng}`;
+            });
+
         // Fungsi untuk memperbarui peta berdasarkan koordinat
         function updateMap(latitude, longitude) {
             map.setView([latitude, longitude], 18);

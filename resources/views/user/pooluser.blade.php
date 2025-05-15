@@ -198,17 +198,35 @@
                                                             style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                     </div>
 
-                                                    <div class="col-md-6 mb-4">
+                                                    <div class="col-md-6 mb-3">
                                                         <h6>Kendala Pool</h6>
-                                                        <input type="text" name="kendala" class="form-control" placeholder="Masukkan Kendala">
+                                                        <select name="kendala_pool_id" id="kendala_pool" class="choices form-select">
+                                                            <option value="" disabled selected>Pilih Kendala Pool</option>
+                                                            @foreach ($kendala_pool as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->kendala_pool }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                </form>
-                                            </div> 
-                                            <div class="card">
-                                                <button type="submit" class="btn btn-success">Kirim</button>
+    
+                                                    <div class="col-md-6 mb-3">
+                                                        <h6>Foto Kendala Pool</h6>
+                                                        <div class="camera-container">
+                                                            <div class="camera-button">
+                                                                <i class="bi bi-camera-fill"></i> Ambil Foto Kendala
+                                                            </div>
+                                                            <input type="file" name="bukti_kendala_halte" class="camera-input imageInput" 
+                                                                data-target="previewImage5" accept="image/*" capture="environment">
+                                                        </div>
+                                                        <img id="previewImage5" src="#" alt="Pratinjau Gambar" 
+                                                            style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                    </div>
+    
+                                                    <div class="card">
+                                                        <button type="submit" class="btn btn-success">Kirim</button>
+                                                    </div>
+                                                </div> 
                                             </div>
-                                        </div>
-                                    </form>                                
+                                        </form>                             
                                 </div>
                             </div>
                         </div>
@@ -251,6 +269,32 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         
+        map.on('click', function(e) {
+                const { lat, lng } = e.latlng;
+                map.setView([lat, lng], 18);
+                
+                if (marker !== null) {
+                    map.removeLayer(marker);
+                }
+
+                marker = L.marker([lat, lng]).addTo(map);
+                
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
+                document.getElementById("koordinat").value = `${lat},${lng}`;
+            });
+
+        // Fungsi untuk memperbarui peta berdasarkan koordinat
+        function updateMap(latitude, longitude) {
+            map.setView([latitude, longitude], 18);
+            
+            if (marker !== null) {
+                map.removeLayer(marker);
+            }
+            
+            marker = L.marker([latitude, longitude]).addTo(map);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Trigger camera automatically when a camera button is clicked
             document.querySelectorAll(".camera-container").forEach(container => {
