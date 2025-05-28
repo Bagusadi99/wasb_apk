@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Choices.js CSS -->
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"> --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
@@ -208,8 +208,7 @@
 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Kendala Halte</h6>
-                                                    <select name="kendala_halte_id" id="kendala_halte" class="choices form-select">
-                                                        <option value="" disabled selected>Pilih Kendala Halte</option>
+                                                    <select name="kendala_halte_id[]" id="kendala_halte" class="choices form-select" multiple>
                                                         @foreach ($kendala_halte as $item)
                                                             <option value="{{ $item->id }}">{{ $item->kendala_halte }}</option>
                                                         @endforeach
@@ -262,15 +261,26 @@
         document.addEventListener("DOMContentLoaded", function () {
             const koridorDropdown = document.getElementById('koridor');
             const halteDropdown = document.getElementById('halte');
+            // const kendalaHalteDropdown = document.getElementById('kendala_halte');
 
-            // Inisialisasi Choices.js pada dropdown halte
-            let halteChoices = new Choices(halteDropdown, {
+
+            // Inisialisasi Choices.js
+            const halteChoices = new Choices(halteDropdown, {
                 searchEnabled: true,
-                removeItemButton: true,
+                removeItemButton: false,
                 shouldSort: false,
                 itemSelectText: '',
                 allowHTML: true
             });
+
+            // Inisialisasi Choices.js untuk kendala halte (multiple select)
+            // const kendalaChoices = new Choices(kendalaHalteDropdown, {
+            //     removeItemButton: true,
+            //     searchEnabled: true,
+            //     shouldSort: false,
+            //     itemSelectText: '',
+            //     allowHTML: true
+            // });
 
             koridorDropdown.addEventListener('change', function () {
                 const koridorId = this.value;
@@ -279,23 +289,30 @@
                     fetch(`/get-halte-by-koridor/${koridorId}`)
                         .then(response => response.json())
                         .then(data => {
-                            halteChoices.clearStore();
+                            halteChoices.clearChoices(); // Hapus pilihan sebelumnya
 
                             if (data.length > 0) {
-                                let halteOptions = data.map(halte => ({
-                                    value: halte.halte_id,
-                                    label: halte.halte_nama
+                                let options = data.map(item => ({
+                                    value: item.halte_id,
+                                    label: item.halte_nama
                                 }));
-
-                                halteChoices.setChoices(halteOptions, "value", "label", true);
+                                halteChoices.setChoices(options, 'value', 'label', true);
                             } else {
-                                halteChoices.setChoices([{ value: "", label: "Tidak ada halte tersedia", disabled: true, selected: true }]);
+                                halteChoices.setChoices([{
+                                    value: "",
+                                    label: "Tidak ada halte tersedia",
+                                    disabled: true
+                                }], 'value', 'label', true);
                             }
                         })
-                        .catch(error => console.error('Error:', error));
+                        .catch(error => console.error('Fetch error:', error));
                 } else {
-                    halteChoices.clearStore();
-                    halteChoices.setChoices([{ value: "", label: "Pilih Halte", disabled: true, selected: true }]);
+                    halteChoices.clearChoices();
+                    halteChoices.setChoices([{
+                        value: "",
+                        label: "Pilih Halte",
+                        disabled: true
+                    }], 'value', 'label', true);
                 }
             });
             
@@ -498,7 +515,7 @@
     <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- Choices.js JS -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script src="{{ asset('template/dist/assets/static/js/pages/form-element-select.js') }}"></script>
-    <script src="{{ asset('template/dist/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
+    {{-- <script src="{{ asset('template/dist/assets/static/js/pages/form-element-select.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script> --}}
 </body>
 </html>
