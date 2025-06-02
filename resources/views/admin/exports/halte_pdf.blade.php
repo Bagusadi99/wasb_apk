@@ -167,7 +167,7 @@
                             <img src="{{ public_path('storage/' . $item->bukti_kondisi_halte) }}" alt="Bukti Gambar">
                         @else
                             Tidak ada foto kondisi halte
-                        @endif
+                        @endif
                     </td>
                     <td colspan="6" style="text-align: center;">Tidak ada data yang tersedia</td>
                 </tr>

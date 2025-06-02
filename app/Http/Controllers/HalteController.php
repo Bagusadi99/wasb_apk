@@ -20,7 +20,7 @@ class HalteController extends Controller
         // dd($request->all());
         $request->validate([
             'halte_nama' => 'required|string|max:255',
-            'koridor_id' => 'required|exists:koridor,koridor_id', // Pastikan shift_id ada di tabel shifts
+            'koridor_id' => 'required|exists:koridor,koridor_id', 
         ]);
 
         Halte::create([
