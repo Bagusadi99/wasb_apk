@@ -70,7 +70,8 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->kendala_pool ?? 'Tidak ada kendala' }}</td>
                                                     <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal">
+                                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModalPool"
+                                                        onclick="loadDataKendala('{{ $item->kendala_pool_id }}', '{{ $item->kendala_pool }}')">
                                                             <i class="bi bi-pencil-fill"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -114,7 +115,8 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->kendala_halte ?? 'Tidak ada kendala' }}</td>
                                                     <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal">
+                                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModalHalte"
+                                                        onclick="loadDataKendala('{{ $item->kendala_halte_id }}', '{{ $item->kendala_halte }}')">
                                                             <i class="bi bi-pencil-fill"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -131,7 +133,7 @@
                         </div>
                     </div>
 
-                    {{-- Modal Pool --}}
+                    {{-- Modal Tambah Pool --}}
                     <div class="modal fade" id="addModalPool" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
@@ -157,7 +159,7 @@
                         </div>
                     </div>
 
-                    {{-- Modal Halte --}}
+                    {{-- Modal Tambah Halte --}}
                     <div class="modal fade" id="addModalHalte" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
@@ -173,6 +175,60 @@
                                     <div class="modal-body">
                                         <label>Nama Kendala:</label>
                                         <input type="text" name="kendala_halte" class="form-control" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-success">Simpan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Modal Edit Pool --}}
+                    <div class="modal fade" id="editModalPool" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <form id="editForm" action="" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="tipe" value="pool">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Kendala Pool</h5>
+                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal">
+                                            <i data-feather="x"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label>Nama Kendala:</label>
+                                        <input type="text" id="edit_kendala_pool" name="kendala_pool" class="form-control" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-success">Simpan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Modal Edit Halte --}}
+                    <div class="modal fade" id="editModalHalte" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <form id="editForm" action="" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="tipe" value="halte">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Kendala Pool</h5>
+                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal">
+                                            <i data-feather="x"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label>Nama Kendala:</label>
+                                        <input type="text" id="edit_kendala_halte" name="kendala_halte" class="form-control" required>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
@@ -214,7 +270,45 @@
         document.querySelectorAll('.table1').forEach(function (el) {
             new simpleDatatables.DataTable(el);
         })
+
+        function loadDataKendala(id, kendalaPool) {
+            // Isi data ke dalam modal edit
+            document.getElementById('edit_kendala_pool').value = kendalaPool;
+            document.getElementById("editForm").action = "/kendala/" + id;
+
+        }
+        function loadDataKendala(id, kendalaHalte) {
+            // Isi data ke dalam modal edit
+            document.getElementById('edit_kendala_halte').value = kendalaHalte;
+            document.getElementById("editForm").action = "/kendala/" + id;
+
+        }
+        
     </script>
+
+    {{-- Sweet Alert --}}
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session("success") }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @endif
+
+    @if($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan!',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+                showConfirmButton: true
+            });
+        </script>
+    @endif
 </body>
 
 </html>

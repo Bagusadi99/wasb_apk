@@ -115,9 +115,10 @@
                 <th style="width: 5%;">No</th>
                 <th style="width: 20%;">Nama Petugas</th>
                 <th style="width: 10%;">Shift</th>
+                <th style="width: 10%;">Koridor</th>
+                <th style="width: 10%;">Halte</th>
                 <th style="width: 15%;">Tanggal & Waktu</th>
                 <th style="width: 20%;">Bukti Kebersihan</th>
-                <th style="width: 30%;">Keterangan</th>
             </tr>
         </thead>
         <tbody>
@@ -127,6 +128,8 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $item->pekerja->nama_pekerja }}</td>
                         <td>{{ $item->shift->shift_nama }}</td>
+                        <td>{{ $item->koridor->koridor_nama }}</td>
+                        <td>{{ $item->halte->halte_nama }}</td>
                         <td>{{ date('d/m/Y H:i', strtotime($item->tanggal_waktu_halte)) }}</td>
                         <td class="image-cell">
                             @if($item->bukti_kebersihan_lantai_halte)
@@ -135,7 +138,6 @@
                                 [Tidak ada bukti]
                             @endif
                         </td>
-                        <td>{{ $item->keterangan ?? '-' }}</td>
                     </tr>
                 @endforeach
             @else

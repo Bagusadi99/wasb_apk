@@ -16,9 +16,9 @@ class KendalaController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'tipe' => 'required|in:pool,halte',
-            'nama_kendala' => 'required|string|max:255',
         ]);
 
         if ($request->tipe == 'pool') {
@@ -31,5 +31,24 @@ class KendalaController extends Controller
             ]);
         }
         return redirect()->back()->with('success', 'Kendala berhasil ditambahkan.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        // dd($request->all());
+        $request->validate([
+            'tipe' => 'required|in:pool,halte',
+        ]);
+
+        if ($request->tipe == 'pool') {
+            KendalaPool::findOrFail($id)->update([
+                'kendala_pool' => $request->kendala_pool,
+            ]);
+        } else {
+            KendalaHalte::findOrFail($id)->update([
+                'kendala_halte' => $request->kendala_halte,
+            ]);
+        }
+        return redirect()->back()->with('success', 'Kendala berhasil diupdate.');
     }
 }

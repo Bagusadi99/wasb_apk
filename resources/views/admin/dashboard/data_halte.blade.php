@@ -161,6 +161,8 @@
                                                         <th>No</th>
                                                         <th>Nama Petugas</th>
                                                         <th>Shift</th>
+                                                        <th>Koridor</th>
+                                                        <th>Halte</th>
                                                         <th>Tanggal & Waktu</th>
                                                         <th>Bukti Kebersihan</th>
                                                         <th style="text-align: center">Aksi</th>
@@ -170,8 +172,10 @@
                                                     @foreach ($laporan_halte as $item)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
-                                                            <td>{{ $item->pekerja->nama_pekerja }}</td>
+                                                            <td class="text-nowrap">{{ $item->pekerja->nama_pekerja }}</td>
                                                             <td>{{ $item->shift->shift_nama }}</td>
+                                                            <td class="text-nowrap">{{ $item->koridor->koridor_nama ?? '-' }}</td>
+                                                            <td>{{ $item->halte->halte_nama ?? '-' }}</td>
                                                             <td>{{ $item->tanggal_waktu_halte }}</td>
                                                             <td>
                                                                 <img src="{{ asset('storage/' . $item->bukti_kebersihan_lantai_halte) }}"
