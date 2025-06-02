@@ -105,4 +105,6 @@ class DataHalteController extends Controller
         // Return excel file
         return Excel::download(new HalteExport($start_date, $end_date), $filename);
     }
+
+    
 }

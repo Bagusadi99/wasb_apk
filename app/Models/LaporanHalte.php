@@ -7,6 +7,7 @@ use App\Models\Shift;
 use App\Models\Koridor;
 use App\Models\Halte;
 use App\Models\User;
+use App\Models\KendalaHalte;
 
 
 class LaporanHalte extends Model
@@ -29,7 +30,7 @@ class LaporanHalte extends Model
         'bukti_kebersihan_kaca_halte',
         'bukti_kebersihan_sampah_halte',
         'bukti_kondisi_halte',
-        'kendala_halte',
+        'kendala_halte_id',
         'bukti_kendala_halte',
     ];
     protected $attributes = [
@@ -58,5 +59,10 @@ class LaporanHalte extends Model
     public function halte()
     {
         return $this->belongsTo(Halte::class, 'halte_id');
+    }
+
+    public function kendala_halte()
+    {
+        return $this->belongsToMany(KendalaHalte::class, 'kendala_halte_id');
     }
 }

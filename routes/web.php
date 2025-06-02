@@ -27,8 +27,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/datahalte/filter', [DataHalteController::class, 'filter_datahalte'])->name('filter_datahalte');
     Route::get('/export-pdf', [DataHalteController::class, 'export_pdf'])->name('export_pdf');
     Route::get('/export-excel', [DataHalteController::class, 'export_excel'])->name('export_excel');
-
-
+    
 
     Route::get('/pengawas', [PengawasController::class, 'list_pengawas'])->name('admin.pengawas.list_pengawas');
     Route::post('/pengawas/store', [PengawasController::class, 'store'])->name('pengawas.store');
@@ -57,6 +56,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/kendala', [KendalaController::class, 'list_kendala'])->name('admin.kendala.list_kendala');
     Route::post('/kendala/store', [KendalaController::class, 'store'])->name('kendala.store');
+    Route::put('/kendala/{id}', [KendalaController::class, 'update'])->name('kendala.update');
 
 });
 

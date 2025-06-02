@@ -62,7 +62,7 @@ class FormHalteController extends Controller
             'bukti_kebersihan_kaca_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'bukti_kebersihan_sampah_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'bukti_kondisi_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'kendala_halte' => 'nullable|string',
+            'kendala_halte_id' => 'nullable',
             'bukti_kendala_halte' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -90,7 +90,7 @@ class FormHalteController extends Controller
             'bukti_kebersihan_kaca_halte' => $fotoKacaPath,
             'bukti_kebersihan_sampah_halte' => $fotoSampahPath,
             'bukti_kondisi_halte' => $fotoKondisiPath,
-            'kendala_halte' => $request->kendala_halte,
+            'kendala_halte_id' => $request->kendala_halte_id,
             'bukti_kendala_halte' => $fotoKendalaPath,
         ]);
 
