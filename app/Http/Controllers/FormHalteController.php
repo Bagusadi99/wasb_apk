@@ -11,6 +11,7 @@ use App\Models\Koridor;
 use App\Models\Halte;
 use App\Models\KendalaHalte;
 use App\Models\LaporanHalte;
+use App\Models\LaporanKendalaHalte;
 
 class FormHalteController extends Controller
 {
@@ -62,7 +63,8 @@ class FormHalteController extends Controller
             'bukti_kebersihan_kaca_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'bukti_kebersihan_sampah_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'bukti_kondisi_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'kendala_halte_id' => 'nullable',
+            'kendala_halte_ids' => 'nullable|array',
+            'kendala_halte_ids.*' => 'exists:kendala_halte,kendala_halte_id',
             'bukti_kendala_halte' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -76,7 +78,7 @@ class FormHalteController extends Controller
         $fotoKendalaPath = $request->file('bukti_kendala_halte') ? $request->file('bukti_kendala_halte')->store('foto_kendala', 'public') : null;
 
         // Simpan data
-        LaporanHalte::create([
+        $laporan =LaporanHalte::create([
             'pekerja_id' => $request->pekerja_id,
             'shift_id' => $request->shift_id,
             'koridor_id' => $request->koridor_id,
@@ -90,9 +92,18 @@ class FormHalteController extends Controller
             'bukti_kebersihan_kaca_halte' => $fotoKacaPath,
             'bukti_kebersihan_sampah_halte' => $fotoSampahPath,
             'bukti_kondisi_halte' => $fotoKondisiPath,
-            'kendala_halte_id' => $request->kendala_halte_id,
             'bukti_kendala_halte' => $fotoKendalaPath,
         ]);
+
+        // Simpan kendala_halte yang dipilih ke tabel laporan_kendala_halte
+        if ($request->has('kendala_halte_ids')) {
+            foreach ($request->kendala_halte_ids as $kendalaId) {
+                LaporanKendalaHalte::create([
+                    'laporan_halte_id' => $laporan->laporan_halte_id,
+                    'kendala_halte_id' => $kendalaId,
+                ]);
+            }
+        }
 
         return redirect()->back()->with('success', 'Data kebersihan halte/shelter berhasil dikirim!');
     }

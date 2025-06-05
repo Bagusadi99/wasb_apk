@@ -71,11 +71,12 @@
                                                     <td>{{ $item->kendala_pool ?? 'Tidak ada kendala' }}</td>
                                                     <td class="text-center">
                                                         <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModalPool"
-                                                        onclick="loadDataKendala('{{ $item->kendala_pool_id }}', '{{ $item->kendala_pool }}')">
-                                                            <i class="bi bi-pencil-fill"></i>
+                                                        onclick="loadDataKendalaPool('{{ $item->kendala_pool_id }}', '{{ $item->kendala_pool }}')">
+                                                            <i class="bi bi-pencil-fill"></i> Edit
                                                         </button>
-                                                        <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                                            <i class="bi bi-trash-fill"></i>
+                                                        <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModalPool"
+                                                        onclick="setDeleteDataPool('{{ $item->kendala_pool_id }}', '{{ $item->kendala_pool }}')">
+                                                            <i class="bi bi-trash-fill"></i> Hapus
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -116,11 +117,12 @@
                                                     <td>{{ $item->kendala_halte ?? 'Tidak ada kendala' }}</td>
                                                     <td class="text-center">
                                                         <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModalHalte"
-                                                        onclick="loadDataKendala('{{ $item->kendala_halte_id }}', '{{ $item->kendala_halte }}')">
-                                                            <i class="bi bi-pencil-fill"></i>
+                                                        onclick="loadDataKendalaHalte('{{ $item->kendala_halte_id }}', '{{ $item->kendala_halte }}')">
+                                                            <i class="bi bi-pencil-fill"></i> Edit
                                                         </button>
-                                                        <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                                            <i class="bi bi-trash-fill"></i>
+                                                        <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModalHalte"
+                                                        onclick="setDeleteDataHalte('{{ $item->kendala_halte_id }}', '{{ $item->kendala_halte }}')">
+                                                            <i class="bi bi-trash-fill"></i> Hapus
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -239,6 +241,61 @@
                         </div>
                     </div>
 
+                    {{-- Modal Hapus Pool --}}
+                    <div class="modal fade text-left" id="deleteModalPool" tabindex="-1" role="dialog" aria-labelledby="deleteModalPoolLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <form id="deleteFormPool" action="" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" name="tipe" value="pool">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalPoolLabel">Hapus Kendala Pool</h5>
+                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                            <i data-feather="x"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Apakah Anda yakin ingin menghapus kendala pool - <br>
+                                            <strong id="delete_kendala_pool_nama"></strong>?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-danger ms-1">Hapus</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Modal Hapus Halte --}}
+                    <div class="modal fade text-left" id="deleteModalHalte" tabindex="-1" role="dialog" aria-labelledby="deleteModalHalteLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <form id="deleteFormHalte" action="" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" name="tipe" value="halte">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalHalteLabel">Hapus Kendala Halte</h5>
+                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
+                                            <i data-feather="x"></i>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Apakah Anda yakin ingin menghapus kendala halte - <br>
+                                            <strong id="delete_kendala_halte_nama"></strong>?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-danger ms-1">Hapus</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </section>
             </div>
 
@@ -271,17 +328,24 @@
             new simpleDatatables.DataTable(el);
         })
 
-        function loadDataKendala(id, kendalaPool) {
+        function loadDataKendalaPool(id, kendalaPool) {
             // Isi data ke dalam modal edit
             document.getElementById('edit_kendala_pool').value = kendalaPool;
             document.getElementById("editForm").action = "/kendala/" + id;
-
         }
-        function loadDataKendala(id, kendalaHalte) {
+        function loadDataKendalaHalte(id, kendalaHalte) {
             // Isi data ke dalam modal edit
             document.getElementById('edit_kendala_halte').value = kendalaHalte;
             document.getElementById("editForm").action = "/kendala/" + id;
+        }
 
+        function setDeleteDataPool(id, kendalaPool) {
+            document.getElementById('delete_kendala_pool_nama').innerText = kendalaPool;
+            document.getElementById('deleteFormPool').action = "/kendala/" + id;
+        }
+        function setDeleteDataHalte(id, kendalaHalte) {
+            document.getElementById('delete_kendala_halte_nama').innerText = kendalaHalte;
+            document.getElementById('deleteFormHalte').action = "/kendala/" + id;
         }
         
     </script>

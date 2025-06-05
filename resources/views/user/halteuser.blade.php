@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/iconly.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Choices.js CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
@@ -206,11 +206,11 @@
                                                         style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
                                                 </div>                                                
 
-                                                <div class="col-md-6 mb-3">
+                                                <div class="col-md-6 mb-3" style="position: relative; z-index: 2;">
                                                     <h6>Kendala Halte</h6>
-                                                    <select name="kendala_halte_id" id="kendala_halte" class="choices form-select" multiple>
+                                                    <select name="kendala_halte_ids[]" id="kendala_halte" class="choices form-select" multiple>
                                                         @foreach ($kendala_halte as $item)
-                                                            <option value="{{ $item->kendala_halte }}">{{ $item->kendala_halte }}</option>
+                                                            <option value="{{ $item->kendala_halte_id }}">{{ $item->kendala_halte }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -261,7 +261,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             const koridorDropdown = document.getElementById('koridor');
             const halteDropdown = document.getElementById('halte');
-            const kendalaHalteDropdown = document.getElementById('kendala_halte');
+            const kendalaHalteDropdown = document.getElementById('kendala_halte');  
 
 
             // Inisialisasi Choices.js
@@ -274,13 +274,6 @@
             });
 
             // Inisialisasi Choices.js untuk kendala halte (multiple select)
-            const kendalaChoices = new Choices(kendalaHalteDropdown, {
-                removeItemButton: true,
-                searchEnabled: true,
-                shouldSort: false,
-                itemSelectText: '',
-                allowHTML: true
-            });
             const kendalaChoices = new Choices(kendalaHalteDropdown, {
                 removeItemButton: true,
                 searchEnabled: true,

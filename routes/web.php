@@ -57,6 +57,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/kendala', [KendalaController::class, 'list_kendala'])->name('admin.kendala.list_kendala');
     Route::post('/kendala/store', [KendalaController::class, 'store'])->name('kendala.store');
     Route::put('/kendala/{id}', [KendalaController::class, 'update'])->name('kendala.update');
+    Route::delete('/kendala/{id}', [KendalaController::class, 'destroy'])->name('kendala.destroy');
 
 });
 
