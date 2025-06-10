@@ -124,7 +124,7 @@
                                     <div class="dropdown">
                                         <button class="btn btn-success dropdown-toggle" type="button"
                                             id="dropdownMenuButtonIcon" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-download"></i> Ekspor
+                                            <i class="bi bi-download"></i> Ekspor Data
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonIcon">
                                             <li>
@@ -429,7 +429,7 @@
             // Jalankan saat halaman pertama kali dimuat
             updateFilterButtonState();
         });
-        
+
     </script>
     
     <script>
