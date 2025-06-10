@@ -1,35 +1,35 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pekerja;
 use App\Models\Shift;
 use App\Models\Koridor;
-use App\Models\Halte;
+use App\Models\Pool;
 use App\Models\User;
 
-
-class LaporanHalte extends Model
+class LaporanPool extends Model
 {
-    protected $table = 'laporan_halte';
-    protected $primaryKey = 'laporan_halte_id';
+    protected $table = 'laporan_pool';
+    protected $primaryKey = 'laporan_pool_id';
     public $timestamps = false;
     protected $fillable = [
         'user_id',
         'pekerja_id',
         'shift_id',
         'koridor_id',
-        'halte_id',
-        'tanggal_waktu_halte',
-        'lokasi_halte',
+        'pool_id',
+        'tanggal_waktu_pool',
+        'lokasi_pool',
         'koordinat',
         'latitude',
         'longitude',
-        'bukti_kebersihan_lantai_halte',
-        'bukti_kebersihan_kaca_halte',
-        'bukti_kebersihan_sampah_halte',
-        'bukti_kondisi_halte',
-        'bukti_kendala_halte',
+        'bukti_kebersihan_lantai_pool',
+        'bukti_kebersihan_kaca_pool',
+        'bukti_kebersihan_sampah_pool',
+        'bukti_kondisi_pool',
+        'bukti_kendala_pool',
     ];
     protected $attributes = [
         'user_id' => 2,
@@ -54,13 +54,13 @@ class LaporanHalte extends Model
         return $this->belongsTo(Koridor::class, 'koridor_id');
     }
 
-    public function halte()
+    public function pool()
     {
-        return $this->belongsTo(Halte::class, 'halte_id');
+        return $this->belongsTo(Pool::class, 'pool_id');
     }
 
-    public function kendalaHalte()
+    public function kendalaPool()
     {
-        return $this->hasMany(LaporanKendalaHalte::class);
+        return $this->hasMany(LaporanKendalaPool::class);
     }
 }

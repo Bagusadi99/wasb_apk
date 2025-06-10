@@ -11,7 +11,7 @@
                     </div>
                 </div> 
                 <div class="sidebar-toggler  x">
-                    <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle" style="color: #4A8939;"></i></a>
+                    <a class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle" style="color: #4A8939;"></i></a>
                 </div>
             </div>
         </div>

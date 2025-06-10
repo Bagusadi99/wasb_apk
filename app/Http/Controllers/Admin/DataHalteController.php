@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Storage;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LaporanHalte;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\HalteExport;
+use App\Models\Koridor;
+use App\Models\LaporanKendalaHalte;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -14,17 +17,22 @@ class DataHalteController extends Controller
 
     public function data_halte()
     {
-        $laporan_halte = LaporanHalte::all();
-        return view('admin.dashboard.data_halte', compact('laporan_halte'));
+        $koridor = Koridor::all();
+        $laporan_halte = LaporanHalte::orderBy('tanggal_waktu_halte', 'desc')->get();
+        return view('admin.dashboard.data_halte', compact('laporan_halte','koridor'));
     } 
     public function detail_datahalte($id)
     {
         $data = LaporanHalte::findOrFail($id);
+        $kendala = LaporanKendalaHalte::with('kendalaHalte')
+            ->where('laporan_halte_id', $id)
+            ->get();
         // dd($detail);
-        return view('admin.dashboard.detail_datahalte', compact('data'));
+        return view('admin.dashboard.detail_datahalte', compact('data','kendala'));
     }
     public function filter_datahalte(Request $request)
     {
+        $koridor = Koridor::all();
         $query = LaporanHalte::with(['pekerja', 'shift']);
         
         // Filter tanggal
@@ -34,10 +42,13 @@ class DataHalteController extends Controller
                 $request->end_date
             ]);
         }
+        if ($request->filled('koridor')) {
+            $query->where('koridor_id', $request->koridor);
+        }
         
         $laporan_halte = $query->orderBy('tanggal_waktu_halte', 'desc')->get();
         
-        return view('admin.dashboard.data_halte', compact('laporan_halte'));
+        return view('admin.dashboard.data_halte', compact('laporan_halte','koridor'));
     }
 
     private function filterLaporan(Request $request)

@@ -86,12 +86,12 @@
                 </a>
             </header>
             <div class="page-heading">
-                <h3 style="color: #4A8939"> Data Halte / Shalter</h3>
+                <h3 style="color: #4A8939"> Data Pool</h3>
             </div>
             <!-- Tambahkan Form Filter di sini -->
             <div class="card mb-3">
                 <div class="card-body">
-                    <form method="GET" action="{{ route('filter_datahalte') }}">
+                    <form method="GET" action="{{ route('filter_datapool') }}">
                         <div class="row">
                             <div class="col-md-2">
                                 <h6 for="start_date">Koridor</h6>
@@ -126,15 +126,13 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonIcon">
                                         <li>
-                                            <a href="javascript:void(0);" class="dropdown-item"
-                                                onclick="showPDFPreview('{{ route('export_pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}')">
+                                            <a href="javascript:void(0);" class="dropdown-item">
                                                 <i class="bi bi-filetype-pdf"></i> Preview PDF
                                             </a>
 
                                         </li>
                                         <li>
-                                            <a class="dropdown-item"
-                                                href="{{ route('export_excel', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}">
+                                            <a class="dropdown-item">
                                                 <i class="bi bi-file-earmark-spreadsheet"></i> Download Excel
                                             </a>
                                         </li>
@@ -161,7 +159,7 @@
                             <div class="card">
                                 <div class="card-header d-flex">
                                     <i class="bi bi-info-circle-fill me-2"></i>
-                                    <h4 class="card-title">List Data Halte / Shalter</h4>
+                                    <h4 class="card-title">List Data Pool</h4>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
@@ -173,30 +171,30 @@
                                                         <th>Nama Petugas</th>
                                                         <th>Shift</th>
                                                         <th>Koridor</th>
-                                                        <th>Halte</th>
+                                                        <th>Pool</th>
                                                         <th>Tanggal & Waktu</th>
                                                         <th>Bukti Kebersihan</th>
                                                         <th style="text-align: center">Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($laporan_halte as $item)
+                                                    @foreach ($laporan_pool as $item)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
                                                             <td class="text-nowrap">{{ $item->pekerja->nama_pekerja }}</td>
                                                             <td>{{ $item->shift->shift_nama }}</td>
                                                             <td class="text-nowrap">{{ $item->koridor->koridor_nama ?? '-' }}</td>
-                                                            <td>{{ $item->halte->halte_nama ?? '-' }}</td>
-                                                            <td>{{ ($item->tanggal_waktu_halte) }}</td>
+                                                            <td>{{ $item->pool->pool_nama ?? '-' }}</td>
+                                                            <td>{{ $item->tanggal_waktu_pool }}</td>
                                                             <td>
-                                                                <img src="{{ asset('storage/' . $item->bukti_kebersihan_lantai_halte) }}"
+                                                                <img src="{{ asset('storage/' . $item->bukti_kebersihan_lantai_pool) }}"
                                                                     alt="Bukti Kebersihan"
                                                                     style="max-width: 100px; max-height: 100px;">
                                                             </td>
                                                             <td style="text-align: center">
                                                                 <button
                                                                     class="btn btn-primary btn-sm detail-btn mb-1 mt-1"
-                                                                    data-id="{{ $item->laporan_halte_id }}">
+                                                                    data-id="{{ $item->laporan_pool_id }}">
                                                                     <i class="bi bi-eye-fill"></i> Detail
                                                                 </button>
                                                                 <button class="btn btn-danger btn-sm mb-1 mt-1">
@@ -286,7 +284,7 @@
                 const button = e.target.closest('.detail-btn');
                 const id = button.getAttribute('data-id');
 
-                fetch(`/detail_datahalte/${id}`)
+                fetch(`/detail_datapool/${id}`)
                     .then(response => response.text())
                     .then(html => {
                         document.getElementById('detail-content').innerHTML = html;
@@ -341,14 +339,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($laporan_halte as $item)
+                                @foreach ($laporan_pool as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->pekerja->nama_pekerja }}</td>
                                         <td>{{ $item->shift->shift_nama }}</td>
-                                        <td>{{ $item->tanggal_waktu_halte }}</td>
+                                        <td>{{ $item->tanggal_waktu_pool }}</td>
                                         <td>
-                                            <img src="{{ asset('storage/' . $item->bukti_kebersihan_lantai_halte) }}"
+                                            <img src="{{ asset('storage/' . $item->bukti_kebersihan_lantai_pool) }}"
                                                 style="max-width: 100px;">
                                         </td>
                                     </tr>

@@ -97,7 +97,7 @@
                                                             <select name="koridor_id" class="choices form-select" required>
                                                                 <option value=""disabled selected>Pilih Koridor</option>
                                                                 @foreach ($koridor as $item)
-                                                                    <option value="{{ $item->koridor_id }}">{{ $item->koridor_nama }}</option> <!-- ID yang dikirim -->
+                                                                    <option value="{{ $item->koridor_id }}">{{ $item->koridor_nama }}</option> 
                                                                 @endforeach
                                                             </select>
                                                         </div>

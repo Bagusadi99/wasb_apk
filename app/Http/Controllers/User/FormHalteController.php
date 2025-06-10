@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
+use App\Http\Controllers\Controller;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use App\Models\Pekerja;
 use App\Models\Shift;
 use App\Models\Koridor;
@@ -78,7 +77,7 @@ class FormHalteController extends Controller
         $fotoKendalaPath = $request->file('bukti_kendala_halte') ? $request->file('bukti_kendala_halte')->store('foto_kendala', 'public') : null;
 
         // Simpan data
-        $laporan =LaporanHalte::create([
+        $laporan = LaporanHalte::create([
             'pekerja_id' => $request->pekerja_id,
             'shift_id' => $request->shift_id,
             'koridor_id' => $request->koridor_id,

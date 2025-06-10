@@ -29,6 +29,12 @@
                         <span>Data Halte / Shalter</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ Request::is('dataformpool') || Request::is('dataformpool/detail/*') || Request::is('datapool/filter') ? 'active' : '' }}">
+                    <a href="{{ route('admin.dashboard.data_pool') }}" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                        <span>Data Pool</span>
+                    </a>
+                </li>
                 <hr>
                 <li class="sidebar-item {{ Request::is('pengawas') ? 'active' : '' }}">
                     <a href="{{ route('admin.pengawas.list_pengawas') }}" class='sidebar-link'>

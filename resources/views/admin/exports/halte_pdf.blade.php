@@ -122,7 +122,7 @@
             </tr>
         </thead>
         <tbody>
-            @if(count($laporan_halte) > 0)
+            @if(is_countable($laporan_halte) && count($laporan_halte) > 0)
                 @foreach($laporan_halte as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
@@ -142,36 +142,7 @@
                 @endforeach
             @else
                 <tr>
-
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->pekerja->nama_pekerja ?? '-' }}</td>
-                    <td>{{ $item->shift->shift_nama ?? '-' }}</td>
-                    <td>{{ $item->tanggal_waktu_halte }}</td>
-                    <td>
-                      
-                    @if ($item->bukti_kebersihan_lantai_halte)
-                            <img src="{{ public_path('storage/' . $item->bukti_kebersihan_lantai_halte) }}" alt="Bukti Gambar">
-                        @else
-                            Tidak ada foto kebersihan lantai halte
-                        @endif
-
-                        @if ($item->bukti_kebersihan_kaca_halte)
-                            <img src="{{ public_path('storage/' . $item->bukti_kebersihan_kaca_halte) }}" alt="Bukti Gambar">
-                        @else
-                            Tidak ada foto kebersihan kaca halte
-                        @endif
-                        @if ($item->bukti_kebersihan_sampah_halte)
-                            <img src="{{ public_path('storage/' . $item->bukti_kebersihan_sampah_halte) }}" alt="Bukti Gambar">
-                        @else
-                            Tidak ada foto kebersihan sampah halte
-                        @endif
-                        @if ($item->bukti_kondisi_halte)
-                            <img src="{{ public_path('storage/' . $item->bukti_kondisi_halte) }}" alt="Bukti Gambar">
-                        @else
-                            Tidak ada foto kondisi halte
-                        @endif
-                    </td>
-                    <td colspan="6" style="text-align: center;">Tidak ada data yang tersedia</td>
+                    <td colspan="7" style="text-align: center;">Tidak ada data yang tersedia</td>
                 </tr>
             @endif
         </tbody>

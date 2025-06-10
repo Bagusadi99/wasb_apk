@@ -9,12 +9,11 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/iconly.css') }}">
-    <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/choices.js/public/assets/styles/choices.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Choices.js CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"> --}}
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
@@ -43,10 +42,10 @@
             display: inline-block;
             background-color: #4A8939;
             color: white;
-            padding: 10px 15px;
+            padding: 8px;
             border-radius: 5px;
             cursor: pointer;
-            font-weight: 500;
+            font-size: 15px;
         }
         .camera-button i {
             margin-right: 5px;
@@ -69,7 +68,7 @@
         @include('user.sidebaruser')
         <div id="main">
             <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
+                <a class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3" style="color: #4A8939;"></i>
                 </a>
             </header>
@@ -92,7 +91,7 @@
                                                 @csrf 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Nama</h6>
-                                                    <select name="pekerja_id" id="pekerja" class="form-select">
+                                                    <select name="pekerja_id" id="pekerja" class="form-select" required>
                                                         <option value=""disabled selected>Nama Pekerja</option>
                                                         @foreach ($pekerja as $item)
                                                             <option value="{{ $item->pekerja_id }}">{{ $item->nama_pekerja }}</option>
@@ -101,7 +100,7 @@
                                                 </div>
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Shift</h6>
-                                                    <select name="shift_id" id="shift" class="form-select">
+                                                    <select name="shift_id" id="shift" class="form-select" required>
                                                         <option value=""disabled selected>Pilih Shift</option>
                                                         @foreach ($shift as $item)
                                                             <option value="{{ $item->shift_id }}">{{ $item->shift_nama }}</option>
@@ -111,7 +110,7 @@
                                                 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Koridor</h6>
-                                                    <select name="koridor_id" id="koridor" class="form-select">
+                                                    <select name="koridor_id" id="koridor" class="form-select" required>
                                                         <option value="" disabled selected>Pilih Koridor</option>
                                                         @foreach ($koridor as $item)
                                                             <option value="{{ $item->koridor_id }}">{{ $item->koridor_nama }}</option>
@@ -123,7 +122,7 @@
                                                     <input type="text" class="form-control" id="live-time" disabled>
                                                     <input type="hidden" name="tanggal_waktu_halte" id="hidden-time">
                                                 </div>
-                                                <div class="col-md-6 mb-3" style="position: relative; z-index: 1050;">
+                                                <div class="col-md-6 mb-3" style="position: relative; z-index: 2;">
                                                     <h6>Halte</h6>
                                                     <select name="halte_id" id="halte" class="choices form-select" style="position: relative; z-index: 1050; background: white;">
                                                         <option value="" disabled selected>Pilih Halte</option>
@@ -148,7 +147,7 @@
                                                 </div>
                                                 
                                                 <!-- Map container -->
-                                                <div class="col-12 mb-4">
+                                                <div class="col-12 mb-4" style="z-index: 1">
                                                     <h6>Lokasi di Peta</h6>
                                                     <div id="map"></div>
                                                 </div>
@@ -161,10 +160,10 @@
                                                             <i class="bi bi-camera-fill"></i> Ambil Foto Lantai
                                                         </div>
                                                         <input type="file" name="bukti_kebersihan_lantai_halte" class="camera-input imageInput" 
-                                                            data-target="previewImage1" accept="image/*" capture="environment">
+                                                            data-target="previewImage1" accept="image/*" capture="environment" required>
                                                     </div>
                                                     <img id="previewImage1" src="#" alt="Pratinjau Gambar" 
-                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                        style="display: none; margin-top: 10px; max-width: 80%; height: auto; margin-left: auto; margin-right: auto;">
                                                 </div>
                                                 
                                                 <div class="col-md-6 mb-3">
@@ -174,10 +173,10 @@
                                                             <i class="bi bi-camera-fill"></i> Ambil Foto Kaca
                                                         </div>
                                                         <input type="file" name="bukti_kebersihan_kaca_halte" class="camera-input imageInput" 
-                                                            data-target="previewImage2" accept="image/*" capture="environment">
+                                                            data-target="previewImage2" accept="image/*" capture="environment" required>
                                                     </div>
                                                     <img id="previewImage2" src="#" alt="Pratinjau Gambar" 
-                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                        style="display: none; margin-top: 10px; max-width: 80%; height: auto; margin-left: auto; margin-right: auto;">
                                                 </div>
                                                 
                                                 <div class="col-md-6 mb-3">
@@ -187,10 +186,10 @@
                                                             <i class="bi bi-camera-fill"></i> Ambil Foto Sampah
                                                         </div>
                                                         <input type="file" name="bukti_kebersihan_sampah_halte" class="camera-input imageInput" 
-                                                            data-target="previewImage3" accept="image/*" capture="environment">
+                                                            data-target="previewImage3" accept="image/*" capture="environment" required>
                                                     </div>
                                                     <img id="previewImage3" src="#" alt="Pratinjau Gambar" 
-                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                        style="display: none; margin-top: 10px; max-width: 80%; height: auto; margin-left: auto; margin-right: auto;">
                                                 </div>
                                                 
                                                 <div class="col-md-6 mb-3">
@@ -200,14 +199,15 @@
                                                             <i class="bi bi-camera-fill"></i> Ambil Foto Kondisi
                                                         </div>
                                                         <input type="file" name="bukti_kondisi_halte" class="camera-input imageInput" 
-                                                            data-target="previewImage4" accept="image/*" capture="environment">
+                                                            data-target="previewImage4" accept="image/*" capture="environment" required>
                                                     </div>
                                                     <img id="previewImage4" src="#" alt="Pratinjau Gambar" 
-                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                        style="display: none; margin-top: 10px; max-width: 80%; height: auto; margin-left: auto; margin-right: auto;">
                                                 </div>                                                
 
                                                 <div class="col-md-6 mb-3" style="position: relative; z-index: 2;">
                                                     <h6>Kendala Halte</h6>
+                                                    <small class="form-text text-danger">*Jika tidak ada kendala halte, tidak perlu diisi</small>
                                                     <select name="kendala_halte_ids[]" id="kendala_halte" class="choices form-select" multiple>
                                                         @foreach ($kendala_halte as $item)
                                                             <option value="{{ $item->kendala_halte_id }}">{{ $item->kendala_halte }}</option>
@@ -217,6 +217,7 @@
 
                                                 <div class="col-md-6 mb-3">
                                                     <h6>Foto Kendala Halte</h6>
+                                                    <small class="form-text text-danger">*Jika tidak ada kendala halte, tidak perlu diisi</>
                                                     <div class="camera-container">
                                                         <div class="camera-button">
                                                             <i class="bi bi-camera-fill"></i> Ambil Foto Kendala
@@ -225,7 +226,7 @@
                                                             data-target="previewImage5" accept="image/*" capture="environment">
                                                     </div>
                                                     <img id="previewImage5" src="#" alt="Pratinjau Gambar" 
-                                                        style="display: none; margin-top: 10px; max-width: 100%; height: auto;">
+                                                        style="display: none; margin-top: 10px; max-width: 80%; height: auto; margin-left: auto; margin-right: auto;">
                                                 </div>
 
                                                 <div class="card">
@@ -279,7 +280,9 @@
                 searchEnabled: true,
                 shouldSort: false,
                 itemSelectText: '',
-                allowHTML: true
+                allowHTML: true,
+                // placeholder: true,
+                // placeholderValue: 'Pilih Kendala Halte'
             });
 
             koridorDropdown.addEventListener('change', function () {
@@ -326,7 +329,7 @@
 
             // Trigger camera automatically when a camera button is clicked
             document.querySelectorAll(".camera-container").forEach(container => {
-                container.addEventListener("click", function() {
+                button.addEventListener("click", function() {
                     const input = this.querySelector(".camera-input");
                     if (input) {
                         input.click();
@@ -514,8 +517,9 @@
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- Choices.js JS -->
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    {{-- <script src="{{ asset('template/dist/assets/static/js/pages/form-element-select.js') }}"></script>
-    <script src="{{ asset('template/dist/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script> --}}
+    <script src="{{ asset('template/dist/assets/static/js/pages/form-element-select.js') }}"></script>
+    <script src="{{ asset('template/dist/assets/extensions/choices.js/public/assets/scripts/choices.js') }}"></script>
+
 </body>
 </html>
