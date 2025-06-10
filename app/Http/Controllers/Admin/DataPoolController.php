@@ -31,22 +31,22 @@ class DataPoolController extends Controller
     public function filter_datapool(Request $request)
     {
         $koridor = Koridor::all();
-        $query = LaporanPool::with(['pekerja', 'shift']);
-        
-        // Filter tanggal
-        if ($request->has('start_date') && $request->has('end_date')) {
+        $query = LaporanPool::with(['pekerja', 'shift', 'koridor', 'pool']);
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
             $query->whereBetween('tanggal_waktu_pool', [
                 $request->start_date, 
                 $request->end_date
             ]);
         }
+
         if ($request->filled('koridor')) {
             $query->where('koridor_id', $request->koridor);
         }
-        
+
         $laporan_pool = $query->orderBy('tanggal_waktu_pool', 'desc')->get();
-        
-        return view('admin.dashboard.data_pool', compact('laporan_pool','koridor'));
+
+        return view('admin.dashboard.data_pool', compact('laporan_pool', 'koridor'));
     }
 
 }

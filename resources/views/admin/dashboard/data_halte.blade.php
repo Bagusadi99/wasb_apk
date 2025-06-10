@@ -115,7 +115,7 @@
                                     value="{{ request('end_date') }}">
                             </div>
                             <div class="col-md-4 d-flex align-items-end">
-                                <button type="submit" class="btn btn-primary me-2">Filter</button>
+                                <button type="submit" class="btn btn-primary me-2" id="filterBtn" disabled>Filter</button>
                                 @if (request('start_date') || request('end_date') || request('koridor'))
                                     <a href="{{ url()->current() }}" class="btn btn-danger me-2">Reset</a>
                                 @endif
@@ -142,7 +142,6 @@
                                         </ul>
                                     </div>
                                 @endif
-
                             </div>
                         </div>
                     </form>
@@ -247,6 +246,82 @@
         </div>
     </div>
 
+    <div class="modal fade" id="previewExcelModal" tabindex="-1" aria-labelledby="previewExcelModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="previewExcelModalLabel">Preview Data Excel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Petugas</th>
+                                    <th>Shift</th>
+                                    <th>Tanggal & Waktu</th>
+                                    <th>Bukti Kebersihan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($laporan_halte as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->pekerja->nama_pekerja }}</td>
+                                        <td>{{ $item->shift->shift_nama }}</td>
+                                        <td>{{ $item->tanggal_waktu_halte }}</td>
+                                        <td>
+                                            <img src="{{ asset('storage/' . $item->bukti_kebersihan_lantai_halte) }}"
+                                                style="max-width: 100px;">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end">
+                        <a href="{{ route('export_excel', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
+                            class="btn btn-success">
+                            <i class="bi bi-download"></i> Download Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Preview Excel -->
+    <div class="modal fade" id="previewExcelModal" ...>
+        ...
+    </div>
+
+    <!-- Modal Preview PDF -->
+    <div class="modal fade" id="previewPDFModal" tabindex="-1" aria-labelledby="previewPDFModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl" style="max-width: 90%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="previewPDFModalLabel">Preview PDF</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="pdfIframe" src="" frameborder="0"
+                        style="width: 100%; height: 80vh;"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="downloadPdfBtn" onclick="downloadPDF()">
+                        <i class="bi bi-download"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
     <script src="{{ asset('template/dist/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
@@ -326,80 +401,41 @@
                 marker = null;
             }
         });
-    </script>
-    <div class="modal fade" id="previewExcelModal" tabindex="-1" aria-labelledby="previewExcelModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="previewExcelModalLabel">Preview Data Excel</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Petugas</th>
-                                    <th>Shift</th>
-                                    <th>Tanggal & Waktu</th>
-                                    <th>Bukti Kebersihan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($laporan_halte as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->pekerja->nama_pekerja }}</td>
-                                        <td>{{ $item->shift->shift_nama }}</td>
-                                        <td>{{ $item->tanggal_waktu_halte }}</td>
-                                        <td>
-                                            <img src="{{ asset('storage/' . $item->bukti_kebersihan_lantai_halte) }}"
-                                                style="max-width: 100px;">
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="text-end">
-                        <a href="{{ route('export_excel', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
-                            class="btn btn-success">
-                            <i class="bi bi-download"></i> Download Excel
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal Preview Excel -->
-    <div class="modal fade" id="previewExcelModal" ...>
-        ...
-    </div>
 
-    <!-- Modal Preview PDF -->
-    <div class="modal fade" id="previewPDFModal" tabindex="-1" aria-labelledby="previewPDFModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl" style="max-width: 90%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="previewPDFModalLabel">Preview PDF</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <iframe id="pdfIframe" src="" frameborder="0"
-                        style="width: 100%; height: 80vh;"></iframe>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" id="downloadPdfBtn" onclick="downloadPDF()">
-                        <i class="bi bi-download"></i> Download PDF
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+        document.addEventListener('DOMContentLoaded', function () {
+            const koridorSelect = document.querySelector('select[name="koridor"]');
+            const startDateInput = document.getElementById('start_date');
+            const endDateInput = document.getElementById('end_date');
+            const filterBtn = document.getElementById('filterBtn');
+
+            function updateFilterButtonState() {
+                const koridorFilled = koridorSelect.value !== "";
+                const startDateFilled = startDateInput.value !== "";
+                const endDateFilled = endDateInput.value !== "";
+
+                if (
+                    // Jika koridor dipilih tanpa tanggal
+                    (koridorFilled && !startDateFilled && !endDateFilled) ||
+                    // Atau koridor dipilih + tanggal lengkap
+                    (koridorFilled && startDateFilled && endDateFilled)
+                ) {
+                    filterBtn.disabled = false;
+                } else {
+                    filterBtn.disabled = true;
+                }
+            }
+
+            // Pantau perubahan input
+            koridorSelect.addEventListener('change', updateFilterButtonState);
+            startDateInput.addEventListener('input', updateFilterButtonState);
+            endDateInput.addEventListener('input', updateFilterButtonState);
+
+            // Jalankan saat halaman pertama kali dimuat
+            updateFilterButtonState();
+        });
+
+    </script>
+
     <script>
         // Modify the showPDFPreview function to first display the PDF in iframe
         function showPDFPreview(url) {
