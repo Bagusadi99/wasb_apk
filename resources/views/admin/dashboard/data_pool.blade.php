@@ -24,7 +24,7 @@
         }
 
         .page-content.active {
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 3fr 1fr;
         }
 
         .detail-section {

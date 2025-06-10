@@ -81,7 +81,7 @@
         @include('admin.sidebaradmin')
         <div id="main">
             <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
+                <a class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3" style="color: #4A8939;"></i>
                 </a>
             </header>
@@ -116,30 +116,33 @@
                             </div>
                             <div class="col-md-4 d-flex align-items-end">
                                 <button type="submit" class="btn btn-primary me-2">Filter</button>
-                                @if (request('start_date') || request('end_date'))
+                                @if (request('start_date') || request('end_date') || request('koridor'))
                                     <a href="{{ url()->current() }}" class="btn btn-danger me-2">Reset</a>
                                 @endif
-                                <div class="dropdown">
-                                    <button class="btn btn-success dropdown-toggle" type="button"
-                                        id="dropdownMenuButtonIcon" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-download"></i> Ekspor
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonIcon">
-                                        <li>
-                                            <a href="javascript:void(0);" class="dropdown-item"
-                                                onclick="showPDFPreview('{{ route('export_pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}')">
-                                                <i class="bi bi-filetype-pdf"></i> Preview PDF
-                                            </a>
 
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item"
-                                                href="{{ route('export_excel', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}">
-                                                <i class="bi bi-file-earmark-spreadsheet"></i> Download Excel
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                @if (request('start_date') && request('end_date'))
+                                    <div class="dropdown">
+                                        <button class="btn btn-success dropdown-toggle" type="button"
+                                            id="dropdownMenuButtonIcon" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-download"></i> Ekspor
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonIcon">
+                                            <li>
+                                                <a href="javascript:void(0);" class="dropdown-item"
+                                                    onclick="showPDFPreview('{{ route('export_pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}')">
+                                                    <i class="bi bi-filetype-pdf"></i> Preview PDF
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item"
+                                                    href="{{ route('export_excel', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}">
+                                                    <i class="bi bi-file-earmark-spreadsheet"></i> Download Excel
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endif
+
                             </div>
                         </div>
                     </form>
@@ -151,6 +154,10 @@
                 <div class="alert alert-primary">
                     Menampilkan data Tanggal <strong>{{ date('d F Y', strtotime(request('start_date'))) }}</strong>
                     sampai <strong>{{ date('d F Y', strtotime(request('end_date'))) }}</strong>
+                </div>
+            @elseif (request('koridor'))
+                <div class="alert alert-primary">
+                    Menampilkan data untuk <strong>{{ $koridor->firstWhere('koridor_id', request('koridor'))->koridor_nama }}</strong>
                 </div>
             @endif
             <div class="page-content" id="page-content">

@@ -33,23 +33,24 @@ class DataHalteController extends Controller
     public function filter_datahalte(Request $request)
     {
         $koridor = Koridor::all();
-        $query = LaporanHalte::with(['pekerja', 'shift']);
-        
-        // Filter tanggal
-        if ($request->has('start_date') && $request->has('end_date')) {
+        $query = LaporanHalte::with(['pekerja', 'shift', 'koridor', 'halte']);
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
             $query->whereBetween('tanggal_waktu_halte', [
                 $request->start_date, 
                 $request->end_date
             ]);
         }
+
         if ($request->filled('koridor')) {
             $query->where('koridor_id', $request->koridor);
         }
-        
+
         $laporan_halte = $query->orderBy('tanggal_waktu_halte', 'desc')->get();
-        
-        return view('admin.dashboard.data_halte', compact('laporan_halte','koridor'));
+
+        return view('admin.dashboard.data_halte', compact('laporan_halte', 'koridor'));
     }
+
 
     private function filterLaporan(Request $request)
     {
@@ -67,6 +68,7 @@ class DataHalteController extends Controller
     public function export_pdf(Request $request)
     {
         $laporan_halte = $this->filterLaporan($request);
+        
 
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');

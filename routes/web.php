@@ -35,8 +35,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dataformpool', [DataPoolController::class, 'data_pool'])->name('admin.dashboard.data_pool');
     Route::get('/detail_datapool/{id}', [DataPoolController::class, 'detail_datapool']);
     Route::get('/datapool/filter', [DataPoolController::class, 'filter_datapool'])->name('filter_datapool');
-    Route::get('/export-pdf', [DataPoolController::class, 'export_pdf'])->name('export_pdf');
-    Route::get('/export-excel', [DataPoolController::class, 'export_excel'])->name('export_excel');
 
     Route::get('/pengawas', [PengawasController::class, 'list_pengawas'])->name('admin.pengawas.list_pengawas');
     Route::post('/pengawas/store', [PengawasController::class, 'store'])->name('pengawas.store');

@@ -113,12 +113,18 @@
         <thead>
             <tr>
                 <th style="width: 5%;">No</th>
-                <th style="width: 20%;">Nama Petugas</th>
-                <th style="width: 10%;">Shift</th>
-                <th style="width: 10%;">Koridor</th>
-                <th style="width: 10%;">Halte</th>
+                <th style="width: 40%;">Nama Petugas</th>
+                <th>Shift</th>
+                <th>Koridor</th>
+                <th style="width: 5%;">Halte</th>
                 <th style="width: 15%;">Tanggal & Waktu</th>
-                <th style="width: 20%;">Bukti Kebersihan</th>
+                <th style="width: 20%;">Kebersihan Lantai</th>
+                <th style="width: 20%;">Kebersihan Kaca</th>
+                <th style="width: 20%;">Kebersihan Sampah</th>
+                <th style="width: 20%;">Kebersihan Halte</th>
+                <th style="width: 20%;">Kendala</th>
+                <th style="width: 20%;">Bukti Kendala</th>
+
             </tr>
         </thead>
         <tbody>
@@ -130,10 +136,39 @@
                         <td>{{ $item->shift->shift_nama }}</td>
                         <td>{{ $item->koridor->koridor_nama }}</td>
                         <td>{{ $item->halte->halte_nama }}</td>
-                        <td>{{ date('d/m/Y H:i', strtotime($item->tanggal_waktu_halte)) }}</td>
+                        <td>{{ date('d/m/Y', strtotime($item->tanggal_waktu_halte)) }}</td>
                         <td class="image-cell">
                             @if($item->bukti_kebersihan_lantai_halte)
-                                <img src="{{ public_path('storage/' . $item->bukti_kebersihan_lantai_halte) }}" alt="Bukti">
+                                <img src="{{ public_path('storage/' . $item->bukti_kebersihan_lantai_halte) }}" alt="Foto Lantai ">
+                            @else
+                                [Tidak ada bukti]
+                            @endif
+                        </td>
+                        <td class="image-cell">
+                            @if($item->bukti_kebersihan_kaca_halte)
+                                <img src="{{ public_path('storage/' . $item->bukti_kebersihan_kaca_halte) }}" alt="Foto Lantai ">
+                            @else
+                                [Tidak ada bukti]
+                            @endif
+                        </td>
+                        <td class="image-cell">
+                            @if($item->bukti_kebersihan_sampah_halte)
+                                <img src="{{ public_path('storage/' . $item->bukti_kebersihan_sampah_halte) }}" alt=" Foto Sampah ">
+                            @else
+                                [Tidak ada bukti]
+                            @endif
+                        </td>
+                        <td class="image-cell">
+                            @if($item->bukti_kondisi_halte)
+                                <img src="{{ public_path('storage/' . $item->bukti_kondisi_halte) }}" alt="Foto Halte ">
+                            @else
+                                [Tidak ada bukti]
+                            @endif
+                        </td>
+
+                        <td class="image-cell">
+                            @if($item->bukti_kendala_halte)
+                                <img src="{{ public_path('storage/' . $item->bukti_kendaala_halte) }}" alt="Foto Kendala ">
                             @else
                                 [Tidak ada bukti]
                             @endif
