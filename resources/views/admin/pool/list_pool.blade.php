@@ -220,12 +220,14 @@
             document.querySelector('#editModal form').action = `/pool/${id}`;
         }
         function setDeleteData(id, nama) {
+            console.log(id, nama);
+
             // Isi data ke dalam modal hapus
             document.getElementById('delete_pool_nama').textContent = nama;
             document.getElementById("deleteForm").action = "/pool/" + id;
 
             // Tampilkan modal hapus
-            // new bootstrap.Modal(document.getElementById('deleteModal')).show();
+            new bootstrap.Modal(document.getElementById('deleteModal')).show();
         }
     </script>
     

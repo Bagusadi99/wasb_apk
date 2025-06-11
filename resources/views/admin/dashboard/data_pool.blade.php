@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/simple-datatables/style.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/table-datatable.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -75,6 +74,7 @@
     </style>
 </head>
 
+
 <body style="background-color: #d5edd2;">
     <script src="{{ asset('template/dist/assets/static/js/initTheme.js') }}"></script>
     <div id="app">
@@ -88,7 +88,6 @@
             <div class="page-heading">
                 <h3 style="color: #4A8939"> Data Pool</h3>
             </div>
-            <!-- Tambahkan Form Filter di sini -->
             <div class="card mb-3">
                 <div class="card-body">
                     <form method="GET" action="{{ route('filter_datapool') }}">
@@ -100,7 +99,7 @@
                                     @foreach ($koridor as $item)
                                         <option value="{{ $item->koridor_id }}" {{ request('koridor') == $item->koridor_id ? 'selected' : '' }}>
                                             {{ $item->koridor_nama }}
-                                        </option> 
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -128,12 +127,12 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonIcon">
                                             <li>
-                                                <a href="javascript:void(0);" class="dropdown-item">
+                                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#previewPDFModal" onclick="showPDFPreview('{{ route('pool.export_pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date'), 'koridor' => request('koridor')]) }}')">
                                                     <i class="bi bi-filetype-pdf"></i> Preview PDF
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item">
+                                                <a href="{{ route('pool.export_excel', ['start_date' => request('start_date'), 'end_date' => request('end_date'), 'koridor' => request('koridor')]) }}" class="dropdown-item">
                                                     <i class="bi bi-file-earmark-spreadsheet"></i> Download Excel
                                                 </a>
                                             </li>
@@ -146,7 +145,6 @@
                 </div>
             </div>
 
-            <!-- Tampilkan info filter jika sedang aktif -->
             @if (request('start_date') && request('end_date'))
                 <div class="alert alert-primary">
                     Menampilkan data Tanggal <strong>{{ date('d F Y', strtotime(request('start_date'))) }}</strong>
@@ -157,8 +155,9 @@
                     Menampilkan data untuk <strong>{{ $koridor->firstWhere('koridor_id', request('koridor'))->koridor_nama }}</strong>
                 </div>
             @endif
+
+     
             <div class="page-content" id="page-content">
-                <!-- Bagian Kiri: Tabel -->
                 <section class="basic-choices">
                     <div class="row">
                         <div class="col-12">
@@ -203,7 +202,10 @@
                                                                     data-id="{{ $item->laporan_pool_id }}">
                                                                     <i class="bi bi-eye-fill"></i> Detail
                                                                 </button>
-                                                                <button class="btn btn-danger btn-sm mb-1 mt-1">
+                                                                {{-- REFAC: Delete button with SweetAlert2 confirmation --}}
+                                                                <button
+                                                                    class="btn btn-danger btn-sm delete-btn mb-1 mt-1"
+                                                                    data-id="{{ $item->laporan_pool_id }}">
                                                                     <i class="bi bi-trash-fill"></i> Hapus
                                                                 </button>
                                                             </td>
@@ -219,7 +221,6 @@
                     </div>
                 </section>
 
-                <!-- Bagian Kanan: Detail -->
                 <section class="detail-section" id="detail-section">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -243,6 +244,12 @@
             </footer>
         </div>
     </div>
+
+    {{-- Hidden form for delete action --}}
+    <form id="delete-form" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 
     <div class="modal fade" id="previewExcelModal" tabindex="-1" aria-labelledby="previewExcelModalLabel"
         aria-hidden="true">
@@ -290,12 +297,10 @@
             </div>
         </div>
     </div>
-    <!-- Modal Preview Excel -->
     <div class="modal fade" id="previewExcelModal" ...>
         ...
     </div>
 
-    <!-- Modal Preview PDF -->
     <div class="modal fade" id="previewPDFModal" tabindex="-1" aria-labelledby="previewPDFModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl" style="max-width: 90%;">
@@ -324,7 +329,6 @@
     <script src="{{ asset('template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
     <script src="{{ asset('template/dist/assets/static/js/pages/simple-datatables.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
@@ -409,12 +413,15 @@
                 const startDateFilled = startDateInput.value !== "";
                 const endDateFilled = endDateInput.value !== "";
 
-                if (
-                    // Jika koridor dipilih tanpa tanggal
-                    (koridorFilled && !startDateFilled && !endDateFilled) ||
-                    // Atau koridor dipilih + tanggal lengkap
-                    (koridorFilled && startDateFilled && endDateFilled)
-                ) {
+                // Enable filter button if:
+                // 1. Koridor is selected AND (both dates are empty OR both dates are filled)
+                // 2. ONLY both dates are filled (koridor is optional for date filtering)
+                const isDateFilterValid = (startDateFilled && endDateFilled);
+                const isKoridorOnlyValid = (koridorFilled && !startDateFilled && !endDateFilled);
+                const isKoridorAndDateValid = (koridorFilled && startDateFilled && endDateFilled);
+
+
+                if (isKoridorOnlyValid || isKoridorAndDateValid || isDateFilterValid) {
                     filterBtn.disabled = false;
                 } else {
                     filterBtn.disabled = true;
@@ -430,20 +437,42 @@
             updateFilterButtonState();
         });
 
+        // REFAC: JavaScript for SweetAlert2 delete confirmation
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.dataset.id;
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data ini akan dihapus secara permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const form = document.getElementById('delete-form');
+                        form.action = `/datapool/${id}`; // Make sure this route exists and handles DELETE method
+                        form.submit();
+                    }
+                })
+            });
+        });
     </script>
-    
+
     <script>
         // Modify the showPDFPreview function to first display the PDF in iframe
         function showPDFPreview(url) {
             // Modify URL to include a parameter that indicates preview only
             const previewUrl = url + (url.includes('?') ? '&' : '?') + 'preview=true';
-            
+
             // Set the iframe src to the preview URL
             document.getElementById('pdfIframe').src = previewUrl;
-            
+
             // Store the original download URL for later use
             document.getElementById('downloadPdfBtn').setAttribute('data-url', url);
-            
+
             // Show the modal
             var myModal = new bootstrap.Modal(document.getElementById('previewPDFModal'));
             myModal.show();
@@ -457,6 +486,7 @@
     </script>
 
     <script>
+        // This function is redundant if using showPDFPreview, but kept if needed elsewhere
         function previewPDF(url) {
             window.open(url, '_blank');
         }

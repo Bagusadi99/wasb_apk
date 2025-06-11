@@ -13,10 +13,10 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/simple-datatables/style.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/table-datatable.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        /* Your existing styles here */
         .page-content {
             display: grid;
             grid-template-columns: 1fr;
@@ -88,7 +88,6 @@
             <div class="page-heading">
                 <h3 style="color: #4A8939"> Data Halte / Shalter</h3>
             </div>
-            <!-- Tambahkan Form Filter di sini -->
             <div class="card mb-3">
                 <div class="card-body">
                     <form method="GET" action="{{ route('filter_datahalte') }}">
@@ -100,7 +99,7 @@
                                     @foreach ($koridor as $item)
                                         <option value="{{ $item->koridor_id }}" {{ request('koridor') == $item->koridor_id ? 'selected' : '' }}>
                                             {{ $item->koridor_nama }}
-                                        </option> 
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -129,7 +128,7 @@
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonIcon">
                                             <li>
                                                 <a href="javascript:void(0);" class="dropdown-item"
-                                                    onclick="showPDFPreview('{{ route('export_pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}')">
+                                                    onclick="showPDFPreview('{{ route('export_pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date'), 'koridor' => request('koridor')]) }}')">
                                                     <i class="bi bi-filetype-pdf"></i> Preview PDF
                                                 </a>
                                             </li>
@@ -148,19 +147,17 @@
                 </div>
             </div>
 
-            <!-- Tampilkan info filter jika sedang aktif -->
             @if (request('start_date') && request('end_date'))
                 <div class="alert alert-primary">
-                    Menampilkan data Tanggal <strong>{{ date('d F Y', strtotime(request('start_date'))) }}</strong>
-                    sampai <strong>{{ date('d F Y', strtotime(request('end_date'))) }}</strong>
+                    Menampilkan data Tanggal **{{ date('d F Y', strtotime(request('start_date'))) }}**
+                    sampai **{{ date('d F Y', strtotime(request('end_date'))) }}**
                 </div>
             @elseif (request('koridor'))
                 <div class="alert alert-primary">
-                    Menampilkan data untuk <strong>{{ $koridor->firstWhere('koridor_id', request('koridor'))->koridor_nama }}</strong>
+                    Menampilkan data untuk **{{ $koridor->firstWhere('koridor_id', request('koridor'))->koridor_nama }}**
                 </div>
             @endif
             <div class="page-content" id="page-content">
-                <!-- Bagian Kiri: Tabel -->
                 <section class="basic-choices">
                     <div class="row">
                         <div class="col-12">
@@ -205,7 +202,9 @@
                                                                     data-id="{{ $item->laporan_halte_id }}">
                                                                     <i class="bi bi-eye-fill"></i> Detail
                                                                 </button>
-                                                                <button class="btn btn-danger btn-sm mb-1 mt-1">
+                                                                {{-- ADDED: data-id for delete button --}}
+                                                                <button class="btn btn-danger btn-sm delete-btn mb-1 mt-1"
+                                                                        data-id="{{ $item->laporan_halte_id }}">
                                                                     <i class="bi bi-trash-fill"></i> Hapus
                                                                 </button>
                                                             </td>
@@ -221,7 +220,6 @@
                     </div>
                 </section>
 
-                <!-- Bagian Kanan: Detail -->
                 <section class="detail-section" id="detail-section">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -245,6 +243,12 @@
             </footer>
         </div>
     </div>
+
+    {{-- ADDED: Hidden form for delete action --}}
+    <form id="delete-form" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 
     <div class="modal fade" id="previewExcelModal" tabindex="-1" aria-labelledby="previewExcelModalLabel"
         aria-hidden="true">
@@ -293,12 +297,6 @@
         </div>
     </div>
 
-    <!-- Modal Preview Excel -->
-    <div class="modal fade" id="previewExcelModal" ...>
-        ...
-    </div>
-
-    <!-- Modal Preview PDF -->
     <div class="modal fade" id="previewPDFModal" tabindex="-1" aria-labelledby="previewPDFModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl" style="max-width: 90%;">
@@ -320,7 +318,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <script src="{{ asset('template/dist/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
@@ -328,14 +326,28 @@
     <script src="{{ asset('template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
     <script src="{{ asset('template/dist/assets/static/js/pages/simple-datatables.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
         // Validasi client-side untuk tanggal
         document.querySelector('form').addEventListener('submit', function(e) {
-            const startDate = new Date(document.getElementById('start_date').value);
-            const endDate = new Date(document.getElementById('end_date').value);
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+
+            // Only validate date range if both dates are filled
+            if (startDate && endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+
+                if (start > end) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Kesalahan Tanggal',
+                        text: 'Tanggal "Dari Tanggal" tidak boleh lebih besar dari "Sampai Tanggal".'
+                    });
+                    e.preventDefault(); // Prevent form submission
+                }
+            }
         });
 
         // Minimaps
@@ -343,7 +355,7 @@
         let marker = null;
 
         // Fungsi untuk inisialisasi peta
-        function initMap(latitude, longitude, title) {
+        function initMap(latitude, longitude) { // Removed 'title' as it wasn't used
             // Hapus peta lama jika ada
             if (miniMap) {
                 miniMap.remove();
@@ -368,21 +380,53 @@
                 const button = e.target.closest('.detail-btn');
                 const id = button.getAttribute('data-id');
 
-                fetch(`/detail_datahalte/${id}`)
-                    .then(response => response.text())
+                // Clear previous detail content to avoid stale data
+                document.getElementById('detail-content').innerHTML = '<div class="text-center py-5">Memuat data...</div>';
+                document.getElementById('page-content').classList.add('active');
+                document.getElementById('detail-section').style.display = 'block';
+
+                fetch(`/detail_datahalte/${id}`) // Make sure this route exists
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.text();
+                    })
                     .then(html => {
                         document.getElementById('detail-content').innerHTML = html;
-                        document.getElementById('page-content').classList.add('active');
-                        document.getElementById('detail-section').style.display = 'block';
 
                         const container = document.querySelector('#detail-content > div');
-                        const lat = parseFloat(container.dataset.latitude);
-                        const lng = parseFloat(container.dataset.longitude);
-                        initMap(lat, lng);
+                        // Ensure container and its dataset properties exist before trying to read them
+                        if (container && container.dataset && container.dataset.latitude && container.dataset.longitude) {
+                            const lat = parseFloat(container.dataset.latitude);
+                            const lng = parseFloat(container.dataset.longitude);
+                            // Only initialize map if coordinates are valid numbers
+                            if (!isNaN(lat) && !isNaN(lng)) {
+                                initMap(lat, lng);
+                            } else {
+                                console.error('Invalid latitude or longitude:', container.dataset.latitude, container.dataset.longitude);
+                                // Optional: display a message if map cannot be loaded due to invalid coords
+                                const mapContainer = document.getElementById('mini-map');
+                                if (mapContainer) {
+                                    mapContainer.innerHTML = '<p class="text-center text-danger">Tidak dapat menampilkan peta: Koordinat tidak valid.</p>';
+                                }
+                            }
+                        } else {
+                            console.error('Detail content or map coordinates not found.');
+                            // Optional: display a message if map cannot be loaded
+                             const mapContainer = document.getElementById('mini-map');
+                                if (mapContainer) {
+                                    mapContainer.innerHTML = '<p class="text-center text-danger">Tidak dapat menampilkan peta: Data detail tidak lengkap.</p>';
+                                }
+                        }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        Swal.fire('Error', 'Gagal memuat data detail', 'error');
+                        Swal.fire('Error', 'Gagal memuat data detail. Silakan coba lagi.', 'error');
+                        document.getElementById('detail-content').innerHTML = '<p class="text-center text-danger">Gagal memuat data detail.</p>';
+                        // Optionally hide detail section on error
+                        document.getElementById('page-content').classList.remove('active');
+                        document.getElementById('detail-section').style.display = 'none';
                     });
             }
         });
@@ -413,16 +457,8 @@
                 const startDateFilled = startDateInput.value !== "";
                 const endDateFilled = endDateInput.value !== "";
 
-                if (
-                    // Jika koridor dipilih tanpa tanggal
-                    (koridorFilled && !startDateFilled && !endDateFilled) ||
-                    // Atau koridor dipilih + tanggal lengkap
-                    (koridorFilled && startDateFilled && endDateFilled)
-                ) {
-                    filterBtn.disabled = false;
-                } else {
-                    filterBtn.disabled = true;
-                }
+                // Simplified logic: Enabled if (Koridor selected AND no dates) OR (both dates selected)
+                filterBtn.disabled = !((koridorFilled && !startDateFilled && !endDateFilled) || (startDateFilled && endDateFilled));
             }
 
             // Pantau perubahan input
@@ -434,6 +470,31 @@
             updateFilterButtonState();
         });
 
+        // ADDED: JavaScript for SweetAlert2 delete confirmation
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.dataset.id;
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data ini akan dihapus secara permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const form = document.getElementById('delete-form');
+                        // Make sure your route for deleting halte data is correctly defined in web.php
+                        // For example: Route::delete('/datahalte/{id}', [YourController::class, 'destroy']);
+                        form.action = `/datahalte/${id}`;
+                        form.submit();
+                    }
+                })
+            });
+        });
+
     </script>
 
     <script>
@@ -441,13 +502,13 @@
         function showPDFPreview(url) {
             // Modify URL to include a parameter that indicates preview only
             const previewUrl = url + (url.includes('?') ? '&' : '?') + 'preview=true';
-            
+
             // Set the iframe src to the preview URL
             document.getElementById('pdfIframe').src = previewUrl;
-            
+
             // Store the original download URL for later use
             document.getElementById('downloadPdfBtn').setAttribute('data-url', url);
-            
+
             // Show the modal
             var myModal = new bootstrap.Modal(document.getElementById('previewPDFModal'));
             myModal.show();

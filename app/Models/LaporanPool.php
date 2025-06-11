@@ -61,6 +61,11 @@ class LaporanPool extends Model
 
     public function kendalaPool()
     {
-        return $this->hasMany(LaporanKendalaPool::class);
+        return $this->hasMany(LaporanKendalaPool::class, 'laporan_pool_id');
+    }
+
+    public function kendalaPools()
+    {
+        return $this->belongsToMany(KendalaPool::class, 'laporan_kendala_pool', 'laporan_pool_id', 'kendala_pool_id');
     }
 }

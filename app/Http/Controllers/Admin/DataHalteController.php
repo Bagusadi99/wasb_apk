@@ -9,6 +9,7 @@ use App\Exports\HalteExport;
 use App\Models\Koridor;
 use App\Models\LaporanKendalaHalte;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -54,16 +55,21 @@ class DataHalteController extends Controller
 
     private function filterLaporan(Request $request)
     {
-        $query = LaporanHalte::with(['pekerja', 'shift']);
+
+        $query = LaporanHalte::with(['pekerja', 'shift', 'kendalaHaltes']);
 
         if ($request->start_date && $request->end_date) {
-            $query->whereBetween('tanggal_waktu_halte', [
+           $query =  $query->whereBetween('tanggal_waktu_halte', [
                 $request->start_date,
                 $request->end_date
             ]);
+   
         }
 
-        return $query->orderBy('tanggal_waktu_halte', 'desc')->get();
+        $query = $query->where('koridor_id', $request->koridor)->orderBy('tanggal_waktu_halte', 'desc')->get();
+
+
+        return $query;
     }
     public function export_pdf(Request $request)
     {
@@ -84,6 +90,28 @@ class DataHalteController extends Controller
         $subtitle = $start_date && $end_date
             ? 'Periode: ' . date('d F Y', strtotime($start_date)) . ' - ' . date('d F Y', strtotime($end_date))
             : 'Periode: Semua Data';
+
+           $laporan_halte = $laporan_halte->map(function ($item) {
+            // Function to safely get base64 image data
+            $getBase64Image = function ($imagePath) {
+                if ($imagePath && Storage::disk('public')->exists($imagePath)) {
+                    $path = Storage::disk('public')->path($imagePath);
+                    $type = pathinfo($path, PATHINFO_EXTENSION);
+                    $data = file_get_contents($path);
+                    return 'data:image/' . $type . ';base64,' . base64_encode($data);
+                }
+                return null;
+            };
+
+            // Apply to each image field
+            $item->bukti_kebersihan_lantai_halte_base64 = $getBase64Image($item->bukti_kebersihan_lantai_halte);
+            $item->bukti_kebersihan_kaca_halte_base64 = $getBase64Image($item->bukti_kebersihan_kaca_halte);
+            $item->bukti_kebersihan_sampah_halte_base64 = $getBase64Image($item->bukti_kebersihan_sampah_halte);
+            $item->bukti_kondisi_halte_base64 = $getBase64Image($item->bukti_kondisi_halte);
+            $item->bukti_kendala_halte_base64 = $getBase64Image($item->bukti_kendala_halte); // Make sure this field exists on your model
+
+            return $item;
+        });
 
         $pdf = PDF::loadView('admin.exports.halte_pdf', [
             'laporan_halte' => $laporan_halte,
@@ -119,5 +147,12 @@ class DataHalteController extends Controller
         return Excel::download(new HalteExport($start_date, $end_date), $filename);
     }
 
-    
+    public function destroy($id)
+    {
+        $data = LaporanHalte::findOrFail($id);
+
+        $data->kendalaHalte()->delete(); // Delete related kendala records
+        $data->delete();
+        return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+    }    
 }

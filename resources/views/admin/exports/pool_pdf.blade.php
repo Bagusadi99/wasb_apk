@@ -120,7 +120,7 @@
                 <th style="width: 12%;">Nama Petugas</th>
                 <th style="width: 8%;">Shift</th>
                 <th style="width: 8%;">Koridor</th>
-                <th style="width: 8%;">Halte</th>
+                <th style="width: 8%;">pool</th>
                 <th style="width: 12%;">Tanggal & Waktu</th>
                 <th style="width: 10%;">Lantai</th>
                 <th style="width: 10%;">Kaca</th>
@@ -129,54 +129,54 @@
                 <th style="width: 10%;">Kendala</th> <th style="width: 10%;">Bukti Kendala</th> </tr>
         </thead>
         <tbody>
-            @if(is_countable($laporan_halte) && count($laporan_halte) > 0)
-                @foreach($laporan_halte as $index => $item)
+            @if(is_countable($laporan_pool) && count($laporan_pool) > 0)
+                @foreach($laporan_pool as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $item->pekerja->nama_pekerja ?? '-' }}</td>
                         <td>{{ $item->shift->shift_nama ?? '-' }}</td>
                         <td>{{ $item->koridor->koridor_nama ?? '-' }}</td>
-                        <td>{{ $item->halte->halte_nama ?? '-' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_waktu_halte)->format('d/m/Y H:i') }}</td>
+                        <td>{{ $item->pool->pool_nama ?? '-' }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_waktu_pool)->format('d/m/Y H:i') }}</td>
                         <td class="image-cell">
-                            @if($item->bukti_kebersihan_lantai_halte_base64)
+                            @if($item->bukti_kebersihan_lantai_pool_base64)
                 
-                                <img src="{{ $item->bukti_kebersihan_lantai_halte_base64 }}" alt="Foto Lantai">
+                                <img src="{{ $item->bukti_kebersihan_lantai_pool_base64 }}" alt="Foto Lantai">
                             @else
                                 [Tidak ada bukti]
                             @endif
                         </td>
                         <td class="image-cell">
-                            @if($item->bukti_kebersihan_kaca_halte_base64)
-                                <img src="{{ $item->bukti_kebersihan_kaca_halte_base64 }}" alt="Foto Kaca">
+                            @if($item->bukti_kebersihan_kaca_pool_base64)
+                                <img src="{{ $item->bukti_kebersihan_kaca_pool_base64 }}" alt="Foto Kaca">
                             @else
                                 [Tidak ada bukti]
                             @endif
                         </td>
                         <td class="image-cell">
-                            @if($item->bukti_kebersihan_sampah_halte_base64)
-                                <img src="{{ $item->bukti_kebersihan_sampah_halte_base64 }}" alt="Foto Sampah">
+                            @if($item->bukti_kebersihan_sampah_pool_base64)
+                                <img src="{{ $item->bukti_kebersihan_sampah_pool_base64 }}" alt="Foto Sampah">
                             @else
                                 [Tidak ada bukti]
                             @endif
                         </td>
                         <td class="image-cell">
-                            @if($item->bukti_kondisi_halte_base64)
-                                <img src="{{ $item->bukti_kondisi_halte_base64 }}" alt="Foto Kondisi Halte">
+                            @if($item->bukti_kondisi_pool_base64)
+                                <img src="{{ $item->bukti_kondisi_pool_base64 }}" alt="Foto Kondisi pool">
                             @else
                                 [Tidak ada bukti]
                             @endif
                         </td>
                         <td>
-                            @forelse($item->kendalaHaltes as $kendala)
-                                {{ $kendala->kendala_halte }}@if(!$loop->last), @endif
+                            @forelse($item->kendalaPools as $kendala)
+                                {{ $kendala->kendala_pool }}@if(!$loop->last), @endif
                             @empty
                                 Tidak ada kendala
                             @endforelse
                         </td>
                         <td class="image-cell">
-                            @if($item->bukti_kendala_halte_base64)
-                                <img src="{{ $item->bukti_kendala_halte_base64 }}" alt="Bukti Kendala">
+                            @if($item->bukti_kendala_pool_base64)
+                                <img src="{{ $item->bukti_kendala_pool_base64 }}" alt="Bukti Kendala">
                             @else
                                 [Tidak ada bukti]
                             @endif

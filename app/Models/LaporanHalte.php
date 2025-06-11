@@ -61,6 +61,13 @@ class LaporanHalte extends Model
 
     public function kendalaHalte()
     {
-        return $this->hasMany(LaporanKendalaHalte::class);
+        return $this->hasMany(LaporanKendalaHalte::class, 'laporan_halte_id');
     }
+    
+
+    public function kendalaHaltes()
+    {
+        return $this->belongsToMany(KendalaHalte::class, 'laporan_kendala_halte', 'laporan_halte_id', 'kendala_halte_id');
+    }
+    
 }

@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\LaporanHalte;
+use App\Models\LaporanPool;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithDrawings;
@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use Carbon\Carbon; // Don't forget to import Carbon for date formatting
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class HalteExport implements FromCollection, WithHeadings, WithDrawings, WithEvents, ShouldAutoSize
+class PoolExport implements FromCollection, WithHeadings, WithDrawings, WithEvents, ShouldAutoSize
 {
     protected $startDate;
     protected $endDate;
@@ -38,10 +38,10 @@ class HalteExport implements FromCollection, WithHeadings, WithDrawings, WithEve
      */
     public function collection()
     {
-        $query = LaporanHalte::with(['pekerja', 'shift', 'koridor', 'halte', 'kendalaHaltes']); // Include koridor and halte relationships
+        $query = LaporanPool::with(['pekerja', 'shift', 'koridor', 'pool', 'kendalaPools']); // Include koridor and pool relationships
 
         if ($this->startDate && $this->endDate) {
-            $query->whereBetween('tanggal_waktu_halte', [
+            $query->whereBetween('tanggal_waktu_pool', [
                 Carbon::parse($this->startDate)->startOfDay(),
                 Carbon::parse($this->endDate)->endOfDay(),
             ]);
@@ -60,21 +60,21 @@ class HalteExport implements FromCollection, WithHeadings, WithDrawings, WithEve
         return $this->data->map(function ($item) {
             // Adjust columns based on headings and image placement
             return [
-                $item->laporan_halte_id, // Use laporan_halte_id for consistency with detail view
+                $item->laporan_pool_id, // Use laporan_pool_id for consistency with detail view
                 optional($item->pekerja)->nama_pekerja, // Use nama_pekerja
                 optional($item->shift)->shift_nama, // Use shift_nama
                 optional($item->koridor)->koridor_nama,
-                optional($item->halte)->halte_nama,
-                Carbon::parse($item->tanggal_waktu_halte)->format('d F Y H:i:s'),
-                // 'Kegiatan Halte', // Assuming these are not directly from LaporanHalte if not in original input
-                // 'Keterangan Halte', // Assuming these are not directly from LaporanHalte if not in original input
+                optional($item->pool)->pool_nama,
+                Carbon::parse($item->tanggal_waktu_pool)->format('d F Y H:i:s'),
+                // 'Kegiatan Pool', // Assuming these are not directly from LaporanPool if not in original input
+                // 'Keterangan Pool', // Assuming these are not directly from LaporanPool if not in original input
                 // Placeholders for images - actual images are embedded by drawings()
                 '',
                 '',
                 '',
                 '',
                 '',
-                $item->kendalaHaltes->pluck('kendala_halte')->implode(', '), // Join kendala descriptions
+                $item->kendalaPools->pluck('kendala_pool')->implode(', '), // Join kendala descriptions
 
             ];
         });
@@ -91,14 +91,14 @@ class HalteExport implements FromCollection, WithHeadings, WithDrawings, WithEve
             'Nama Pekerja',
             'Shift',
             'Koridor',
-            'Halte',
+            'Pool',
             'Tanggal & Waktu',
             'Bukti Kebersihan Lantai', // Reserved for image
             'Bukti Kebersihan Kaca',   // Reserved for image
             'Bukti Kebersihan Sampah', // Reserved for image
-            'Bukti Kondisi Halte',      // Reserved for image
-            'Bukti Kendala Halte',      // Reserved for image
-            'Kendala Halte',      // Reserved for image
+            'Bukti Kondisi Pool',      // Reserved for image
+            'Bukti Kendala Pool',      // Reserved for image
+            'Kendala Pool',      // Reserved for image
         ];
     }
 
@@ -116,11 +116,11 @@ class HalteExport implements FromCollection, WithHeadings, WithDrawings, WithEve
             $maxHeightForRow = 0; // Track max height needed for current row
 
             $imagePaths = [
-                $item->bukti_kebersihan_lantai_halte,
-                $item->bukti_kebersihan_kaca_halte,
-                $item->bukti_kebersihan_sampah_halte,
-                $item->bukti_kondisi_halte,
-                $item->bukti_kendala_halte, // Include kendala image
+                $item->bukti_kebersihan_lantai_pool,
+                $item->bukti_kebersihan_kaca_pool,
+                $item->bukti_kebersihan_sampah_pool,
+                $item->bukti_kondisi_pool,
+                $item->bukti_kendala_pool, // Include kendala image
             ];
 
             foreach ($imagePaths as $colIndexOffset => $imagePath) {

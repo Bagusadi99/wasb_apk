@@ -31,10 +31,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/datahalte/filter', [DataHalteController::class, 'filter_datahalte'])->name('filter_datahalte');
     Route::get('/export-pdf', [DataHalteController::class, 'export_pdf'])->name('export_pdf');
     Route::get('/export-excel', [DataHalteController::class, 'export_excel'])->name('export_excel');
+    Route::delete('/datahalte/{id}', [DataHalteController::class, 'destroy'])->name('datahalte.destroy');
     
     Route::get('/dataformpool', [DataPoolController::class, 'data_pool'])->name('admin.dashboard.data_pool');
     Route::get('/detail_datapool/{id}', [DataPoolController::class, 'detail_datapool']);
     Route::get('/datapool/filter', [DataPoolController::class, 'filter_datapool'])->name('filter_datapool');
+    Route::delete('/datapool/{id}', [DataPoolController::class, 'destroy'])->name('datapool.destroy');
+    Route::get('/dataformpool/export-pdf', [DataPoolController::class, 'export_pdf'])->name('pool.export_pdf');
+    Route::get('/dataformpool/export-excel', [DataPoolController::class, 'export_excel'])->name('pool.export_excel');
+
 
     Route::get('/pengawas', [PengawasController::class, 'list_pengawas'])->name('admin.pengawas.list_pengawas');
     Route::post('/pengawas/store', [PengawasController::class, 'store'])->name('pengawas.store');
