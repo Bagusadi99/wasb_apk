@@ -59,10 +59,10 @@
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td>{{ $item->pool_nama }}</td>
-                                                        <td>{{ $item->koridor ? $item->koridor->koridor_nama : 'Tidak ada koridor' }}</td>
+                                                        <td>{{ $item->koridor->koridor_nama ?? 'Tidak ada koridor' }}</td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
-                                                            onclick="openEditModal('{{ $item->pool_id }}', '{{ $item->pool_nama }}', '{{ $item->koridor->koridor_id ?? 'Tidak ada halte' }}')">
+                                                            onclick="openEditModal('{{ $item->pool_id }}', '{{ $item->pool_nama }}', '{{ $item->koridor->koridor_id ?? '' }}')">
                                                                 <i class="bi bi-pencil-fill"></i> Edit
                                                             </button>
                                                             <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModal" 
@@ -75,7 +75,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <!-- Modal Tambah Pool -->
                                     <div class="modal fade text-left" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
@@ -83,19 +82,18 @@
                                                     @csrf
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="addModalLabel">Tambah Pool</h5>
-                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                            <i data-feather="x"></i>
-                                                        </button>
+                                                        {{-- Bootstrap standard close button --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <h6 class="text-start">Pool:</h6>
                                                         <div class="form-group">
-                                                            <input type="text" name="pool_nama" class="form-control" placeholder="Nama Pool">
+                                                            <input type="text" name="pool_nama" class="form-control" placeholder="Nama Pool" required>
                                                         </div>
                                                         <h6 class="text-start">Koridor:</h6>
                                                         <div class="form-group">
                                                             <select name="koridor_id" class="choices form-select" required>
-                                                                <option value=""disabled selected>Pilih Koridor</option>
+                                                                <option value="" disabled selected>Pilih Koridor</option>
                                                                 @foreach ($koridor as $item)
                                                                     <option value="{{ $item->koridor_id }}">{{ $item->koridor_nama }}</option> 
                                                                 @endforeach
@@ -111,7 +109,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Modal Edit Pool-->
                                     <div class="modal fade text-left" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
@@ -120,18 +117,17 @@
                                                     @method('PUT')
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="editModalLabel">Edit Pool</h5>
-                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                            <i data-feather="x"></i>
-                                                        </button>
+                                                        {{-- Bootstrap standard close button --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <h6 class="text-start">Pool:</h6>
                                                         <div class="form-group">
-                                                            <input type="text" id="edit_pool_nama" name="pool_nama" class="form-control" placeholder="Nama Pool">
+                                                            <input type="text" id="edit_pool_nama" name="pool_nama" class="form-control" placeholder="Nama Pool" required>
                                                         </div>
                                                         <h6 class="text-start">Koridor:</h6>
                                                         <div class="form-group">
-                                                            <select id="edit_koridor" name="koridor_id" class="choices form-select">
+                                                            <select id="edit_koridor" name="koridor_id" class="choices form-select" required>
                                                                 @foreach($koridor as $item)
                                                                     <option value="{{ $item->koridor_id }}">{{ $item->koridor_nama }}</option>
                                                                 @endforeach
@@ -146,7 +142,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Modal Hapus Halte -->
                                     <div class="modal fade text-left" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
@@ -155,9 +150,8 @@
                                                     @method('DELETE')
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="deleteModalLabel">Hapus Pool</h5>
-                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                            <i data-feather="x"></i>
-                                                        </button>
+                                                        {{-- Bootstrap standard close button --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <p>Apakah Anda yakin ingin menghapus pool - <br>
@@ -212,22 +206,53 @@
         </script>
     @endif
 
+    {{-- Feather Icons script (add if you intend to use feather icons elsewhere) --}}
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Initialize Simple Datatables after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('table1')) {
+                new simpleDatatables.DataTable(document.getElementById('table1'));
+            }
+
+            // Initialize Choices.js for select elements if it's not handled by app.js
+            // You might need to adjust this depending on your setup
+            if (typeof Choices !== 'undefined') { // Check if Choices is loaded
+                var choicesElements = document.querySelectorAll('.choices');
+                choicesElements.forEach(function(el) {
+                    new Choices(el, {
+                        searchEnabled: true, // Enable searching in select options
+                        itemSelectText: 'Pilih', // Custom text
+                    });
+                });
+            }
+        });
+
         function openEditModal(id, nama, koridorId) {
             document.getElementById('edit_pool_nama').value = nama;
-            document.getElementById('edit_koridor').value = koridorId;
-            // Set action form untuk update
+            
+            // Set the selected option for Koridor dropdown
+            const editKoridorSelect = document.getElementById('edit_koridor');
+            editKoridorSelect.value = koridorId;
+            
+            // If using Choices.js, refresh the instance to reflect the new selection
+            // This assumes your Choices.js instance is available globally or can be re-initialized
+            if (typeof Choices !== 'undefined' && editKoridorSelect.choicesjs) {
+                 editKoridorSelect.choicesjs.setChoiceByValue(koridorId);
+            }
+
+            // Set action form for update
             document.querySelector('#editModal form').action = `/pool/${id}`;
         }
-        function setDeleteData(id, nama) {
-            console.log(id, nama);
 
+        function setDeleteData(id, nama) {
             // Isi data ke dalam modal hapus
             document.getElementById('delete_pool_nama').textContent = nama;
             document.getElementById("deleteForm").action = "/pool/" + id;
-
-            // Tampilkan modal hapus
-            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+            // No need to manually show the modal here, data-bs-target handles it.
         }
     </script>
     

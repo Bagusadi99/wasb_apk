@@ -74,7 +74,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <!-- Modal Tambah Pengawas -->
                                     <div class="modal fade text-left" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
@@ -82,9 +81,8 @@
                                                 @csrf
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="addModalLabel">Tambah Pengawas</h5>
-                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                            <i data-feather="x"></i>
-                                                        </button>
+                                                        {{-- Changed to Bootstrap's standard close button --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <h6 class="text-start">Nama Pengawas:</h6>
@@ -100,7 +98,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Modal Edit Pengawas -->
                                     <div class="modal fade text-left" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
@@ -109,9 +106,8 @@
                                                     @method('PUT') 
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="editModalLabel">Edit Pengawas</h5>
-                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                            <i data-feather="x"></i>
-                                                        </button>
+                                                        {{-- Changed to Bootstrap's standard close button --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <h6 class="text-start">Nama Pengawas:</h6>
@@ -128,7 +124,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Modal Hapus Pengawas -->
                                     <div class="modal fade text-left" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
@@ -137,9 +132,8 @@
                                                     @method('DELETE')
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="deleteModalLabel">Hapus Pengawas</h5>
-                                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                                            <i data-feather="x"></i>
-                                                        </button>
+                                                        {{-- Changed to Bootstrap's standard close button --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <p>Apakah Anda yakin ingin menghapus pengawas - <br>
@@ -199,10 +193,21 @@
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-    <script src="{{ asset('template/dist/assets/static/js/pages/simple-datatables.js') }}"></script>
+    {{-- <script src="{{ asset('template/dist/assets/static/js/pages/simple-datatables.js') }}"></script> --}}
     
-    {{-- Script Modal --}}
+    {{-- Feather Icons script (add if you intend to use feather icons elsewhere) --}}
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Initialize Simple Datatables after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('table1')) {
+                new simpleDatatables.DataTable(document.getElementById('table1'));
+            }
+        });
+
         function loadDataPengawas(id, nama) {
             // Isi data ke dalam modal edit
             document.getElementById('edit_nama_pengawas').value = nama;
@@ -215,13 +220,9 @@
             // Isi data ke dalam modal hapus
             document.getElementById('delete_nama_pengawas').textContent = nama;
             document.getElementById("deleteForm").action = "/pengawas/" + id;
-
-            // Tampilkan modal hapus
-            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+            // No need to manually show the modal here, data-bs-target handles it.
         }
     </script>
     
 </body>
-
-
 </html>
