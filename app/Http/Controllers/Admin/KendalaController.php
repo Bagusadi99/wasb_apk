@@ -40,15 +40,20 @@ class KendalaController extends Controller
         // dd($request->all());
         $request->validate([
             'tipe' => 'required|in:pool,halte',
+            'nama_kendala' => 'required',
         ]);
+        
+
+
 
         if ($request->tipe == 'pool') {
+
             KendalaPool::findOrFail($id)->update([
-                'kendala_pool' => $request->kendala_pool,
+                'kendala_pool' => $request->nama_kendala,
             ]);
         } else {
             KendalaHalte::findOrFail($id)->update([
-                'kendala_halte' => $request->kendala_halte,
+                'kendala_halte' => $request->nama_kendala,
             ]);
         }
         return redirect()->back()->with('success', 'Kendala berhasil diupdate.');

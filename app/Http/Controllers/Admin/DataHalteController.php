@@ -9,6 +9,7 @@ use App\Exports\HalteExport;
 use App\Models\Koridor;
 use App\Models\LaporanKendalaHalte;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -39,8 +40,8 @@ class DataHalteController extends Controller
 
         if ($request->filled('start_date') && $request->filled('end_date')) {
             $query->whereBetween('tanggal_waktu_halte', [
-                $request->start_date, 
-                $request->end_date
+                Carbon::parse($request->start_date)->startOfDay(),
+                Carbon::parse($request->end_date)->endOfDay() 
             ]);
         }
 
@@ -61,8 +62,8 @@ class DataHalteController extends Controller
 
         if ($request->start_date && $request->end_date) {
            $query =  $query->whereBetween('tanggal_waktu_halte', [
-                $request->start_date,
-                $request->end_date
+                Carbon::parse($request->start_date)->startOfDay(),
+                Carbon::parse($request->end_date)->endOfDay()
             ]);
    
         }

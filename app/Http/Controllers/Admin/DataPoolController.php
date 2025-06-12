@@ -9,7 +9,7 @@ use App\Models\Koridor;
 use App\Models\LaporanPool;
 use App\Models\LaporanKendalaPool;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -42,8 +42,8 @@ class DataPoolController extends Controller
 
         if ($request->filled('start_date') && $request->filled('end_date')) {
             $query = $query->whereBetween('tanggal_waktu_pool', [
-                $request->start_date, 
-                $request->end_date
+                Carbon::parse($request->start_date)->startOfDay(), 
+                Carbon::parse($request->end_date)->endOfDay()
             ]);
         }
 
@@ -75,8 +75,8 @@ class DataPoolController extends Controller
 
         if ($request->start_date && $request->end_date) {
            $query =  $query->whereBetween('tanggal_waktu_pool', [
-                $request->start_date,
-                $request->end_date
+                Carbon::parse($request->start_date)->startOfDay(),
+                Carbon::parse($request->end_date)->endOfDay()
             ]);
    
         }

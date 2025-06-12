@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WASB - pengawasan kebersihan</title>
-    <link rel="shortcut icon" href="{{ asset('template/dist/assets/compiled/png/logotransjatim.png') }}" type="image/x-icon">
+    <title>WASB - Pengawasan Kebersihan</title>
+    <link rel="shortcut icon" href="{{ asset('template/dist/assets/compiled/png/logotransjatim.png') }}"
+        type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/iconly.css') }}">
@@ -13,6 +14,9 @@
     <link rel="stylesheet" href="{{ asset('template/dist/assets/compiled/css/table-datatable.css') }}">
     <link rel="stylesheet" href="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Add any custom styles here */
+    </style>
 </head>
 
 <body style="background-color: #d5edd2;">
@@ -31,7 +35,6 @@
             <div class="page-content">
                 <section class="basic-choices">
 
-                    <!-- Dropdown Pilihan -->
                     <div class="form-group mb-4">
                         <h6 for="pilihKendala" class="form-label">Pilih Jenis Kendala:</h6>
                         <select class="form-select" id="pilihKendala" onchange="tampilkanTabel()">
@@ -42,7 +45,6 @@
                     </div>
 
                     <div class="row">
-                        <!-- Tabel Pool -->
                         <div class="col-md-12" id="tabelPool" style="display: none;">
                             <div class="card">
                                 <div class="card-header d-flex">
@@ -52,11 +54,12 @@
                                 <div class="card-content">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-success mb-2 me-2" data-bs-toggle="modal" data-bs-target="#addModalPool">
+                                            <button type="button" class="btn btn-success mb-2 me-2" data-bs-toggle="modal"
+                                                data-bs-target="#addModalPool">
                                                 <i class="bi bi-plus-circle"></i> Tambah Kendala
                                             </button>
                                         </div>
-                                        <table class="table table-striped table-responsive table1" id="tablepool">
+                                        <table class="table table-striped table-responsive data-table" id="tablepool">
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
@@ -70,12 +73,14 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->kendala_pool ?? 'Tidak ada kendala' }}</td>
                                                     <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModalPool"
-                                                        onclick="loadDataKendalaPool('{{ $item->kendala_pool_id }}', '{{ $item->kendala_pool }}')">
+                                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                            data-bs-target="#editModal"
+                                                            onclick="populateEditModal('pool', '{{ $item->kendala_pool_id }}', '{{ $item->kendala_pool }}')">
                                                             <i class="bi bi-pencil-fill"></i> Edit
                                                         </button>
-                                                        <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModalPool"
-                                                        onclick="setDeleteDataPool('{{ $item->kendala_pool_id }}', '{{ $item->kendala_pool }}')">
+                                                        <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal"
+                                                            onclick="populateDeleteModal('pool', '{{ $item->kendala_pool_id }}', '{{ $item->kendala_pool }}')">
                                                             <i class="bi bi-trash-fill"></i> Hapus
                                                         </button>
                                                     </td>
@@ -88,7 +93,6 @@
                             </div>
                         </div>
 
-                        <!-- Tabel Halte -->
                         <div class="col-md-12" id="tabelHalte" style="display: none;">
                             <div class="card">
                                 <div class="card-header d-flex">
@@ -98,11 +102,12 @@
                                 <div class="card-content">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-success mb-2 me-2" data-bs-toggle="modal" data-bs-target="#addModalHalte">
+                                            <button type="button" class="btn btn-success mb-2 me-2" data-bs-toggle="modal"
+                                                data-bs-target="#addModalHalte">
                                                 <i class="bi bi-plus-circle"></i> Tambah Kendala
                                             </button>
                                         </div>
-                                        <table class="table table-striped table-responsive table1" id="tablehalte">
+                                        <table class="table table-striped table-responsive data-table" id="tablehalte">
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
@@ -116,12 +121,14 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->kendala_halte ?? 'Tidak ada kendala' }}</td>
                                                     <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModalHalte"
-                                                        onclick="loadDataKendalaHalte('{{ $item->kendala_halte_id }}', '{{ $item->kendala_halte }}')">
+                                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                            data-bs-target="#editModal"
+                                                            onclick="populateEditModal('halte', '{{ $item->kendala_halte_id }}', '{{ $item->kendala_halte }}')">
                                                             <i class="bi bi-pencil-fill"></i> Edit
                                                         </button>
-                                                        <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#deleteModalHalte"
-                                                        onclick="setDeleteDataHalte('{{ $item->kendala_halte_id }}', '{{ $item->kendala_halte }}')">
+                                                        <button type="button" class="btn btn-sm btn-danger mb-1 mt-1" data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal"
+                                                            onclick="populateDeleteModal('halte', '{{ $item->kendala_halte_id }}', '{{ $item->kendala_halte }}')">
                                                             <i class="bi bi-trash-fill"></i> Hapus
                                                         </button>
                                                     </td>
@@ -136,17 +143,15 @@
                     </div>
 
                     {{-- Modal Tambah Pool --}}
-                    <div class="modal fade" id="addModalPool" tabindex="-1" role="dialog">
+                    <div class="modal fade" id="addModalPool" tabindex="-1" role="dialog" aria-labelledby="addModalPoolLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <form action="{{ route('kendala.store') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="tipe" value="pool">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Tambah Kendala Pool</h5>
-                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal">
-                                            <i data-feather="x"></i>
-                                        </button>
+                                        <h5 class="modal-title" id="addModalPoolLabel">Tambah Kendala Pool</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <label>Nama Kendala:</label>
@@ -162,17 +167,15 @@
                     </div>
 
                     {{-- Modal Tambah Halte --}}
-                    <div class="modal fade" id="addModalHalte" tabindex="-1" role="dialog">
+                    <div class="modal fade" id="addModalHalte" tabindex="-1" role="dialog" aria-labelledby="addModalHalteLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <form action="{{ route('kendala.store') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="tipe" value="halte">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Tambah Kendala Halte</h5>
-                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal">
-                                            <i data-feather="x"></i>
-                                        </button>
+                                        <h5 class="modal-title" id="addModalHalteLabel">Tambah Kendala Halte</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <label>Nama Kendala:</label>
@@ -187,23 +190,21 @@
                         </div>
                     </div>
 
-                    {{-- Modal Edit Pool --}}
-                    <div class="modal fade" id="editModalPool" tabindex="-1" role="dialog">
+                    {{-- Universal Edit Modal --}}
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
-                                <form id="editForm" action="" method="POST">
+                                <form id="universalEditForm" action="" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name="tipe" value="pool">
+                                    <input type="hidden" name="tipe" id="edit_tipe">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Edit Kendala Pool</h5>
-                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal">
-                                            <i data-feather="x"></i>
-                                        </button>
+                                        <h5 class="modal-title" id="editModalLabel">Edit Kendala</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <label>Nama Kendala:</label>
-                                        <input type="text" id="edit_kendala_pool" name="kendala_pool" class="form-control" required>
+                                        <input type="text" id="edit_kendala_nama" name="nama_kendala" class="form-control" required>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
@@ -214,77 +215,20 @@
                         </div>
                     </div>
 
-                    {{-- Modal Edit Halte --}}
-                    <div class="modal fade" id="editModalHalte" tabindex="-1" role="dialog">
+                    {{-- Universal Delete Modal --}}
+                    <div class="modal fade text-left" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
-                                <form id="editForm" action="" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="hidden" name="tipe" value="halte">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Edit Kendala Pool</h5>
-                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal">
-                                            <i data-feather="x"></i>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <label>Nama Kendala:</label>
-                                        <input type="text" id="edit_kendala_halte" name="kendala_halte" class="form-control" required>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                                        <button type="submit" class="btn btn-success">Simpan</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Modal Hapus Pool --}}
-                    <div class="modal fade text-left" id="deleteModalPool" tabindex="-1" role="dialog" aria-labelledby="deleteModalPoolLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <form id="deleteFormPool" action="" method="POST">
+                                <form id="universalDeleteForm" action="" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <input type="hidden" name="tipe" value="pool">
+                                    <input type="hidden" name="tipe" id="delete_tipe">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalPoolLabel">Hapus Kendala Pool</h5>
-                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                            <i data-feather="x"></i>
-                                        </button>
+                                        <h5 class="modal-title" id="deleteModalLabel">Hapus Kendala</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Apakah Anda yakin ingin menghapus kendala pool - <br>
-                                            <strong id="delete_kendala_pool_nama"></strong>?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                                        <button type="submit" class="btn btn-danger ms-1">Hapus</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Modal Hapus Halte --}}
-                    <div class="modal fade text-left" id="deleteModalHalte" tabindex="-1" role="dialog" aria-labelledby="deleteModalHalteLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <form id="deleteFormHalte" action="" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" name="tipe" value="halte">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalHalteLabel">Hapus Kendala Halte</h5>
-                                        <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
-                                            <i data-feather="x"></i>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Apakah Anda yakin ingin menghapus kendala halte - <br>
-                                            <strong id="delete_kendala_halte_nama"></strong>?</p>
+                                        <p>Apakah Anda yakin ingin menghapus kendala <strong id="delete_kendala_nama"></strong>?</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
@@ -313,41 +257,48 @@
     <script src="{{ asset('template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-    <script src="{{ asset('template/dist/assets/static/js/pages/simple-datatables.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
-
-    <!-- Script Kendala Pilihan -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script>
+        feather.replace(); // Initialize Feather Icons
+    </script>
+
+
+    <script>
+        // Initialize DataTables
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Simple DataTables for both tables
+            if (document.getElementById('tablepool')) {
+                new simpleDatatables.DataTable(document.getElementById('tablepool'));
+            }
+            if (document.getElementById('tablehalte')) {
+                new simpleDatatables.DataTable(document.getElementById('tablehalte'));
+            }
+        });
+
         function tampilkanTabel() {
             var pilihan = document.getElementById("pilihKendala").value;
             document.getElementById("tabelPool").style.display = (pilihan === "pool") ? "block" : "none";
             document.getElementById("tabelHalte").style.display = (pilihan === "halte") ? "block" : "none";
         }
 
-        document.querySelectorAll('.table1').forEach(function (el) {
-            new simpleDatatables.DataTable(el);
-        })
-
-        function loadDataKendalaPool(id, kendalaPool) {
-            // Isi data ke dalam modal edit
-            document.getElementById('edit_kendala_pool').value = kendalaPool;
-            document.getElementById("editForm").action = "/kendala/" + id;
-        }
-        function loadDataKendalaHalte(id, kendalaHalte) {
-            // Isi data ke dalam modal edit
-            document.getElementById('edit_kendala_halte').value = kendalaHalte;
-            document.getElementById("editForm").action = "/kendala/" + id;
+        // Universal function to populate Edit Modal
+        function populateEditModal(type, id, name) {
+            document.getElementById('editModalLabel').innerText = `Edit Kendala ${type === 'pool' ? 'Pool' : 'Halte'}`;
+            document.getElementById('edit_tipe').value = type;
+            document.getElementById('edit_kendala_nama').value = name;
+            document.getElementById('universalEditForm').action = `/kendala/${id}`;
+            // Optional: If you have different input fields for pool/halte, you'd hide/show them here.
+            // For now, assuming 'kendala_nama' is universal.
         }
 
-        function setDeleteDataPool(id, kendalaPool) {
-            document.getElementById('delete_kendala_pool_nama').innerText = kendalaPool;
-            document.getElementById('deleteFormPool').action = "/kendala/" + id;
+        // Universal function to populate Delete Modal
+        function populateDeleteModal(type, id, name) {
+            document.getElementById('deleteModalLabel').innerText = `Hapus Kendala ${type === 'pool' ? 'Pool' : 'Halte'}`;
+            document.getElementById('delete_tipe').value = type;
+            document.getElementById('delete_kendala_nama').innerText = name;
+            document.getElementById('universalDeleteForm').action = `/kendala/${id}`;
         }
-        function setDeleteDataHalte(id, kendalaHalte) {
-            document.getElementById('delete_kendala_halte_nama').innerText = kendalaHalte;
-            document.getElementById('deleteFormHalte').action = "/kendala/" + id;
-        }
-        
     </script>
 
     {{-- Sweet Alert --}}
