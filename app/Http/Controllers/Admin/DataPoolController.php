@@ -92,6 +92,21 @@ class DataPoolController extends Controller
     {
         $laporan_pool = $this->filterLaporan($request);
 
+          $getBase64Image = function ($imagePath) {
+                if ($imagePath && fileExists(public_path($imagePath))) {
+                   
+                    $path = public_path($imagePath);
+                    $type = pathinfo($path, PATHINFO_EXTENSION);
+                    $data = file_get_contents($path);
+
+                    return 'data:image/' . $type . ';base64,' . base64_encode($data);
+                }
+                return null;
+            };
+
+        $logo_base64 = $getBase64Image('template/dist/assets/compiled/png/logotransjatim.png'); // Adjust the path to your
+        
+
         
 
         $start_date = $request->input('start_date');
@@ -139,7 +154,8 @@ class DataPoolController extends Controller
             'title' => $title,
             'subtitle' => $subtitle,
             'start_date' => $start_date,
-            'end_date' => $end_date
+            'end_date' => $end_date,
+            'logo_base64' => $logo_base64,
         ]);
 
         $pdf->setPaper('a4', 'landscape');

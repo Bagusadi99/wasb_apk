@@ -96,7 +96,7 @@
         <table style="border: none; margin: 0;">
             <tr style="background: none; border: none;">
                 <td style="width: 20%; border: none; text-align: center; vertical-align: middle;">
-                    <img src="{{ public_path('template/dist/assets/compiled/png/logotransjatim.png') }}" alt="Logo Trans Jawa Timur">
+                    <img src="{{ $logo_base64 }}" alt="Logo Trans Jawa Timur">
                 </td>
                 <td style="width: 80%; border: none; text-align: center; vertical-align: middle;">
                     <h1>{{ $title }}</h1>

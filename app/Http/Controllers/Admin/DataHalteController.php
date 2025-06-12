@@ -12,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
+use function PHPUnit\Framework\fileExists;
 
 class DataHalteController extends Controller
 {
@@ -74,7 +75,24 @@ class DataHalteController extends Controller
     public function export_pdf(Request $request)
     {
         $laporan_halte = $this->filterLaporan($request);
+
+         $getBase64Image = function ($imagePath) {
+                if ($imagePath && fileExists(public_path($imagePath))) {
+                   
+                    $path = public_path($imagePath);
+                    $type = pathinfo($path, PATHINFO_EXTENSION);
+                    $data = file_get_contents($path);
+
+                    return 'data:image/' . $type . ';base64,' . base64_encode($data);
+                }
+                return null;
+            };
+
+        $logo_base64 = $getBase64Image('template/dist/assets/compiled/png/logotransjatim.png'); // Adjust the path to your
         
+
+
+
 
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
@@ -93,7 +111,8 @@ class DataHalteController extends Controller
 
            $laporan_halte = $laporan_halte->map(function ($item) {
             // Function to safely get base64 image data
-            $getBase64Image = function ($imagePath) {
+           
+             $getBase64Image = function ($imagePath) {
                 if ($imagePath && Storage::disk('public')->exists($imagePath)) {
                     $path = Storage::disk('public')->path($imagePath);
                     $type = pathinfo($path, PATHINFO_EXTENSION);
@@ -102,7 +121,6 @@ class DataHalteController extends Controller
                 }
                 return null;
             };
-
             // Apply to each image field
             $item->bukti_kebersihan_lantai_halte_base64 = $getBase64Image($item->bukti_kebersihan_lantai_halte);
             $item->bukti_kebersihan_kaca_halte_base64 = $getBase64Image($item->bukti_kebersihan_kaca_halte);
@@ -119,7 +137,8 @@ class DataHalteController extends Controller
             'title' => $title,
             'subtitle' => $subtitle,
             'start_date' => $start_date,
-            'end_date' => $end_date
+            'end_date' => $end_date,
+            'logo_base64' => $logo_base64, // Pass the base64 logo
         ]);
 
         $pdf->setPaper('a4', 'landscape');
