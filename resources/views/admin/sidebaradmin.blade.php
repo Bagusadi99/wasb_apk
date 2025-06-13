@@ -17,8 +17,8 @@
         </div>
         <div class="sidebar-menu">
             <ul class="menu mt-3">
-                <li class="sidebar-item {{ Request::is('admin/dashadmin') ? 'active' : '' }}">
-                    <a href="{{ route('admin.dashadmin') }}" class='sidebar-link'>
+                <li class="sidebar-item {{ Request::is('homeadmin') ? 'active' : '' }}">
+                    <a href="{{ route('admin.homeadmin') }}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -72,6 +72,7 @@
                         <span>Kendala</span>
                     </a>
                 </li>
+                <hr>
                 <li class="sidebar-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf

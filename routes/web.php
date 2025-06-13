@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 
+use App\Http\Controllers\Admin\HomeAdminController;
 use App\Http\Controllers\Admin\DataHalteController;
 use App\Http\Controllers\Admin\DataPoolController;  
 use App\Http\Controllers\Admin\PengawasController;
@@ -24,7 +25,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Hanya untuk admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashadmin', function () { return view('admin.dashadmin'); })->name('admin.dashadmin');
+    Route::get('homeadmin', [HomeAdminController::class, 'homeadmin'])->name('admin.homeadmin');
 
     Route::get('/dataformhalte', [DataHalteController::class, 'data_halte'])->name('admin.dashboard.data_halte');
     Route::get('/detail_datahalte/{id}', [DataHalteController::class, 'detail_datahalte']);

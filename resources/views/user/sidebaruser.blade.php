@@ -36,6 +36,7 @@
                         <span>Form Pool</span>
                     </a>
                 </li>
+                <hr>
                 <li class="sidebar-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf

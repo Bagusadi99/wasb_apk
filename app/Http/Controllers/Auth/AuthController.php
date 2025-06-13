@@ -28,7 +28,7 @@ class AuthController extends Controller
             // Hanya user dengan role 'admin' atau 'petugas' yang boleh login
             if ($user->user_role === 'admin') {
                 Auth::login($user);
-                return redirect()->route('admin.dashadmin');
+                return redirect()->route('admin.homeadmin');
             } elseif ($user->user_role === 'petugas') {
                 Auth::login($user);
                 return redirect()->route('user.homeuser');
