@@ -58,13 +58,13 @@ class FormHalteController extends Controller
                 //     }
                 // },
             ],
-            'bukti_kebersihan_lantai_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bukti_kebersihan_kaca_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bukti_kebersihan_sampah_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bukti_kondisi_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'bukti_kebersihan_lantai_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:5000',
+            'bukti_kebersihan_kaca_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:5000',
+            'bukti_kebersihan_sampah_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:5000',
+            'bukti_kondisi_halte' => 'required|image|mimes:jpeg,png,jpg,gif|max:5000',
             'kendala_halte_ids' => 'nullable|array',
             'kendala_halte_ids.*' => 'exists:kendala_halte,kendala_halte_id',
-            'bukti_kendala_halte' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'bukti_kendala_halte' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000',
         ]);
 
         // dd($request->all());
