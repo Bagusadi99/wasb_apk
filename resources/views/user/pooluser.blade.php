@@ -157,7 +157,7 @@
                                                     <h6>Foto Kebersihan Lantai Pool</h6>
                                                     <div class="camera-container">
                                                         <div class="camera-button">
-                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Lantai
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto
                                                         </div>
                                                         <input type="file" name="bukti_kebersihan_lantai_pool" class="camera-input imageInput" 
                                                             data-target="previewImage1" accept="image/*" capture="environment" required>
@@ -170,7 +170,7 @@
                                                     <h6>Foto Kebersihan Kaca Pool</h6>
                                                     <div class="camera-container">
                                                         <div class="camera-button">
-                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Kaca
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto
                                                         </div>
                                                         <input type="file" name="bukti_kebersihan_kaca_pool" class="camera-input imageInput" 
                                                             data-target="previewImage2" accept="image/*" capture="environment" required>
@@ -183,7 +183,7 @@
                                                     <h6>Foto Kebersihan Sampah Pool</h6>
                                                     <div class="camera-container">
                                                         <div class="camera-button">
-                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Sampah
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto
                                                         </div>
                                                         <input type="file" name="bukti_kebersihan_sampah_pool" class="camera-input imageInput" 
                                                             data-target="previewImage3" accept="image/*" capture="environment" required>
@@ -196,7 +196,7 @@
                                                     <h6>Foto Kebersihan Kondisi Pool</h6>
                                                     <div class="camera-container">
                                                         <div class="camera-button">
-                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Kondisi
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto
                                                         </div>
                                                         <input type="file" name="bukti_kondisi_pool" class="camera-input imageInput" 
                                                             data-target="previewImage4" accept="image/*" capture="environment" required>
@@ -220,7 +220,7 @@
                                                     <small class="form-text text-danger">*Jika tidak ada kendala pool, tidak perlu diisi</>
                                                     <div class="camera-container">
                                                         <div class="camera-button">
-                                                            <i class="bi bi-camera-fill"></i> Ambil Foto Kendala
+                                                            <i class="bi bi-camera-fill"></i> Ambil Foto
                                                         </div>
                                                         <input type="file" name="bukti_kendala_pool" class="camera-input imageInput" 
                                                             data-target="previewImage5" accept="image/*" capture="environment">
