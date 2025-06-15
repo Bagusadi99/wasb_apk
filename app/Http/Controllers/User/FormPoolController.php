@@ -58,14 +58,35 @@ class FormPoolController extends Controller
                 //     }
                 // },
             ],
-            'bukti_kebersihan_lantai_pool' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bukti_kebersihan_kaca_pool' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bukti_kebersihan_sampah_pool' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bukti_kondisi_pool' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'bukti_kebersihan_lantai_pool' => 'required|image|mimes:jpeg,png,jpg,gif|max:5000',
+            'bukti_kebersihan_kaca_pool' => 'required|image|mimes:jpeg,png,jpg,gif|max:5000',
+            'bukti_kebersihan_sampah_pool' => 'required|image|mimes:jpeg,png,jpg,gif|max:5000',
+            'bukti_kondisi_pool' => 'required|image|mimes:jpeg,png,jpg,gif|max:5000',
             'kendala_pool_ids' => 'nullable|array',
             'kendala_pool_ids.*' => 'exists:kendala_pool,kendala_pool_id',
-            'bukti_kendala_pool' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'bukti_kendala_pool' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:500',
+        ], [
+            'bukti_kebersihan_lantai_pool.max' => 'Ukuran gambar lantai tidak boleh lebih dari 5MB.',
+            'bukti_kebersihan_kaca_pool.max' => 'Ukuran gambar kaca tidak boleh lebih dari 5MB.',
+            'bukti_kebersihan_sampah_pool.max' => 'Ukuran gambar sampah tidak boleh lebih dari 5MB.',
+            'bukti_kondisi_pool.max' => 'Ukuran gambar kondisi pool tidak boleh lebih dari 5MB.',
+            'bukti_kendala_pool.max' => 'Ukuran gambar kendala tidak boleh lebih dari 5MB.',
         ]);
+
+        $kendalaDipilih = $request->filled('kendala_pool_ids');
+        $fotoKendalaDiupload = $request->hasFile('bukti_kendala_pool');
+
+        if ($kendalaDipilih && !$fotoKendalaDiupload) {
+            return back()->withErrors([
+                'bukti_kendala_pool' => 'Foto kendala pool wajib diunggah jika terdapat kendala yang dipilih.',
+            ])->withInput();
+        }
+
+        if ($fotoKendalaDiupload && !$kendalaDipilih) {
+            return back()->withErrors([
+                'kendala_pool_ids' => 'Kendala pool harus dipilih jika mengunggah foto kendala.',
+            ])->withInput();
+        }
 
         // dd($request->all());
 

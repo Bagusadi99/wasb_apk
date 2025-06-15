@@ -65,9 +65,28 @@ class FormHalteController extends Controller
             'kendala_halte_ids' => 'nullable|array',
             'kendala_halte_ids.*' => 'exists:kendala_halte,kendala_halte_id',
             'bukti_kendala_halte' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000',
+        ], [
+            'bukti_kebersihan_lantai_halte.max' => 'Ukuran gambar lantai tidak boleh lebih dari 5MB.',
+            'bukti_kebersihan_kaca_halte.max' => 'Ukuran gambar kaca tidak boleh lebih dari 5MB.',
+            'bukti_kebersihan_sampah_halte.max' => 'Ukuran gambar sampah tidak boleh lebih dari 5MB.',
+            'bukti_kondisi_halte.max' => 'Ukuran gambar kondisi halte tidak boleh lebih dari 5MB.',
+            'bukti_kendala_halte.max' => 'Ukuran gambar kendala tidak boleh lebih dari 5MB.',
         ]);
 
-        // dd($request->all());
+        $kendalaDipilih = $request->filled('kendala_halte_ids');
+        $fotoKendalaDiupload = $request->hasFile('bukti_kendala_halte');
+
+        if ($kendalaDipilih && !$fotoKendalaDiupload) {
+            return back()->withErrors([
+                'bukti_kendala_halte' => 'Foto kendala halte wajib diunggah jika terdapat kendala yang dipilih.',
+            ])->withInput();
+        }
+
+        if ($fotoKendalaDiupload && !$kendalaDipilih) {
+            return back()->withErrors([
+                'kendala_halte_ids' => 'Kendala halte harus dipilih jika mengunggah foto kendala.',
+            ])->withInput();
+        }
 
         // Simpan file
         $fotoLantaiPath = $request->file('bukti_kebersihan_lantai_halte')->store('foto_lantai', 'public');
