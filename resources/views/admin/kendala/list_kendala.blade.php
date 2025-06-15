@@ -37,7 +37,7 @@
 
                     <div class="form-group mb-4">
                         <h6 for="pilihKendala" class="form-label">Pilih Jenis Kendala:</h6>
-                        <select class="form-select" id="pilihKendala" onchange="tampilkanTabel()">
+                        <select class="choices form-select" id="pilihKendala" onchange="tampilkanTabel()">
                             <option value="" disabled selected>Jenis Kendala</option>
                             <option value="pool">Kendala Pool</option>
                             <option value="halte">Kendala Halte</option>
