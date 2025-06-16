@@ -186,11 +186,11 @@
                                                     @foreach ($laporan_pool as $item)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
-                                                            <td class="text-nowrap">{{ $item->pekerja->nama_pekerja }}</td>
-                                                            <td>{{ $item->shift->shift_nama }}</td>
-                                                            <td class="text-nowrap">{{ $item->koridor->koridor_nama ?? '-' }}</td>
-                                                            <td>{{ $item->pool->pool_nama ?? '-' }}</td>
-                                                            <td>{{ $item->tanggal_waktu_pool }}</td>
+                                                            <td class="text-nowrap">{{ $item->pekerja->nama_pekerja ?? 'Data Tidak Tersedia' }}</td>
+                                                            <td>{{ $item->shift->shift_nama ?? 'Data Tidak Tersedia' }}</td>
+                                                            <td class="text-nowrap">{{ $item->koridor->koridor_nama ?? 'Data Tidak Tersedia' }}</td>
+                                                            <td>{{ $item->pool->pool_nama ?? 'Dada Tidak Tersedia' }}</td>
+                                                            <td>{{ $item->tanggal_waktu_pool ?? 'Data Tidak Tersedia' }}</td>
                                                             <td>
                                                                 <img src="{{ asset('storage/' . $item->bukti_kebersihan_lantai_pool) }}"
                                                                     alt="Bukti Kebersihan"

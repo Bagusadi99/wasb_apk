@@ -70,8 +70,8 @@
                                             <tbody>
                                                 @foreach ($kendala_pool as $item)
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $item->kendala_pool ?? 'Tidak ada kendala' }}</td>
+                                                    <td>{{ $loop->iteration ?? 'Data Tidak Tersedia' }}</td>
+                                                    <td>{{ $item->kendala_pool ?? 'Data Tidak Tersedia' }}</td>
                                                     <td class="text-center">
                                                         <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                             data-bs-target="#editModal"

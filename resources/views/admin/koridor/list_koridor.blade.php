@@ -56,8 +56,8 @@
                                             <tbody>
                                                 @forEach ($koridor as $item)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $item->koridor_nama }}</td>
+                                                        <td>{{ $loop->iteration ?? 'Data Tidak Tersedia' }}</td>
+                                                        <td>{{ $item->koridor_nama ?? 'Data Tidak Tersedia' }}</td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
                                                                 onclick="loadDataKoridor('{{ $item->koridor_id }}', '{{ $item->koridor_nama }}')">

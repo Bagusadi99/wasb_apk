@@ -57,8 +57,8 @@
                                             <tbody>
                                                 @foreach ($halte as $item)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $item->halte_nama }}</td>
+                                                        <td>{{ $loop->iteration ?? 'Data Tidak Tersedia' }}</td>
+                                                        <td>{{ $item->halte_nama ?? 'Data Tidak Tersedia' }}</td>
                                                         <td>{{ $item->koridor ? $item->koridor->koridor_nama : 'Tidak ada koridor' }}</td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"

@@ -186,11 +186,11 @@
                                                     @foreach ($laporan_halte as $item)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
-                                                            <td class="text-nowrap">{{ $item->pekerja->nama_pekerja }}</td>
-                                                            <td>{{ $item->shift->shift_nama }}</td>
-                                                            <td class="text-nowrap">{{ $item->koridor->koridor_nama ?? '-' }}</td>
-                                                            <td>{{ $item->halte->halte_nama ?? '-' }}</td>
-                                                            <td>{{ ($item->tanggal_waktu_halte) }}</td>
+                                                            <td class="text-nowrap">{{ $item->pekerja->nama_pekerja ?? 'Data Tidak Tersedia'}}</td>
+                                                            <td>{{ $item->shift->shift_nama ?? 'Data Tidak Tersedia' }}</td>
+                                                            <td class="text-nowrap">{{ $item->koridor->koridor_nama ?? 'Data Tiidak Tersedia' }}</td>
+                                                            <td>{{ $item->halte->halte_nama ?? 'Data Tidak Tersedia' }}</td>
+                                                            <td>{{ ($item->tanggal_waktu_halte) ?? 'Data Tidak Tersedia' }}</td>
                                                             <td>
                                                                 <img src="{{ asset('storage/' . $item->bukti_kebersihan_lantai_halte) }}"
                                                                     alt="Bukti Kebersihan"
@@ -414,7 +414,7 @@
                         } else {
                             console.error('Detail content or map coordinates not found.');
                             // Optional: display a message if map cannot be loaded
-                             const mapContainer = document.getElementById('mini-map');
+                            const mapContainer = document.getElementById('mini-map');
                                 if (mapContainer) {
                                     mapContainer.innerHTML = '<p class="text-center text-danger">Tidak dapat menampilkan peta: Data detail tidak lengkap.</p>';
                                 }

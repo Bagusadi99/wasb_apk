@@ -56,8 +56,8 @@
                                             <tbody>
                                                 @forEach ($shift as $item)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $item->shift_nama ?? 'Tidak ada shift' }}</td>
+                                                        <td>{{ $loop->iteration ?? 'Data Tidak Tersedia' }}</td>
+                                                        <td>{{ $item->shift_nama ?? 'Data Tidak Tersedia' }}</td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
                                                                 onclick="loadDataShift('{{ $item->shift_id }}', '{{ $item->shift_nama }}')">

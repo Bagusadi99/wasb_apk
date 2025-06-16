@@ -57,8 +57,8 @@
                                             <tbody>
                                                 @foreach ($pekerja as $item)
                                                     <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $item->nama_pekerja }}</td>
+                                                        <td>{{ $loop->iteration ?? 'Data Tidak Tersedia' }}</td>
+                                                        <td>{{ $item->nama_pekerja ?? 'Data Tidak Tersedia' }}</td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-sm btn-warning mb-1 mt-1" data-bs-toggle="modal" data-bs-target="#editModal" 
                                                                 onclick="loadDataPengawas('{{ $item->pekerja_id }}', '{{ $item->nama_pekerja }}')">
