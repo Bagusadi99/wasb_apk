@@ -53,8 +53,8 @@
                                                     <i class="bi bi-bus-front-fill fs-5 text-white"></i>
                                                 </div>
                                                 <div class="ms-lg-3 text-center text-lg-start">
-                                                    <h6 class="text-muted font-semibold">Pengawas</h6>
-                                                    <h5 class="text-extrabold mb-0">{{$pekerja}}</h5>
+                                                    <h6 class="text-muted font-semibold">Koridor</h6>
+                                                    <h5 class="text-extrabold mb-0">{{$koridor}}</h5>
                                                 </div>
                                             </div>
                                         </div>

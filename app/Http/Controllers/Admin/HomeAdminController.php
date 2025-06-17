@@ -8,6 +8,7 @@ use App\Models\Pool;
 use App\Models\Pekerja;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\Koridor;
 
 use Illuminate\Http\Request;
 
@@ -18,6 +19,7 @@ class HomeAdminController extends Controller
         $halte = Halte::count();
         $pool = Pool::count();
         $pekerja = Pekerja::count();
+        $koridor = Koridor::count();
 
         $kategori = $request->kategori ?? 'halte';
         $bulan = $request->bulan ?? Carbon::now()->month;
@@ -38,7 +40,7 @@ class HomeAdminController extends Controller
                 ->get();
         }
 
-        return view('admin.homeadmin', compact('halte', 'pool', 'pekerja', 'laporanPerUser', 'kategori', 'bulan'));
+        return view('admin.homeadmin', compact('halte', 'pool','koridor', 'pekerja', 'laporanPerUser', 'kategori', 'bulan'));
     }
 
     
