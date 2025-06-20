@@ -39,7 +39,6 @@ class HomeAdminController extends Controller
                 ->groupBy('laporan_pool.pekerja_id', 'pekerja.nama_pekerja')
                 ->get();
         }
-
         return view('admin.homeadmin', compact('halte', 'pool', 'pekerja', 'laporanPerUser', 'kategori', 'bulan', 'koridor'));
     }
 

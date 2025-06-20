@@ -59,11 +59,11 @@
                                                 <div class="ms-lg-3 text-center text-lg-start">
                                                     <h6 class="text-muted">Koridor</h6>
                                                     @if(isset($koridor) && !empty($koridor))
-                                                            <h6 class="text-extrabold mb-0">{{ $koridor }}</h6>
-                                                        @else
-                                                            <small class="text-danger mb-0">Data tidak ditersedia</small>
-                                                        @endif
-                                                </div>    
+                                                        <h5 class="text-extrabold mb-0">{{ $koridor }}</h5>
+                                                    @else
+                                                        <small class="text-danger mb-0">Data tidak ditersedia</small>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -78,7 +78,7 @@
                                                 <div class="ms-lg-3 text-center text-lg-start">
                                                     <h6 class="text-muted">Halte</h6>
                                                     @if(isset($halte) && !empty($halte))
-                                                            <h6 class="text-extrabold mb-0">{{ $halte }}</h6>
+                                                            <h5 class="text-extrabold mb-0">{{ $halte }}</h5>
                                                         @else
                                                             <small class="text-danger mb-0">Data tidak tersedia</small>
                                                         @endif
@@ -97,7 +97,7 @@
                                                 <div class="ms-lg-3 text-center text-lg-start">
                                                     <h6 class="text-muted">Pool</h6>
                                                     @if(isset($pool) && !empty($pool))
-                                                            <h6 class="text-extrabold mb-0">{{ $pool }}</h6>
+                                                            <h5 class="text-extrabold mb-0">{{ $pool }}</h5>
                                                         @else
                                                             <small class="text-danger mb-0">Data tidak tersedia</small>
                                                         @endif
