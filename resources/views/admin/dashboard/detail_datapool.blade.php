@@ -11,7 +11,7 @@
     <p><strong>Waktu:</strong> {{ $data->tanggal_waktu_pool }}</p>
 
     <!-- Container untuk peta -->
-    <p><strong>Lokasi:</strong></p>
+    <p><strong>Lokasi:</strong> {{$data->lokasi_pool}}</p>
     <div id="mini-map"></div>
     <hr>
     <p style="margin-bottom: 0px"><strong>Bukti Kebersihan Lantai:</strong></p>

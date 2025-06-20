@@ -35,11 +35,15 @@
                                         <div class="card-body px-4 py-4-2">
                                             <div class="d-flex flex-column flex-lg-row align-items-center">
                                                 <div class="bg-primary p-3 rounded mb-2 mb-lg-0">
-                                                    <i class="bi bi-bus-front-fill fs-5 text-white"></i>
+                                                    <i class="bi bi-person-standing fs-5 text-white"></i>
                                                 </div>
                                                 <div class="ms-lg-3 text-center text-lg-start">
-                                                    <h5 class="text-muted font-semibold">Pengawas</h5>
-                                                    <h6 class="text-extrabold mb-0">{{$pekerja}}</h6>
+                                                    <h6 class="text-muted">Pengawas</h6>
+                                                    @if(isset($pekerja) && !empty($pekerja))
+                                                        <h5 class="text-extrabold mb-0">{{ $pekerja }}</h5>
+                                                    @else
+                                                        <small class="text-danger mb-0">Data tidak ditersedia</small>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -50,12 +54,16 @@
                                         <div class="card-body px-4 py-4-2">
                                             <div class="d-flex flex-column flex-lg-row align-items-center">
                                                 <div class="bg-warning p-3 rounded mb-2 mb-lg-0">
-                                                    <i class="bi bi-bus-front-fill fs-5 text-white"></i>
+                                                    <i class="bi bi-building-fill fs-5 text-white"></i>
                                                 </div>
                                                 <div class="ms-lg-3 text-center text-lg-start">
-                                                    <h6 class="text-muted font-semibold">Pengawas</h6>
-                                                    <h5 class="text-extrabold mb-0">{{$pekerja}}</h5>
-                                                </div>
+                                                    <h6 class="text-muted">Koridor</h6>
+                                                    @if(isset($koridor) && !empty($koridor))
+                                                            <h6 class="text-extrabold mb-0">{{ $koridor }}</h6>
+                                                        @else
+                                                            <small class="text-danger mb-0">Data tidak ditersedia</small>
+                                                        @endif
+                                                </div>    
                                             </div>
                                         </div>
                                     </div>
@@ -68,8 +76,12 @@
                                                     <i class="bi bi-bus-front-fill fs-5 text-white"></i>
                                                 </div>
                                                 <div class="ms-lg-3 text-center text-lg-start">
-                                                    <h5 class="text-muted font-semibold">Halte</h5>
-                                                    <h6 class="text-extrabold mb-0">{{$halte}}</h6>
+                                                    <h6 class="text-muted">Halte</h6>
+                                                    @if(isset($halte) && !empty($halte))
+                                                            <h6 class="text-extrabold mb-0">{{ $halte }}</h6>
+                                                        @else
+                                                            <small class="text-danger mb-0">Data tidak tersedia</small>
+                                                        @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -80,11 +92,15 @@
                                         <div class="card-body px-4 py-4-2">
                                             <div class="d-flex flex-column flex-lg-row align-items-center">
                                                 <div class="bg-info p-3 rounded mb-2 mb-lg-0">
-                                                    <i class="bi bi-bus-front-fill fs-5 text-white"></i>
+                                                    <i class="bi bi-buildings-fill fs-5 text-white"></i>
                                                 </div>
                                                 <div class="ms-lg-3 text-center text-lg-start">
-                                                    <h5 class="text-muted font-semibold">Pool</h5>
-                                                    <h6 class="text-extrabold mb-0">{{$pool}}</h6>
+                                                    <h6 class="text-muted">Pool</h6>
+                                                    @if(isset($pool) && !empty($pool))
+                                                            <h6 class="text-extrabold mb-0">{{ $pool }}</h6>
+                                                        @else
+                                                            <small class="text-danger mb-0">Data tidak tersedia</small>
+                                                        @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -117,7 +133,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-2 d-flex align-items-end">
-                                                    <button type="submit" class="btn btn-success me-2">Cari</button>
+                                                    <button type="submit" class="btn btn-primary me-2">Filter</button>
                                                     <a href="{{ route('admin.homeadmin') }}" class="btn btn-danger">Reset</a>
                                                 </div>
                                             </form>
@@ -154,7 +170,7 @@
                                                                     <td>
                                                                         @if($laporan->total_laporan == 0)
                                                                             <span class="badge bg-danger">Kosong</span>
-                                                                        @elseif($laporan->total_laporan < 20)
+                                                                        @elseif($laporan->total_laporan < 5)
                                                                             <span class="badge bg-warning text-dark">Kurang</span>
                                                                         @else
                                                                             <span class="badge bg-success">Terpenuhi</span>

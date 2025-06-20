@@ -193,7 +193,7 @@
     <script src="{{ asset('template/dist/assets/compiled/js/app.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
-    {{-- <script src="{{ asset('template/dist/assets/static/js/pages/simple-datatables.js') }}"></script> --}}
+    <script src="{{ asset('template/dist/assets/static/js/pages/simple-datatables.js') }}"></script>
     
     {{-- Feather Icons script (add if you intend to use feather icons elsewhere) --}}
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -202,11 +202,11 @@
         feather.replace();
 
         // Initialize Simple Datatables after DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('table1')) {
-                new simpleDatatables.DataTable(document.getElementById('table1'));
-            }
-        });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     if (document.getElementById('table1')) {
+        //         new simpleDatatables.DataTable(document.getElementById('table1'));
+        //     }
+        // });
 
         function loadDataPengawas(id, nama) {
             // Isi data ke dalam modal edit
