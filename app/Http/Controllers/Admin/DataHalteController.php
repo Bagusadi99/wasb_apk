@@ -159,12 +159,14 @@ class DataHalteController extends Controller
         // Get filter dates
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
+        $koridorId = $request->input('koridor');
     
         // Generate filename
         $filename = 'laporan_halte_' . date('YmdHis') . '.xlsx';
+
         
         // Return excel file
-        return Excel::download(new HalteExport($start_date, $end_date), $filename);
+        return Excel::download(new HalteExport($start_date, $end_date, $koridorId), $filename);
     }
 
     public function destroy($id)

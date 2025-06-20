@@ -177,12 +177,13 @@ class DataPoolController extends Controller
         // Get filter dates
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
+        $koridor = $request->input('koridor');
     
         // Generate filename
         $filename = 'laporan_pool_' . date('YmdHis') . '.xlsx';
         
         // Return excel file
-        return Excel::download(new PoolExport($start_date, $end_date), $filename);
+        return Excel::download(new PoolExport($start_date, $end_date, $koridor), $filename);
     }
 
 }
