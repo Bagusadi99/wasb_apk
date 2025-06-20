@@ -288,7 +288,7 @@
                         </table>
                     </div>
                     <div class="text-end">
-                        <a href="{{ route('export_excel', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
+                        <a href="{{ route('pool.export_excel', ['start_date' => request('start_date'), 'end_date' => request('end_date'), 'koridor' => request('koridor')]) }}"
                             class="btn btn-success">
                             <i class="bi bi-download"></i> Download Excel
                         </a>
